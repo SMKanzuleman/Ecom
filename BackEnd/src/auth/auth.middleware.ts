@@ -1,13 +1,8 @@
-import { NextFunction,request,Request, Response } from "express";
+import { NextFunction,Request, Response } from "express";
 import { SendError } from "../utils/responce";
 import jwt from 'jsonwebtoken';
-import { AuthConfig } from "../config/auth.config";
+import { AuthConfig, AuthRequest } from '../config/auth.config';
 import { User } from './user.model';
-
-interface AuthRequest extends Request {
-    User?: any
-}
-
 
 export const Authenticate =async (req:AuthRequest,res:Response,next:NextFunction)=>{
     try {

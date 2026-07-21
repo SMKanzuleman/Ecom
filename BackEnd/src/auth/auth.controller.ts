@@ -3,9 +3,8 @@ import jwt from 'jsonwebtoken'
 import { User } from './user.model';
 import { Request, Response } from 'express'
 import { SendError, SendSuccess } from "../utils/responce";
-import { AuthConfig } from '../config/auth.config';
+import { AuthConfig, AuthRequest } from '../config/auth.config';
 import { token } from "morgan";
-
 
 
 const GenerateToken = (UserId: string, SecretKey: string, Expiry: any): string => {
@@ -74,9 +73,9 @@ const LoginUser = async (req: Request, res: Response) => {
     }
 }
 
-const GetMe = async (req: Request, res: Response) => {
+const GetMe = async (req: AuthRequest, res: Response) => {
     try {
-        let { id } = req.body; // grab user's id  from middlewares responce
+        let { id } = req.User; // grab user's id  from middlewares responce
         const FoundedUser = await User.findById(id).select("-Password")
         if (!FoundedUser) {
             return SendError(res, 400, "You does not have an account.Create account first.")

@@ -1,4 +1,5 @@
 import dotenv from 'dotenv';
+import { Request } from 'express';
 dotenv.config()
 
 type AuthConfig = {
@@ -7,6 +8,10 @@ type AuthConfig = {
     RefreshSecretKey: string
     RefreshExpiry: string
     NODE_ENV: string
+}
+
+export interface AuthRequest extends Request {
+    User?: any
 }
 
 export const AuthConfig: AuthConfig = {
