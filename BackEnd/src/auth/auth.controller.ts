@@ -87,4 +87,22 @@ const GetMe = async (req: AuthRequest, res: Response) => {
     }
 }
 
-export { RegisterUser, LoginUser, GetMe }
+const Refresh = async ( req:Request ,res: Response ) =>{
+    try {
+
+        let {token} = req.cookies
+        if(!token){
+            return SendError(res,404,"You have not refresh token.")
+        }
+        const decoded=jwt.verify(token,AuthConfig.RefreshSecretKey) as { id:string}
+
+        const AccessToken=GenerateToken(decoded.id,AuthConfig.AccessSecretKey,AuthConfig.AccessExpiry)
+
+        return SendSuccess(res,200,"Token genrated successfully",{AccessToken: AccessToken})
+        
+    } catch (error) {
+        return SendError(res,500,"There is some error in refreshing token.")
+    }
+}
+
+export { RegisterUser, LoginUser, GetMe, Refresh }
