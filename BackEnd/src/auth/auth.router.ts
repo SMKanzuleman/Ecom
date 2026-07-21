@@ -1,6 +1,7 @@
 import express, { Router } from 'express';
 import { User } from './user.model';
 import { GetMe, LoginUser, RegisterUser } from './auth.controller';
+import { Authenticate } from './auth.middleware';
 
 
 
@@ -10,6 +11,6 @@ AuthRouter.post("/register", RegisterUser)
 
 AuthRouter.post("/login", LoginUser)
 
-AuthRouter.get("/me", GetMe)
+AuthRouter.get("/me", Authenticate ,GetMe)
 
 export default AuthRouter

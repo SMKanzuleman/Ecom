@@ -3,16 +3,16 @@ import jwt from 'jsonwebtoken'
 import { User } from './user.model';
 import { Request, Response } from 'express'
 import { SendError, SendSuccess } from "../utils/responce";
-import { AuthConfig } from "../config/auth.config";
+import { AuthConfig } from '../config/auth.config';
 import { token } from "morgan";
 
 
 
-const GenerateToken = (UserId: string): string => {
+const GenerateToken = (UserId: string, SecretKey: string, Expiry: any): string => {
     return jwt.sign(
         { id: UserId },
-        AuthConfig.SecretKey,
-        { expiresIn: "1m" }
+        SecretKey,
+        { expiresIn: Expiry }
     )
 }
 
@@ -30,8 +30,16 @@ const RegisterUser = async (req: Request, res: Response) => {
         const NewUser = new User({ Name, Email, Password });
         await NewUser.save()
 
-        const Token = GenerateToken(NewUser._id.toString())
-        return SendSuccess(res, 201, "User registered sucessfully", { user: NewUser, token: Token })
+        const AccessToken = GenerateToken(NewUser._id.toString(), AuthConfig.AccessSecretKey, AuthConfig.AccessExpiry)
+
+        const RefreshToken = GenerateToken(NewUser._id.toString(), AuthConfig.RefreshSecretKey, AuthConfig.RefreshExpiry)
+        res.cookie("token", RefreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 24 * 60 * 60 * 1000
+        })
+        return SendSuccess(res, 201, "User registered sucessfully", { user: NewUser, token: AccessToken })
 
     } catch (error) {
         return SendError(res, 500, "There is some error")
@@ -49,8 +57,17 @@ const LoginUser = async (req: Request, res: Response) => {
         if (!FoundedUser) {
             return SendError(res, 404, "You does not have an account")
         }
-        const Token = GenerateToken(FoundedUser._id.toString())
-        return SendSuccess(res, 200, "User Found sucessfully", { User: FoundedUser, token: Token })
+        const AccessToken = GenerateToken(FoundedUser._id.toString(), AuthConfig.AccessSecretKey, AuthConfig.AccessExpiry)
+
+        const RefreshToken = GenerateToken(FoundedUser._id.toString(), AuthConfig.RefreshSecretKey, AuthConfig.RefreshExpiry)
+        
+        res.cookie("refeshToken", RefreshToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "lax",
+            maxAge: 24 * 60 * 60
+        })
+        return SendSuccess(res, 200, "User Found sucessfully", { User: FoundedUser, accessToken: AccessToken })
 
     } catch (error) {
         return SendError(res, 500, "There is some error")
@@ -59,12 +76,8 @@ const LoginUser = async (req: Request, res: Response) => {
 
 const GetMe = async (req: Request, res: Response) => {
     try {
-        if (!req.headers.authorization) {
-            return SendError(res, 404, "Token does not found")
-        }
-        const Token = req.headers.authorization.split(" ")[1]
-        const decoded = jwt.verify(Token, AuthConfig.SecretKey) as { id: string }
-        const FoundedUser = await User.findById(decoded.id).select("-Password")
+        let { id } = req.body; // grab user's id  from middlewares responce
+        const FoundedUser = await User.findById(id).select("-Password")
         if (!FoundedUser) {
             return SendError(res, 400, "You does not have an account.Create account first.")
         }
