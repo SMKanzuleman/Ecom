@@ -1,8 +1,8 @@
 import express, { Router } from 'express';
 import { User } from './user.model';
 import { GetMe, LoginUser, RegisterUser, Refresh } from './auth.controller';
-import { Authenticate } from './auth.middleware';
 import {GoogleCallback, GoogleRedirect} from './google';
+import { Authenticate } from '../middlewares/authentication';
 
 
 const AuthRouter = Router()
