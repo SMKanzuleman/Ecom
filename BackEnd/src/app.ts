@@ -10,7 +10,11 @@ const app=express()
 app.use(express.json())
 app.use(morgan("dev"))
 app.use(cookieParser())
-app.use("/api/",AuthRouter)
+app.use("/auth/",AuthRouter)
+
+app.get("/" , (req,res)=>{
+    return res.send(`<a href="/auth/google">Account with Google <a/>`)
+})
 
 
 app.listen(Config.Port,()=>{

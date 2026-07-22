@@ -5,15 +5,11 @@ import { Request, Response } from 'express'
 import { SendError, SendSuccess } from "../utils/responce";
 import { AuthConfig, AuthRequest } from '../config/auth.config';
 import { token } from "morgan";
+import { OAuth2Client } from "google-auth-library"
+import { GenerateToken } from "./utils";
 
 
-const GenerateToken = (UserId: string, SecretKey: string, Expiry: any): string => {
-    return jwt.sign(
-        { id: UserId },
-        SecretKey,
-        { expiresIn: Expiry }
-    )
-}
+
 
 const RegisterUser = async (req: Request, res: Response) => {
     try {
@@ -59,7 +55,7 @@ const LoginUser = async (req: Request, res: Response) => {
         const AccessToken = GenerateToken(FoundedUser._id.toString(), AuthConfig.AccessSecretKey, AuthConfig.AccessExpiry)
 
         const RefreshToken = GenerateToken(FoundedUser._id.toString(), AuthConfig.RefreshSecretKey, AuthConfig.RefreshExpiry)
-        
+
         res.cookie("refeshToken", RefreshToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === "production",
@@ -87,22 +83,23 @@ const GetMe = async (req: AuthRequest, res: Response) => {
     }
 }
 
-const Refresh = async ( req:Request ,res: Response ) =>{
+const Refresh = async (req: Request, res: Response) => {
     try {
 
-        let {token} = req.cookies
-        if(!token){
-            return SendError(res,404,"You have not refresh token.")
+        let { token } = req.cookies
+        if (!token) {
+            return SendError(res, 404, "You have not refresh token.")
         }
-        const decoded=jwt.verify(token,AuthConfig.RefreshSecretKey) as { id:string}
+        const decoded = jwt.verify(token, AuthConfig.RefreshSecretKey) as { id: string }
 
-        const AccessToken=GenerateToken(decoded.id,AuthConfig.AccessSecretKey,AuthConfig.AccessExpiry)
+        const AccessToken = GenerateToken(decoded.id, AuthConfig.AccessSecretKey, AuthConfig.AccessExpiry)
 
-        return SendSuccess(res,200,"Token genrated successfully",{AccessToken: AccessToken})
-        
+        return SendSuccess(res, 200, "Token genrated successfully", { AccessToken: AccessToken })
+
     } catch (error) {
-        return SendError(res,500,"There is some error in refreshing token.")
+        return SendError(res, 500, "There is some error in refreshing token.")
     }
 }
+
 
 export { RegisterUser, LoginUser, GetMe, Refresh }
