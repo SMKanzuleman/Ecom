@@ -5,6 +5,7 @@ import { ConnectDB } from './db';
 import AuthRouter from "./auth/auth.router";
 import cookieParser from "cookie-parser";
 import { ProductRouter } from "./products/product.router";
+import { CartRouter } from "./cart/cart.router";
 
 
 const app=express()
@@ -13,6 +14,7 @@ app.use(morgan("dev"))
 app.use(cookieParser())
 app.use("/auth/",AuthRouter)
 app.use("/products", ProductRouter)
+app.use("/cart", CartRouter)
 
 app.get("/" , (req,res)=>{
     return res.send(`<a href="/auth/google">Account with Google <a/>`)
