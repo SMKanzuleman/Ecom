@@ -8,8 +8,8 @@ type CartType = {
     Items: {
         ProductId: mongoose.Types.ObjectId
         Quantity: number
-        Colors: string
-        Sizes: string
+        Colors?: string
+        Sizes?: string
     }[]
 }
 

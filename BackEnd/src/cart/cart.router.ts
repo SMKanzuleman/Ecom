@@ -7,6 +7,9 @@ import { AddToCart, GetCart, RemoveFromCart, RemoveCart } from './cart.controlle
 export const CartRouter = Router()
 
 CartRouter.post("/:id", Authenticate, authorizeRoles("User"), AddToCart)
+
 CartRouter.get("/", Authenticate, authorizeRoles("User"), GetCart)
+
 CartRouter.put("/:id", Authenticate, authorizeRoles("User"), RemoveFromCart)
+
 CartRouter.delete("/",Authenticate,authorizeRoles("User"),RemoveCart)

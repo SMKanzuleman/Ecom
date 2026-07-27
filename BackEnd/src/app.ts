@@ -6,6 +6,7 @@ import AuthRouter from "./auth/auth.router";
 import cookieParser from "cookie-parser";
 import { ProductRouter } from "./products/product.router";
 import { CartRouter } from "./cart/cart.router";
+import { OrderRouter } from "./order/order.router";
 
 
 const app=express()
@@ -15,6 +16,7 @@ app.use(cookieParser())
 app.use("/auth/",AuthRouter)
 app.use("/products", ProductRouter)
 app.use("/cart", CartRouter)
+app.use("/order", OrderRouter)
 
 app.get("/" , (req,res)=>{
     return res.send(`<a href="/auth/google">Account with Google <a/>`)
