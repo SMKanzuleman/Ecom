@@ -10,16 +10,16 @@ import { GenerateToken } from "./utils";
 
 const RegisterUser = async (req: Request, res: Response) => {
   try {
-    const { Name, Email, Password } = req.body;
+    const { FName, LName, Email, Password } = req.body;
 
-    if (!Name || !Email || !Password) {
+    if (!FName || !Email || !Password) {
       return SendError(res, 404, "All field are required.");
     }
     const ExistingUser = await User.findOne({ Email });
     if (ExistingUser) {
       return SendError(res, 500, "Account already exist.");
     }
-    const NewUser = new User({ Name, Email, Password });
+    const NewUser = new User({ FName, LName, Email, Password });
     await NewUser.save();
 
     const AccessToken = GenerateToken(

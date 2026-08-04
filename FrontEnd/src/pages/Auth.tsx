@@ -4,15 +4,17 @@ import React, { useState } from "react";
 import GoogleIcon from "../assets/Google_Symbol_2.webp";
 
 export const Auth = () => {
+
     const [isLogin, setLogin] = useState(true);
 
     const [Email, setEmail] = useState("someone@gmail.com");
-    
+
     const [Fname, setFname] = useState("Steve");
-    
-    const [Lname, setLname] = useState("Smith");
-    
+
+    const [Lname, setLname] = useState("");
+
     const [Pass, setPass] = useState("");
+
     const HandleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
@@ -30,26 +32,32 @@ export const Auth = () => {
         }
     };
 
-    const HandleSignUp = async () => { 
+    const HandleSignUp = async (e: React.FormEvent) => {
+        e.preventDefault()
         try {
-            const res = await axios.post({
+            const res = await axios.post("http://localhost:2026/auth/register", {
+                FName: Fname,
+                LName: Lname,
                 Email: Email,
                 Password: Pass,
+
             })
-            if (res) { 
+            if (res) {
                 alert("account created successfully")
                 console.log(res);
-                
+
             }
-            
+
         } catch (error) {
             console.error(error)
-            
+
         }
     }
 
+
     return (
         <div className="w-full min-h-screen flex flex-col items-center justify-center">
+
             <div className="relative w-full max-w-50 bg-wh shadow-2xl border-gray-700/80 rounded-lg mb-16 flex justify-evenly p-1">
                 <div
                     className={`absolute w-[calc(50%-4px)] left-1 top-1 bottom-1 bg-black rounded-lg transition-transform duration-300 ease-out py-2 ${isLogin ? "translate-x-0" : "translate-x-full"}`}
@@ -92,7 +100,7 @@ export const Auth = () => {
                                 value={Email}
                                 type="email"
                                 id="e"
-                                className=" w-full px-4 py-3 rounded-lg border border-gray-300 outline-none focus:border-gray-500/50"
+                                className=" w-full px-4 py-3 rounded-lg border-2 border-gray-950 outline-none focus:border-gray-500/50"
                             />
                         </div>
                         <div className="flex flex-col gap-2 w-full">
@@ -106,7 +114,7 @@ export const Auth = () => {
                                 onChange={(e) => {
                                     setPass(e.target.value);
                                 }}
-                                className=" w-full px-4 py-3 rounded-lg border border-gray-300 outline-none focus:border-gray-500/50"
+                                className=" w-full px-4 py-3 rounded-lg border-2 border-gray-950 outline-none focus:border-gray-500/50"
                             />
                         </div>
                         <div className="w-full flex justify-center">
@@ -135,16 +143,16 @@ export const Auth = () => {
 
                 <div className="w-full max-w-lg py-16 border border-gray-400/20 rounded-2xl bg-white flex flex-col items-center justify-center">
                     <form
-                        onSubmit={HandleLogin}
+                        onSubmit={HandleSignUp}
                         className="w-full max-w-103 flex flex-col justify-center items-center gap-3.5"
                     >
                         <div className="w-full flex gap-2.5 ">
 
                             <div className=" w-1/2 flex flex-col gap-2">
                                 <label htmlFor="e" className="text-sm text-black font-body">
-                                    First Name
-                                    </label>
-                                
+                                    First Name<span className="text-red-600 font-bold">*</span>
+                                </label>
+
                                 <input
                                     onChange={(e) => {
                                         setFname(e.target.value);
@@ -154,7 +162,7 @@ export const Auth = () => {
                                     }}
                                     value={Fname}
                                     id="e"
-                                    className=" w-full px-2 py-2 rounded-lg border border-gray-300 outline-none focus:border-gray-500/50"
+                                    className=" w-full px-2 py-2 rounded-lg border-2 border-gray-950 outline-none focus:border-gray-500/50"
                                 />
                             </div>
 
@@ -171,7 +179,7 @@ export const Auth = () => {
                                     }}
                                     value={Lname}
                                     id="e"
-                                    className=" w-full px-2 py-2 rounded-lg border border-gray-300 outline-none focus:border-gray-500/50"
+                                    className=" w-full px-2 py-2 rounded-lg border-2 border-gray-950 outline-none focus:border-gray-500/50"
                                 />
                             </div>
 
@@ -190,7 +198,7 @@ export const Auth = () => {
                                 value={Email}
                                 type="email"
                                 id="e"
-                                className=" w-full px-2 py-2 rounded-lg border border-gray-300 outline-none focus:border-gray-500/50"
+                                className=" w-full px-2 py-2 rounded-lg border-2 border-gray-950 outline-none focus:border-gray-500/50"
                             />
                         </div>
                         <div className="flex flex-col gap-2 w-full">
@@ -204,7 +212,7 @@ export const Auth = () => {
                                 onChange={(e) => {
                                     setPass(e.target.value);
                                 }}
-                                className=" w-full p-2 rounded-lg border border-gray-300 outline-none focus:border-gray-500/50"
+                                className=" w-full p-2 rounded-lg border-2 border-gray-950 outline-none focus:border-gray-500/50"
                             />
                         </div>
                         <div className="w-full flex justify-center">

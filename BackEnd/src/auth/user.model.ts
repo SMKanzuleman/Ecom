@@ -1,7 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 
 type UserType = {
-    Name: string
+    FName: string
+    LName: string
     Email: string
     Provider: "local" | "google"
     Password?: string
@@ -11,9 +12,13 @@ type UserType = {
 // Generics allow us to pass types as parameters to functions and classes keeping strict type safety.
 
 const UserSchema = new mongoose.Schema<UserType>({
-    Name: {
+    FName: {
         type: String,
-        required: [true, "name is required"]
+        required: [true, "Fname is required"]
+    },
+    LName: {
+        type: String,
+        required: false
     },
     Email: {
         type: String,

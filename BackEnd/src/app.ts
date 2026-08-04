@@ -15,7 +15,10 @@ const app=express()
 app.use(express.json())
 app.use(morgan("dev"))
 app.use(cookieParser())
-app.use(cors())
+app.use(cors({
+    origin: "http://localhost:2024",
+    credentials: true
+}))
 app.use("/auth/",AuthRouter)
 app.use("/products", ProductRouter)
 app.use("/cart", CartRouter)
