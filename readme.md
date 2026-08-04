@@ -1,7 +1,7 @@
 # Table of Contents
 
 - [Introduction](#introduction)
-- [Ui screenshots](#Ui screenshots)
+- [Ui screenshots](#Uiscreenshots)
 - ![Login Page](./Docs/Login%20Page.png)
 - [Features](#features)
 - [Installation](#installation)
