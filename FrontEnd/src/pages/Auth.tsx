@@ -6,6 +6,7 @@ import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 
 export const Auth = () => {
+    
     const [isLogin, setLogin] = useState(true);
 
     const [LoginEmail, setLoginEmail] = useState("");

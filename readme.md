@@ -1,6 +1,7 @@
 # Table of Contents
 
 - [Introduction](#introduction)
+- ![thumbnail](./Docs/Thumbnail.png)
 - [Ui screenshots](#Uiscreenshots)
    ### Login Page
 - ![Login Page](./Docs/Login%20Page.png)
