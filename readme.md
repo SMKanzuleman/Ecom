@@ -8,6 +8,8 @@
    ![Login Page](./Docs/Login%20Page.png)
    ### SignUp Page
  ![SignUp Page](./Docs/SignUp%20Page.png)
+   ### HomePage
+ ![Heosection](./Docs/HeroSection.png)
 
 - [Features](#features)
 - [Installation](#installation)
