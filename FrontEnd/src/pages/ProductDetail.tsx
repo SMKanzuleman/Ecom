@@ -4,15 +4,15 @@ import BR1 from '../assets/HeroImg.png'
 import BR2 from '../assets/zara.svg'
 import { useEffect, useState } from "react";
 import { useParams, Link } from 'react-router-dom';
-import { FaStar, FaStarHalfAlt, FaRegStar, FaRegEyeSlash } from 'react-icons/fa';
+import { FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa';
 import { FaCartShopping } from "react-icons/fa6";
-import { MdClear } from "react-icons/md";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
 import Newsletter from "../components/Newsletter";
 
 
 
 const ProductDetail = () => {
+
     const { id } = useParams();
     const [Product, setProduct] = useState<any>("")
     const [Thumb, setThumb] = useState<any>(logo)
@@ -180,7 +180,7 @@ const ProductDetail = () => {
 
             { /*ProductDetail/Reviews/Faqs*/}
 
-            <div className="w-full h-[100px] bg-wh">
+            <div className="w-full h-25 bg-wh">
                 <div className="w-full h-full px-30 py-2 flex lg:justify-evenly justify-center items-end text-text font-accent border-b-2 border-gray-700/10 lg:text-2xl text-lg lg:gap-0 gap-10">
                     <button className={` cursor-pointer ${ActiveTab === "Product Details" ? "text-black font-bold" : "text-text"}`} onClick={() => { setActiveTab("Product Details") }}>Product Details</button>
                     <button className={` cursor-pointer ${ActiveTab === "Reviews" ? "text-black font-bold" : "text-text"}`} onClick={() => { setActiveTab("Reviews") }}>Reviews</button>

@@ -23,7 +23,7 @@ const Home = () => {
     }, [])
 
     return (
-        <div className="">
+        <div>
             <HeroSection />
             <Brands />
             <ProductsSection title={"Top Selling"} tag={"top_selling"} products={Products} />
