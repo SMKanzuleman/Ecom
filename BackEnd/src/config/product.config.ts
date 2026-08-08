@@ -6,4 +6,5 @@ export type ProductType = {
     Sizes?: string[]
     Colors?: string[]
     Tags?: string[]
+    Rating?: number
 }

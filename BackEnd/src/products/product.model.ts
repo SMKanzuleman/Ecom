@@ -31,6 +31,11 @@ const ProductScheme = new mongoose.Schema<ProductType>({
     Tags: {
         type: [String],
         required: false
+    },
+    Rating: {
+        type: Number,
+        default: "0",
+        required: false
     }
 
 }, { timestamps: true })
