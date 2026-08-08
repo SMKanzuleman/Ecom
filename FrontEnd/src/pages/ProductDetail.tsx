@@ -8,6 +8,7 @@ import { FaStar, FaStarHalfAlt, FaRegStar, FaRegEyeSlash } from 'react-icons/fa'
 import { FaCartShopping } from "react-icons/fa6";
 import { MdClear } from "react-icons/md";
 import { IoIosArrowDropdownCircle } from "react-icons/io";
+import Newsletter from "../components/Newsletter";
 
 
 
@@ -476,9 +477,10 @@ const ProductDetail = () => {
                    
 
                     </div>
-                )}
-                 
+                )}  
             </div>
+
+            <Newsletter />
 
         </div>
     );
