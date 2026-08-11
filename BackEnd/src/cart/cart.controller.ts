@@ -10,7 +10,7 @@ export const AddToCart = async (req: AuthRequest, res: Response) => {
 
         let { id: productId } = req.params
 
-        let { Quantity, Sizes, Colors } = req.body
+        let { Quantity, Size, Color } = req.body
 
         const FounedProduct = await Product.findById(productId)
 
@@ -28,16 +28,17 @@ export const AddToCart = async (req: AuthRequest, res: Response) => {
                     {
                         ProductId: productId as any,
                         Quantity,
-                        Colors,
-                        Sizes
+                        Colors: Color,
+                        Sizes: Size,
                     }
                 ]
             })
+
             return SendSuccess(res, 200, `${FounedProduct.Name} added to cart😊`, { NewCart })
         }
-
+        
         const index = FoundedCart.Items.findIndex(item => item.ProductId.toString() === FounedProduct._id.toString())
-
+        
         if (index > -1) {
             FoundedCart.Items[index].Quantity += Quantity
         }
@@ -46,13 +47,14 @@ export const AddToCart = async (req: AuthRequest, res: Response) => {
                 {
                     ProductId: productId as any,
                     Quantity,
-                    Colors,
-                    Sizes
+                    Colors: Color,
+                    Sizes: Size,
                 }
             )
         }
         FoundedCart.CartPrice += FounedProduct.Price * Quantity
         await FoundedCart.save()
+        
         return SendSuccess(res, 200, `${FounedProduct.Name} added to cart😊`, { FoundedCart })
 
     } catch (error) {

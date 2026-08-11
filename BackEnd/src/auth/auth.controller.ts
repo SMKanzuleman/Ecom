@@ -37,7 +37,7 @@ const RegisterUser = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 24 * 60 * 60 * 1000,
+      maxAge: 30 * 24 * 60 * 60 * 1000,
     });
     return SendSuccess(res, 201, "User registered sucessfully", {
       user: NewUser,
@@ -71,15 +71,15 @@ const LoginUser = async (req: Request, res: Response) => {
       AuthConfig.RefreshExpiry,
     );
 
-    res.cookie("refeshToken", RefreshToken, {
+    res.cookie("token", RefreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
-      maxAge: 24 * 60 * 60,
+      maxAge: 30*24*60*60*1000,
     });
     return SendSuccess(res, 200, "User Found sucessfully", {
       User: FoundedUser,
-      accessToken: AccessToken,
+      token: AccessToken,
     });
   } catch (error) {
     return SendError(res, 500, "There is some error");
@@ -105,6 +105,7 @@ const GetMe = async (req: AuthRequest, res: Response) => {
 
 const Refresh = async (req: Request, res: Response) => {
   try {
+    console.log("Cookie recived",req.cookies)
     let { token } = req.cookies;
     if (!token) {
       return SendError(res, 404, "You have not refresh token.");
@@ -112,17 +113,22 @@ const Refresh = async (req: Request, res: Response) => {
     const decoded = jwt.verify(token, AuthConfig.RefreshSecretKey) as {
       id: string;
     };
-
+    console.log("decoded")
+    
     const AccessToken = GenerateToken(
       decoded.id,
       AuthConfig.AccessSecretKey,
       AuthConfig.AccessExpiry,
     );
-
+    console.log("generated")
+    
     return SendSuccess(res, 200, "Token genrated successfully", {
-      AccessToken: AccessToken,
+      token: AccessToken,
     });
   } catch (error) {
+    res.clearCookie("token")
+    console.error("❌ REFRESH ERROR DETAILS:", error);
+
     return SendError(res, 500, "There is some error in refreshing token.");
   }
 };

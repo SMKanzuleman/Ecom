@@ -30,7 +30,7 @@ const ProductDetail = () => {
 
             <Breadcrumbs product={Product} />
 
-            <PDContent Product={Product} />
+            <PDContent productId={ id}  Product={Product}/>
             
             <PDContent2 Product={ Product} />
 

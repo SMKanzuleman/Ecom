@@ -4,6 +4,7 @@ import Newsletter from "../components/Newsletter";
 import Brands from '../components/Brands';
 import HeroSection from '../components/HeroSection';
 import ProductsSection from '../components/ProductsSection';
+import { Auth } from "./Auth";
 
 const Home = () => {
     const [Products, setProducts] = useState<any>([])
@@ -23,13 +24,14 @@ const Home = () => {
     }, [])
 
     return (
-        <div>
+        <div className="animate-fade-up">
             <HeroSection />
             <Brands />
             <ProductsSection title={"Top Selling"} tag={"top_selling"} products={Products} />
             <ProductsSection title={"New Arrivals"} tag={"new_arrival"} products={Products} />
             <div className="py-5 bg-wh"></div>
             <Newsletter />
+            {/* <Auth /> */}
         </div>
     );
 };
