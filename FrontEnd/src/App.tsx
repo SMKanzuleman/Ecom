@@ -8,6 +8,7 @@ export const App = () => {
   return (
     <div>
       <Navbar />
+      <Cart />
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/auth" element={<Auth />} />

@@ -21,6 +21,7 @@ const PDContent = ({productId, Product }: any) => {
     const Navigate = useNavigate();
     const Location = useLocation();
 
+
     const HandleAddToCart = async() => { 
         try {
          
@@ -37,6 +38,8 @@ const PDContent = ({productId, Product }: any) => {
                 throw console.error("error in buying product");
             }
             console.log("added to cart",res.data)
+            console.log("Setted");
+            
         } catch (error) {
             console.error(error)
             

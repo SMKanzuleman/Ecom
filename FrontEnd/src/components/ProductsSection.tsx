@@ -14,7 +14,7 @@ const ProductsSection = ({ title, tag, products }: ProductProp) => {
     const [ShowAll, SetShowAll] = useState(false)
     return (
         <div className="w-full bg-wh min-h-[60vh] flex flex-col gap-5">
-            <div className="w-full font-heading text-4xl uppercase text-black font-bold lg:pt-32 lg:pb-20 pt-20 pb-10 text-center">{title}</div>
+            <div className="w-full font-heading text-4xl uppercase text-black font-bold lg:pt-20 lg:pb-20 pt-20 pb-10 text-center">{title}</div>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 px-2 bg-amber-00 lg:px-16 justify-items-center">
 

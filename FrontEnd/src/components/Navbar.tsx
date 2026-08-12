@@ -10,11 +10,23 @@ import { useCart } from '../context/CartContext';
 
 const Navbar = () => {
     const [SearcchOpen, setSearchOpen] = useState(false)
+    const { setIsCartOpen } = useCart()
     const [HamBOpen, setHamBOpen] = useState(false)
     const [Closing, setClosing] = useState(false)
     const { Cart } = useCart()
     return (
-        <div className="w-full flex min-h-[10vh] bg-wh sticky top-0">
+        <div className="w-full flex min-h-[10vh] bg-wh sticky top-0 z-10">
+
+           <div
+           onClick={()=>{
+            setHamBOpen(!HamBOpen)
+           }}
+
+                className={`fixed inset-0 bg-black/50 backdrop-blur-xs z-40 transition-opacity duration-300 lg:hidden ${HamBOpen && !Closing
+                        ? "opacity-100 pointer-events-auto"
+                        : "opacity-0 pointer-events-none"     
+                    }`}
+            />
 
             <div className="lg:w-[20%] w-[40%] flex items-center lg:justify-end justify-center gap-5 px-1 bg-amber-00">
                 <GiHamburgerMenu className="text-black text-3xl lg:hidden " onClick={() => {
@@ -29,7 +41,7 @@ const Navbar = () => {
             </div>
 
             {HamBOpen && (
-                <div className={`fixed top-0 left-0 w-[70%] bg-bg min-h-screen z-10 ${Closing ? "animate-slide-out" : "animate-slide-in"}`}>
+                <div className={`fixed top-0 left-0 w-[70%] bg-bg min-h-screen z-50 ${Closing ? "animate-slide-out" : "animate-slide-in"}`}>
                     <div className="w-full flex min-h-25">
 
                         <div className="w-[70%] bg-amber-00 flex items-center pl-14">
@@ -60,9 +72,6 @@ const Navbar = () => {
                             <span className="font-heading text-3xl text-black font-semibold tracking-tight lowercase">Shop</span> with confidence
                         </span>
                     </div>
-
-
-
                 </div>
             )}
 
@@ -98,11 +107,11 @@ const Navbar = () => {
                     <Link to={"/auth"}>
                         <RiAccountPinCircleFill className="text-3xl text-black cursor-pointer hover:scale-120 transition-transform duration-200" />
                     </Link>
-                    <Link to={"/cart"} className="relative">
-                        <FaCartShopping className="text-black w-full text-3xl cursor-pointer hover:scale-120 transition-transform duration-200" />
+                    <div className="relative">
+                        <FaCartShopping className="text-black w-full text-3xl cursor-pointer hover:scale-120 transition-transform duration-200" onClick={() => setIsCartOpen(true)} />
                         <div className="absolute -top-2 -right-4 w-5 h-5 font-heading  rounded-full bg-red-600 text-black text-[12px] flex items-center justify-center text-center">{Cart.length}</div>
 
-                    </Link>
+                    </div>
 
                 </div>}
 
