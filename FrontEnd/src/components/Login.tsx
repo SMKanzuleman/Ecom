@@ -12,7 +12,7 @@ const Login = () => {
     const [LoginPass, setLoginPass] = useState("");
     const [LoginEmail, setLoginEmail] = useState("");
     const [ShowPass, SetShowPass] = useState(false);
-    const { Token, setToken } = useAuth();
+    const { Token, setToken,setName } = useAuth();
 
     const Navigate = useNavigate()
 
@@ -29,10 +29,10 @@ const Login = () => {
                     Password: LoginPass,
                 }, {withCredentials: true});
                 if (responce) {
-                    console.log(Token)
                     setToken(responce.data.token)
-                    console.log(Token)
-
+                    console.log("Token",responce.data.token)
+                    setName(responce.data.User.FName)
+                    console.log("Name",responce.data.User.FName)
                     setLoginEmail("");
                     setLoginPass("");
                     Navigate(redirect, { replace: true })

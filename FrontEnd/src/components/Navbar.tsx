@@ -109,7 +109,7 @@ const Navbar = () => {
                     </Link>
                     <div className="relative">
                         <FaCartShopping className="text-black w-full text-3xl cursor-pointer hover:scale-120 transition-transform duration-200" onClick={() => setIsCartOpen(true)} />
-                        <div className="absolute -top-2 -right-4 w-5 h-5 font-heading  rounded-full bg-red-600 text-black text-[12px] flex items-center justify-center text-center">{Cart.length}</div>
+                        <div className={` ${Cart.length===0? "hidden": "absolute -top-2 -right-4 w-5 h-5 font-heading  rounded-full bg-red-600 text-black text-[12px] flex items-center justify-center text-center" }`}>{Cart.length}</div>
 
                     </div>
 

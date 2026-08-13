@@ -37,7 +37,7 @@ export const AddToCart = async (req: AuthRequest, res: Response) => {
             return SendSuccess(res, 200, `${FounedProduct.Name} added to cart😊`, { NewCart })
         }
         
-        const index = FoundedCart.Items.findIndex(item => item.ProductId.toString() === FounedProduct._id.toString())
+        const index = FoundedCart.Items.findIndex(item => item.ProductId.toString() === FounedProduct._id.toString() && item.Colors===Color && item.Sizes ===Size)
         
         if (index > -1) {
             FoundedCart.Items[index].Quantity += Quantity
@@ -82,28 +82,33 @@ export const GetCart = async (req: AuthRequest, res: Response) => {
 export const RemoveFromCart = async (req: AuthRequest, res: Response) => {
     try {
         let { id: userId } = req.User
+
         let { id: productId } = req.params
+        
+        let{Size,Color,Quantity}=req.body
+        
         const FoundedProduct = await Product.findById(productId)
+        
         if (!FoundedProduct) {
             return SendError(res, 400, "Product not found")
         }
+        
         const FoundedCart = await Cart.findOne({ UserId: userId })
+        
         if (!FoundedCart) {
             return SendError(res, 400, "Cart not found")
         }
-        const index = FoundedCart.Items.findIndex(item => item.ProductId.toString() === productId.toString())
+        
+        const index = FoundedCart.Items.findIndex(item => item.ProductId.toString() === productId.toString() && item.Sizes===Size && item.Colors === Color && item.Quantity === Quantity)
 
         if (index > -1) {
-            FoundedCart.Items[index].Quantity--
-            FoundedCart.CartPrice -= FoundedProduct.Price
-            if (FoundedCart.Items[index].Quantity === 0) {
-                FoundedCart.Items.splice(index, 1)
-                await FoundedCart.save()
-                return SendError(res, 200, `${FoundedProduct.Name} removed from cart completely`)
-            }
+            const ItemToBeDeleted=FoundedCart.Items[index]
+            FoundedCart.Items.splice(index,1)
+            FoundedCart.CartPrice -= ItemToBeDeleted.Quantity*FoundedProduct.Price
             await FoundedCart.save()
-            return SendSuccess(res, 200, `${FoundedProduct.Name} removed from cart`, { CurrentQuantity: FoundedCart.Items[index].Quantity })
+            return SendSuccess(res, 200, `${FoundedProduct.Name} removed from your cart`,{FoundedCart})
         }
+        
         return SendError(res, 400, "Product is not in your cart")
 
     } catch (error) {
@@ -129,3 +134,36 @@ export const RemoveCart = async (req: AuthRequest, res: Response) => {
 
 }
 }
+
+export const UpdateQuantity = async (req: AuthRequest, res: Response) => {
+    try {
+        let { id: userId } = req.User
+        let {id: productId}= req.params
+
+        let {q} = req.body //+1,-1
+        
+        // if(userId){
+        //     return SendError(res, 200, `userid is this ${userId} pId is this ${productId} and quantity is this ${q}`)
+        // }
+        const FoundedCart = await Cart.findOne({ UserId: userId })
+        if (!FoundedCart) {
+            return SendError(res, 400, "Cart not found")
+        }
+        console.log("d2")
+        const index =FoundedCart.Items.findIndex((item)=> (item.ProductId.toString() === productId.toString()))
+        
+        if(index>-1){
+            FoundedCart.Items[index].Quantity=q
+            console.log("d3")
+        }
+        
+        await FoundedCart.save()
+        console.log("d4")
+        return SendSuccess(res, 200, `Quantity increased to ${q}`)
+
+} catch (error) {
+    return SendError(res, 500, "Unknown error")
+
+}
+}
+

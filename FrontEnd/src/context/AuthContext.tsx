@@ -3,17 +3,18 @@ import React, { createContext, useContext, useEffect, useState } from "react";
 
 type ContextType = {
     Token: string | null
-    setToken: (token: string | null) => void
+    Name: string | null
+    setToken: (t: string | null) => void
+    setName: (n: string | null) => void
 }
 
 
 const AuthContext = createContext<ContextType | undefined>(undefined)
 
-
-
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const [Token, setToken] = useState<string | null>(null)
+    const [Name, setName] = useState<string | null>(null)
 
     useEffect(() => {
         const refresh = async () => {
@@ -28,7 +29,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, [])
 
     return (
-        <AuthContext.Provider value={{ Token, setToken }}>
+        <AuthContext.Provider value={{ Token, setToken,Name,setName }}>
             {children}
         </AuthContext.Provider>
 

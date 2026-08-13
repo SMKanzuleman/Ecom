@@ -1,43 +1,81 @@
+import axios from 'axios';
 import React, { createContext, useContext, useEffect, useState } from 'react'
-import Cart from '../pages/Cart';
-
+import { useAuth } from './AuthContext';
 
 type CartType = {
     Cart: any[]
-    AddTocart: (product: any, size: string, color: string, quantity: number) => void
     IsCartOpen: boolean
-    setIsCartOpen: (open: boolean) => void
-    RemoveFromCart: (id: string, quantity: number) => void
+    CartPrice: number
     setCart: (item: any) => void
-    UpdateQuantity: (id:string,newQuan:number)=>void
+    setIsCartOpen: (open: boolean) => void
+    AddTocart: (product: any, size: string, color: string, quantity: number) => void
+    RemoveFromCart: (id: string, quantity: number) => void
+    UpdateQuantity: (Id: string, Size: string, Color: string, newQuan: number) => void
 }
+
+
 const CartContext = createContext<CartType | undefined>(undefined)
+
+
 
 const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     const [Cart, setCart] = useState<any[]>(() => {
-        const SavedCart = localStorage.getItem("User_Cart")
-        return SavedCart ? JSON.parse(SavedCart) : []
+        const savedcart = localStorage.getItem("User_Cart");
+        return savedcart ? JSON.parse(savedcart) : []
     })
 
+    const { Token } = useAuth()
+    const CartPrice = Cart.reduce((total, item) => total + (item.Quantity * item.Price), 0);
     const [IsCartOpen, setIsCartOpen] = useState(false)
+
+    const SyncCart = async () => {
+        try {
+            if (!Token) return;
+            const res = await axios.get("http://localhost:2026/cart", {
+                headers: { Authorization: `Bearer ${Token}` }
+            });
+
+            if (res.data.FoundedCart?.Items) {
+
+                const itemsFromDb = res.data.FoundedCart.Items.map((item: any) => ({
+                    _id: item.ProductId?._id || item._id,
+                    Name: item.ProductId?.Name || "Product",
+                    Price: item.ProductId?.Price || 0,
+                    Size: item.Sizes || "Large",
+                    Color: item.Colors || "",
+                    Quantity: item.Quantity
+                }));
+                setCart(itemsFromDb)
+                localStorage.setItem("User_Cart", JSON.stringify(itemsFromDb));
+                console.log("cart Synced")
+            }
+        } catch (error) {
+            console.error("Cart sync error:", error);
+        }
+    };
 
     useEffect(() => {
         localStorage.setItem("User_Cart", JSON.stringify(Cart))
     }, [Cart])
 
-    const AddTocart = (product: any, size: string, color: string, quantity: number) => {
+    useEffect(() => {
+        if (Token) {
+            SyncCart()
+        }
+    }, [Token])
 
+
+    const AddTocart = (product: any, size: string, color: string, quantity: number) => {
 
         setCart((prev) => {
 
-            const index = prev.findIndex((item) => item._id === product._id && item.Name === product.Name && item.Size === size && item.Color === color)
+            const index = prev.findIndex((item: any) => item._id === product._id && item.Name === product.Name && item.Size === size && item.Color === color)
 
             if (index > -1) {
                 const UpdatedCart = [...prev]
                 UpdatedCart[index].Quantity += quantity
                 console.log("Updated cart", UpdatedCart);
-
                 return UpdatedCart
             }
             else {
@@ -51,28 +89,37 @@ const CartProvider = ({ children }: { children: React.ReactNode }) => {
                 }
                 return [...prev, NewItem]
             }
-
         });
     }
     const RemoveFromCart = (id: string) => {
         setCart((prev) => prev.filter((item) => { return item._id !== id }))
     }
-    const UpdateQuantity = (id: string, newQuan: number) => {
+
+    const UpdateQuantity = async (Id: string, Size: string, Color: string, newQuan: number) => {
         if (newQuan < 1) {
             return
         }
         else {
-            setCart((prev => 
-                 (
-                    prev.map((item) =>
-                        item._id === id ? { ...item, Quantity: newQuan } : item
-                    ))
+            setCart((prev =>
+            (
+                prev.map((item) =>
+                    item._id === Id && item.Size === Size && item.Color === Color ? { ...item, Quantity: newQuan } : item
+                ))
             ))
+        }
+
+        try {
+            const res = await axios.put(`http://localhost:2026/cart/${Id}`, { q: newQuan }, { headers: { Authorization: `Bearer ${Token}` } })
+            console.log(res.data)
+            // console.log(`Quantity of ${Id} is changed to ${newQuan} and its resonce is`,res.data);
+
+        } catch (error) {
+            console.error(error)
         }
     }
 
     return (
-        <CartContext.Provider value={{ Cart, setCart, AddTocart, RemoveFromCart, IsCartOpen, setIsCartOpen,UpdateQuantity }}>
+        <CartContext.Provider value={{ Cart, setCart, AddTocart, RemoveFromCart, IsCartOpen, setIsCartOpen, UpdateQuantity, CartPrice }}>
             {children}
         </CartContext.Provider>
     )
@@ -85,7 +132,5 @@ export const useCart = () => {
     }
     return context
 }
-
-
 
 export default CartProvider
