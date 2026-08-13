@@ -102,3 +102,11 @@
 html{
     scroll-behavior: smooth;
 }
+/* 🌟 Hides scrollbar in Chrome, Safari, Edge & Firefox while keeping scroll enabled */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+} 

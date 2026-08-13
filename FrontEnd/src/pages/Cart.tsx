@@ -3,12 +3,12 @@ import { MdDelete } from "react-icons/md";
 import logo from '../assets/logo.svg'
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
-
+import { Link } from "react-router-dom";
 
 
 const Cart = () => {
   const { Cart, setCart, setIsCartOpen, IsCartOpen, CartPrice, UpdateQuantity } = useCart();
-  const { Token,Name } = useAuth()
+  const { Token, Name } = useAuth()
 
   const Remove = async (id: string, size: string, color: string, quantity: number) => {
     try {
@@ -47,11 +47,11 @@ const Cart = () => {
           <button onClick={() => setIsCartOpen(!IsCartOpen)} className="btn-primary px-5 py-1">X</button>
         </div>
 
-        <div className="flex-1 overflow-y-auto bg-amb00 relative bg-wh flex gap-2 flex-col justify-start py-10">
+        <div className="flex-1 overflow-y-auto bg-amb00 relative bg-wh flex gap-5 flex-col justify-start py-10 px-10">
 
           {Cart.map((item) => {
             return (
-              <div key={item._id} className="w-full flex py border-b-2 border-gray-700/20 gap-3.5 px-5 lg:py-5 py-2">
+              <div key={item._id} className="w-full bg-bg backdrop-blur-xs border border-gray-400/30 rounded-xl p-3.5 flex items-center justify-between gap-3 shadow-xs hover:border-gray-400/60 transition-all">
 
                 <div className="w-[10%]  flex items-center h-auto rounded-4xl">
                   <img src={logo} alt="Logo" />
@@ -68,22 +68,23 @@ const Cart = () => {
 
                 <div className="w-[30%] flex items-center justify-between gap-2">
 
-                  <div className="w-[80%] bg-bg rounded-full flex  items-center justify-between overflow-hidden px-2">
+                  <div className="w-[80%] bg-black rounded-full flex items-center justify-between overflow-hidden px-3">
                     <button onClick={() => {
                       UpdateQuantity(item._id, item.Size, item.Color, item.Quantity - 1)
 
                     }}
-                      className=" w-[30%] py-2 cursor-pointer font-bold hover:scale-150 duration-100">
+                      className=" w-[30%] py-1 cursor-pointer font-bold hover:scale-150 duration-100 text-wh">
                       -
                     </button>
-                    <div className="w-[40%] py-2 text-black text-center">{item.Quantity}</div>
+                    <div className="w-[40%] py-1 text-wh text-center">{item.Quantity}</div>
                     <button onClick={() => {
                       UpdateQuantity(item._id, item.Size, item.Color, item.Quantity + 1)
                     }}
-                      className="w-[30%] py-2 cursor-pointer font-bold hover:scale-150 duration-100">
+                      className="w-[30%] text-wh py-1 cursor-pointer font-bold hover:scale-150 duration-100">
                       +
                     </button>
                   </div>
+
                   <div className="text-black cursor-pointer hover:scale-110 transition-transform duration-300" onClick={() => { Remove(item._id, item.Size, item.Color, item.Quantity) }}>
                     <MdDelete />
                   </div>
@@ -100,7 +101,9 @@ const Cart = () => {
             <p>Subtotal:</p>
             <p>Rs.{CartPrice}</p>
           </div>
-          <button className="btn-primary w-[90%]">Proceed to CheckOut</button>
+          <Link to={`/checkout`} className="w-full flex justify-center items-center" onClick={() => setIsCartOpen(false)}>
+            <button className="btn-primary w-[90%]">Proceed to CheckOut</button>
+          </Link>
         </div>
       </div >
     </>
