@@ -3,14 +3,19 @@ import logo from '../assets/logo.svg'
 import { MdDelete } from "react-icons/md";
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
+import { useState } from "react";
+import { FaCartShopping } from "react-icons/fa6";
+import { MdOutlinePayment } from "react-icons/md";
 
 
 const Checkout = () => {
 
-  const { Cart,setCart,CartPrice } = useCart()
-  const {Token} =useAuth()
+  const { Cart, setCart, CartPrice } = useCart()
+  const { Token } = useAuth()
+  const [Menu, setMenu] = useState("Shipping")
+  const [Payment, setPayment] = useState<"cod" | "bank">("cod")
 
-    const Remove = async (id: string, size: string, color: string, quantity: number) => {
+  const Remove = async (id: string, size: string, color: string, quantity: number) => {
     try {
       setCart((prev: any) => (
         prev.filter((item: any) =>
@@ -26,16 +31,180 @@ const Checkout = () => {
     }
   }
   return (
-    <div className="w-full flex bg-bg h-[90vh]">
-      <div className="w-[70%] h-full">
+    <div className="w-full flex lg:flex-row flex-col bg-bg lg:h-[90vh]">
 
-        <h1 className="text-heading text-8xl">Mian bundi hon
-          Mian bundi hon.Mian bundi hon.Mian bundi hon.vMian bundi hon.Mian bundi hon.Mian bundi hon
-        </h1>
+      <div className="w-full lg:w-[70%] h-full lg:px-20 px-10 py-5 overflow-y-auto no-scrollbar">
+
+        {/*Header*/}
+        <div className="w-full flex items-center justify-between py-5">
+          <div className="w-auto flex flex-col items-center gap-2">
+            <div className="w-20 h-10 rounded-full bg-black text-wh flex justify-center items-center">✔︎</div>
+            <div className="w-full text-sm text-center font-heading">{Menu}</div>
+          </div>
+
+          <div className="flex-1 border-t-2 border-gray-700/30 border-dashed mx-2 mb-6"></div>
+
+          <div className="w-auto flex flex-col items-center gap-2">
+            <div className="w-20 h-10 rounded-full bg-black text-wh flex justify-center items-center"><FaCartShopping /></div>
+            <div className="w-full text-sm font-heading text-center">{Menu}</div>
+          </div>
+          <div className="flex-1 border-t-2 border-gray-700/30 border-dashed mx-2 mb-6"></div>
+          <div className="w-auto flex flex-col items-center gap-2">
+            <div className="w-20 h-10 rounded-full bg-black text-wh flex justify-center items-center"><MdOutlinePayment /></div>
+            <div className="w-full font-heading text-center text-sm">{Menu}</div>
+          </div>
+        </div>
+        {/*Shipping Address*/}
+
+        <div className="w-full">
+          <div className="w-full font-accent text-black text-2xl font-semibold py-2" >
+            Shipping Address
+          </div>
+          <form action=""
+            className="w-full flex flex-col gap-2">
+
+            <div className="w-full">
+              <input type="text" className="w-full rounded-full px-5 bg-wh border-2 border-gray-400/40 focus:outline-none text-black py-3" placeholder="Email" />
+            </div>
+            <div className="w-full flex items-center gap-3  justify-between">
+              <input type="text" className="w-full rounded-full px-5 bg-wh border-2 border-gray-400/40 focus:outline-none text-black py-3" placeholder="First Name" />
+              <input type="text" className="w-full rounded-full px-5 bg-wh border-2 border-gray-400/40 focus:outline-none text-black py-3" placeholder="Last Name" />
+            </div>
+            <div className="w-full">
+              <input type="text" className="w-full rounded-full px-5 bg-wh border-2 border-gray-400/40 focus:outline-none text-black py-3" placeholder="Address" />
+            </div>
+            <div className="w-full">
+              <input type="text" className="w-full rounded-full px-5 bg-wh border-2 border-gray-400/40 focus:outline-none text-black py-3" placeholder="Apartment, suit, etc,(optional)" />
+            </div>
+            <div className="w-full flex items-center gap-3  justify-between">
+              <input type="text" className="w-full rounded-full px-5 bg-wh border-2 border-gray-400/40 focus:outline-none text-black py-3" placeholder="City" />
+              <input type="text" className="w-full rounded-full px-5 bg-wh border-2 border-gray-400/40 focus:outline-none text-black py-3" placeholder="Zipcode" />
+              <input type="text" className="w-full rounded-full px-5 bg-wh border-2 border-gray-400/40 focus:outline-none text-black py-3" placeholder="State" />
+
+            </div>
+
+          </form>
+        </div>
+
+        {/*Shipping Methood*/}
+
+        <div className="w-full lg:py-10 py-5">
+
+          <div className="w-full font-accent text-black text-2xl font-semibold py-2" >
+            Shipping Methood
+          </div>
+          <form action=""
+            className="w-full flex flex-col bg-wh rounded-2xl border-2 border-gray-400/40">
+
+            <label htmlFor="standard" className=" cursor-pointer py-3 px-10 w-full flex justify-between items-center border-b-2 border-gray-400/40">
+              <div className=" flex gap-3.5 items-center">
+                <input type="radio" id="standard" name="sm" defaultChecked className="w-4 h-4 accent-black" />
+                <div className="flex flex-col items-start justify-center">
+                  <div className="text-black">Standard shipping</div>
+                  <p className="text-sm">3 to 5 days</p>
+                </div>
+              </div>
+              <div className="font-accent text-black text-xl">Rs.250</div>
+            </label>
+
+            <label htmlFor="express" className="cursor-pointer py-3 px-10 w-full flex justify-between items-center">
+              <div className="flex gap-3.5 items-center">
+                <input type="radio" id="express" name="sm" className="w-4 h-4 accent-black" />
+                <div className="flex flex-col items-start justify-center">
+                  <div className="text-black">Express shipping</div>
+                  <p className="text-sm">2 days</p>
+                </div>
+              </div>
+              <div className="font-accent text-xl text-black">Rs.350</div>
+            </label>
+          </form>
+        </div>
+
+        {/*Payment Methood*/}
+  
+
+        <div className="w-full py-10">
+
+          <div className="w-full font-accent text-black text-2xl font-semibold py-2" >
+            Payment Methood
+          </div>
+          <form className="w-full flex flex-col bg-white rounded-2xl border-2 border-gray-400/40 overflow-hidden">
+
+            {/* 🌟 1. Cash on Delivery */}
+            <label
+              htmlFor="cod"
+              className="cursor-pointer py-3.5 px-10 w-full flex justify-start gap-3.5 items-center border-b-2 border-gray-400/40"
+            >
+              <input
+                type="radio"
+                id="cod"
+                name="pm"
+                // checked={Payment === "cod"}
+                onChange={() => setPayment("cod")}
+                className="cursor-pointer accent-black w-4 h-4"
+              />
+              <div className="text-black font-medium">Cash on Delivery</div>
+            </label>
+
+            <label
+              htmlFor="bank"
+              className="cursor-pointer gap-3.5 py-3.5 px-10 w-full flex justify-start items-center hover:bg-gray-50 transition-colors"
+            >
+              <input
+                type="radio"
+                id="bank"
+                name="pm"
+                // checked={Payment === "bank"}
+                onChange={() => setPayment("bank")}
+                className="cursor-pointer accent-black w-4 h-4"
+              />
+              <div className="text-black font-medium">Bank Transfer VISA card</div>
+            </label>
+
+            {Payment === "bank" && (
+              <div className="w-full py-5 flex flex-col gap-3.5 px-10 bg-gray-50/70 border-t border-gray-200">
+                <div className="w-full">
+                  <input
+                    type="text"
+                    className="w-full rounded-full px-5 bg-white border-2 border-gray-400/40 focus:outline-none text-black py-3 text-sm"
+                    placeholder="Card Number (16 digits)"
+                  />
+                </div>
+                <div className="w-full flex justify-between gap-3">
+                  <input
+                    type="text"
+                    className="w-full rounded-full px-5 bg-white border-2 border-gray-400/40 focus:outline-none text-black py-3 text-sm"
+                    placeholder="MM / YY"
+                  />
+                  <input
+                    type="text"
+                    className="w-full rounded-full px-5 bg-white border-2 border-gray-400/40 focus:outline-none text-black py-3 text-sm"
+                    placeholder="CVV"
+                  />
+                </div>
+              </div>
+            )}
+
+          </form>
+
+
+
+        </div>
+
+        {/*SUbmit Button*/}
+        <div className="w-full  flex justify-end">
+          <button className="btn-primary lg:w-[20%] w-full">
+            Place order
+          </button>
+
+        </div>
+
+
+
 
       </div>
 
-      <div className="w-[30%] h-full border-l-2 border-gray-400/30 px-10 pt-5 flex flex-col">
+      <div className="w-full lg:w-[30%] h-full border-l-2 border-gray-400/30 px-10 pt-5 flex flex-col">
         <div className="font-accent text-black text-2xl font-medium">Order summary</div>
 
         <div className="w-full flex-1 overflow-y-auto space-y-1 py-3 no-scrollbar overflow-hidden px-5 flex flex-col gap-2 ">

@@ -17,7 +17,6 @@ export const Authenticate =async (req:AuthRequest,res:Response,next:NextFunction
         console.log("token mil gia")
         const Decoded = jwt.verify(Token,AuthConfig.AccessSecretKey) as { id: string}
         console.log("decode mil gia")
-
         req.User =Decoded
         next()
     } catch (error) {

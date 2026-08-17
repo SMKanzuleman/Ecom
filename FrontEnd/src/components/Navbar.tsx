@@ -17,14 +17,14 @@ const Navbar = () => {
     return (
         <div className="w-full flex min-h-[10vh] bg-wh sticky top-0 z-10">
 
-           <div
-           onClick={()=>{
-            setHamBOpen(!HamBOpen)
-           }}
+            <div
+                onClick={() => {
+                    setHamBOpen(!HamBOpen)
+                }}
 
                 className={`fixed inset-0 bg-black/50 backdrop-blur-xs z-40 transition-opacity duration-300 lg:hidden ${HamBOpen && !Closing
-                        ? "opacity-100 pointer-events-auto"
-                        : "opacity-0 pointer-events-none"     
+                    ? "opacity-100 pointer-events-auto"
+                    : "opacity-0 pointer-events-none"
                     }`}
             />
 
@@ -61,7 +61,7 @@ const Navbar = () => {
 
                     </div>
                     <div className="w-full flex flex-col justify-center items-start pl-24 pt-20 gap-8 text-black text-2xl  font-heading ">
-                        <a href="#" className=" hover:text-text transition-transform duration-1000 ">Shop</a>
+                        <Link to={"/shop"} className='hover:text-text transition-transform duration-1000'>Shop</Link>
                         <a href="#" className=" hover:text-text transition-transform duration-1000 ">OnSale</a>
                         <a href="#" className=" hover:text-text transition-transform duration-1000 ">New Arrival</a>
                         <a href="#" className=" hover:text-text transition-transform duration-1000 ">Brands</a>
@@ -78,7 +78,9 @@ const Navbar = () => {
             <div id="navlinks" className="w-[15%] lg:w-[40%] hidden sm:flex ">
 
                 <div className="w-full flex justify-center items-center gap-8 text-black font-heading ">
-                    <a href="#" className="hover:text-text transition-transform duration-1000 ">Shop</a>
+                    {/* <a href="#" className="hover:text-text transition-transform duration-1000 ">Shop</a> */}
+                    <Link to={"/shop"} className='hover:text-text transition-transform duration-1000'>Shop</Link>
+
                     <a href="#" className="hover:text-text transition-transform duration-1000 ">OnSale</a>
                     <a href="#" className="hover:text-text transition-transform duration-1000 ">New Arrival</a>
                     <a href="#" className="hover:text-text transition-transform duration-1000 ">Brands</a>
@@ -104,12 +106,12 @@ const Navbar = () => {
             </div> :
                 <div className=" w-[60%] lg:w-[20%] flex items-center justify-center gap-5 pl-16 bg-amber-00 relative">
                     <HiOutlineSearch onClick={() => { setSearchOpen(!SearcchOpen) }} className=" text-black text-3xl font-bold lg:hidden" />
-                    <Link to={"/auth"}>
+                    <Link to={"/dashboard"}>
                         <RiAccountPinCircleFill className="text-3xl text-black cursor-pointer hover:scale-120 transition-transform duration-200" />
                     </Link>
                     <div className="relative">
                         <FaCartShopping className="text-black w-full text-3xl cursor-pointer hover:scale-120 transition-transform duration-200" onClick={() => setIsCartOpen(true)} />
-                        <div className={` ${Cart.length===0? "hidden": "absolute -top-2 -right-4 w-5 h-5 font-heading  rounded-full bg-red-600 text-black text-[12px] flex items-center justify-center text-center" }`}>{Cart.length}</div>
+                        <div className={` ${Cart.length === 0 ? "hidden" : "absolute -top-2 -right-4 w-5 h-5 font-heading  rounded-full bg-red-600 text-black text-[12px] flex items-center justify-center text-center"}`}>{Cart.length}</div>
 
                     </div>
 

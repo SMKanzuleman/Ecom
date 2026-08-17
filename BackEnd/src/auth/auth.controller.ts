@@ -24,12 +24,14 @@ const RegisterUser = async (req: Request, res: Response) => {
 
     const AccessToken = GenerateToken(
       NewUser._id.toString(),
+      NewUser.Role,
       AuthConfig.AccessSecretKey,
       AuthConfig.AccessExpiry,
     );
 
     const RefreshToken = GenerateToken(
       NewUser._id.toString(),
+      NewUser.Role,
       AuthConfig.RefreshSecretKey,
       AuthConfig.RefreshExpiry,
     );
@@ -61,12 +63,14 @@ const LoginUser = async (req: Request, res: Response) => {
     }
     const AccessToken = GenerateToken(
       FoundedUser._id.toString(),
+      FoundedUser.Role,
       AuthConfig.AccessSecretKey,
       AuthConfig.AccessExpiry,
     );
 
     const RefreshToken = GenerateToken(
       FoundedUser._id.toString(),
+      FoundedUser.Role,
       AuthConfig.RefreshSecretKey,
       AuthConfig.RefreshExpiry,
     );
@@ -113,10 +117,17 @@ const Refresh = async (req: Request, res: Response) => {
     const decoded = jwt.verify(token, AuthConfig.RefreshSecretKey) as {
       id: string;
     };
+    const FoundedUser=await User.findById(decoded.id)
+    
+    if(!FoundedUser){
+      return SendError(res,404,"You does't have account")
+    }
+    
     console.log("decoded")
     
     const AccessToken = GenerateToken(
       decoded.id,
+      FoundedUser.Role,
       AuthConfig.AccessSecretKey,
       AuthConfig.AccessExpiry,
     );
