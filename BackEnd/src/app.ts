@@ -8,6 +8,7 @@ import { ProductRouter } from "./products/product.router";
 import { CartRouter } from "./cart/cart.router";
 import { OrderRouter } from "./order/order.router";
 import cors from "cors"
+import { AdminRouter } from "./admin/admin.router";
 
 
 
@@ -23,6 +24,7 @@ app.use("/auth/",AuthRouter)
 app.use("/products", ProductRouter)
 app.use("/cart", CartRouter)
 app.use("/order", OrderRouter)
+app.use("/dashboard",AdminRouter)
 
 
 

@@ -37,7 +37,7 @@ const ProductScheme = new mongoose.Schema<ProductType>({
         default: "0",
         required: false
     },
-       Details: {
+    Details: {
         type: String,
         required: true
     }
@@ -45,5 +45,5 @@ const ProductScheme = new mongoose.Schema<ProductType>({
 }, { timestamps: true })
 
 
-export const Product = mongoose.model<ProductType>("Product",ProductScheme)
+export const Product = mongoose.model<ProductType>("Product", ProductScheme)
 

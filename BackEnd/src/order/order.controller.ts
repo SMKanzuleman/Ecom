@@ -3,9 +3,13 @@ import { AuthRequest } from "../config/auth.config";
 import { SendError, SendSuccess } from "../utils/responce";
 import { Cart } from "../cart/cart.model";
 import { Order } from "./order.model";
+import { User } from "../auth/user.model";
+
+
 
 export const MakeOrder = async (req: AuthRequest, res: Response) => {
     try {
+        
         let { id: userId } = req.User
 
         let { State, City, Location } = req.body
@@ -61,7 +65,7 @@ export const GetUserOrders = async (req: AuthRequest, res: Response) => {
 
 export const GetAllOrders = async (req: AuthRequest, res: Response) => {
     try {
-        const OrderUser = await Order.find()
+        const OrderUser = await Order.find().sort({createdAt: -1}).populate("UserId","FName")
         if (!OrderUser || OrderUser.length===0) {
             return SendError(res, 400, "No Orders Found")
         }

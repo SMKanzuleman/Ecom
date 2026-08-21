@@ -8,7 +8,7 @@ export const OrderRouter = Router()
 
 OrderRouter.post("",Authenticate,authorizeRoles("User"),MakeOrder)
 
-OrderRouter.get("/userorders",Authenticate,authorizeRoles("User"),GetUserOrders)
+OrderRouter.get("/userorders",Authenticate,authorizeRoles("Admin"),GetUserOrders)
 
 OrderRouter.get("", Authenticate, authorizeRoles("Admin"), GetAllOrders)
 
