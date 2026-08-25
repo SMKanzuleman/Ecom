@@ -12,7 +12,7 @@ export const OrdersTab = () => {
     const [OrderMenu, setOrderMenu] = useState("All")
     const [Orders, setOrders] = useState<any>([])
     const [CurrentPage, setCurrentPage] = useState(1)
-    const [PostPerPage, setPostPerPage] = useState(8)
+    const [PostPerPage, setPostPerPage] = useState(10)
     const FirstIndex = CurrentPage * PostPerPage;
     const LastIndex = FirstIndex + PostPerPage;
 
@@ -61,7 +61,7 @@ export const OrdersTab = () => {
 
             <div className="bg-wh rounded-lg shadow-xl flex flex-col">
                 {/* Header */}
-                <div className=" bg-bg font-semibold text-black  border-2 border-black grid lg:grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr_1fr_1fr] gap-x-5 py-4 px-3 border-b-2 border-gray-700/10">
+                <div className=" bg-bg font-semibold text-black  border-2 rounded-t-lg grid lg:grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr_1fr_1fr] gap-x-5 py-4 px-3 border-b-2 border-gray-700/10">
                     <div className="lg:block hidden">Order Id</div>
                     <div className="">Customer</div>
                     {/* <div className="lg:block hidden">Date</div> */}

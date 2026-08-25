@@ -10,13 +10,16 @@ import AdminPagenation from "./AdminPagenation";
 import logo from "../../assets/logo.svg"
 import axios from "axios";
 
+type ProductTypeProp={
+    setMenu: (m:string)=>void
+}
 
 
 
-const ProductsTab = () => {
+const ProductsTab = ({setMenu}:ProductTypeProp) => {
 
     const [Currentpage, setCurrentpage] = useState(0);
-    const PostperPage = 8;
+    const PostperPage = 10;
     const FirstIndex = Currentpage * PostperPage;
     const LastIndex = FirstIndex + PostperPage;
 
@@ -54,7 +57,7 @@ const ProductsTab = () => {
                 <div className="font-accent text-3xl font-bold text-black">Products</div>
                 <div className="w-full flex justify-between">
                     <div><button onClick={() => setFilter(true)} className="btn-primary lg:hidden" > <LiaFilterSolid /> Filters</button></div>
-                    <div><button className="btn-primary" > <FaPlus /> Add Product</button></div>
+                    <div><button onClick={()=>setMenu("AddNewProduct")} className="btn-primary" > <FaPlus /> Add Product</button></div>
                 </div>
             </div>
 
@@ -102,13 +105,9 @@ const ProductsTab = () => {
                 {/* Right */}
                 <div className="bg-wh rounded-lg shadow-xl flex flex-col">
                     {/* Showing 1-10 of 124 items */}
-                    <div className="flex justify-start p-3 text-[14px] border-b-2 border-gray-700/10">
-                        <span className="">
-                            Showing {FirstIndex} -{LastIndex} of {Products.length} items
-                        </span>
-                    </div>
+             
                     {/* Header */}
-                    <div className="grid lg:grid-cols-[0.5fr_3fr_1fr_1fr_1fr_1fr] grid-cols-[0.5fr_2fr_1fr_1fr] gap-x-5 py-4 px-3 border-b-2 border-gray-700/10">
+                    <div className="grid lg:grid-cols-[0.5fr_3fr_1fr_1fr_1fr_1fr] grid-cols-[0.5fr_2fr_1fr_1fr] gap-x-5 py-4 px-3  bg-bg rounded-t-lg border-2 border-gray-700/10">
                         <div className={`w-5 h-5 rounded-full flex items-center justify-center border-2 border-gray-700/30`}> </div>
                         <div>Product</div>
                         <div>Category</div>
@@ -133,7 +132,7 @@ const ProductsTab = () => {
                                     <div>Category</div>
                                     <div className="lg:block hidden">{product.Price}</div>
                                     <div className="lg:block hidden">{product.Stock}</div>
-                                    <div className="flex flex-col gap-2 items-center">
+                                    <div className="flex gap-2 items-center ">
                                         <button className="bg-bg cursor-pointer w-7 h-7 flex justify-center items-center text-black rounded-sm hover:scale-105 duration-200"><MdEdit /></button>
                                         <button className="bg-bg cursor-pointer w-7 h-7 flex justify-center items-center text-black rounded-sm hover:scale-105 duration-200"><MdDelete /></button>
                                     </div>

@@ -4,6 +4,7 @@ import { IoCartSharp } from "react-icons/io5";
 import { FaUsers } from "react-icons/fa";
 import { SiGoogleanalytics } from "react-icons/si";
 import { BiLogOut } from "react-icons/bi";
+import { Link } from "react-router-dom";
 
 type SidebarProps = {
     Menu: string,
@@ -44,10 +45,13 @@ const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
             </div>
 
             <div className="w-full absolute bottom-2 px-5">
+                <Link to="/" >
                 <button className="btn-primary bg-bg w-full text-black">
                     <div><BiLogOut className="font-bold" /></div>
                     <div className="font-body font-bold">Logout</div>
                 </button>
+                
+                </Link>
 
             </div>
 

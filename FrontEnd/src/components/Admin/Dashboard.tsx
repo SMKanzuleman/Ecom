@@ -38,7 +38,7 @@ const Dashboard = () => {
             {/*Header Row*/}
             <div className="w-full flex justify-between py-5">
                 <div className="lg:w-[80%] w-[50%] font-accent text-black flex flex-col">
-                    <span className="font-bold lg:text-3xl text-xl">Dashboard <span className="lg:block -mt-5">Overiew</span> </span>
+                    <span className="font-bold lg:text-3xl text-xl">Dashboard <span className=" -mt-5 ">Overiew</span> </span>
                     <span className="text-[14px] tracking-wide text-text lg:block hidden">Welcome back,Here what is happening</span>
                 </div>
                 <div className="lg:w-[20%] w-[50%] justify-items-end"> <button className="btn-primary lg:text-sm text-[12px]"><FaDownload />Export Report</button></div>

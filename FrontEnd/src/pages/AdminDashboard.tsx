@@ -9,6 +9,7 @@ import BottomNav from "../components/Admin/BottomNav";
 import Dashboard from "../components/Admin/Dashboard";
 import ProductsTab from "../components/Admin/ProductsTab";
 import CustomersTab from "../components/Admin/CustomersTab";
+import AddNewProductTab from "../components/Admin/AddNewProductTab";
 
 export const AdminDashboard = () => {
 
@@ -153,13 +154,11 @@ export const AdminDashboard = () => {
 
             <div className="w-full pb-20 lg:pb-5 py-5 lg:w-[83%] overflow-y-auto bg-bg no-scrollbar px-10">
                 {Menu === "Dashboard" && ( <Dashboard />)}
-                {Menu === "Products" && (<ProductsTab />)}
+                {Menu === "Products" && (<ProductsTab setMenu={setMenu} />)}
                 {Menu === "Orders" && (<OrdersTab />)}
                 {Menu === "Customers" && ( <CustomersTab />)}
-                {Menu === "Analytics" && (
-                    <div className="w-full">
-                        <h1 className="font-body text-7xl"> Analytics</h1>
-                    </div>
+                {Menu === "AddNewProduct" && (
+                  <AddNewProductTab setMenu={setMenu} />
                 )}
             </div>
 
