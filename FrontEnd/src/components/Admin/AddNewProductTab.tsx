@@ -3,6 +3,7 @@ import { MdDelete } from "react-icons/md";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { ImImages } from "react-icons/im";
 import logo from '../../assets/logo.svg'
+import { RichTextEditor } from "./RichTextEditor";
 
 type ProductTypeProp = {
     setMenu: (m: string) => void
@@ -15,6 +16,7 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
     const [Colors, setColors] = useState<any>([])
     const [InputColor, setInputColor] = useState("")
     const [Sizes, setSizes] = useState<any>([])
+    const [Details, setDetails] = useState("")
 
 
 
@@ -109,7 +111,7 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
 
 
     return (
-        <div className="w-full">
+        <div className="w-full flex flex-col">
             {/* Header */}
             <div className="w-full flex lg:flex-row flex-col lg:justify-between gap-5 lg:items-center py-5">
                 <div className="font-accent text-3xl font-bold text-black w-[40%]">Add Product</div>
@@ -121,7 +123,7 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
 
             {/* Outer Container */}
 
-            <div className="lg:grid grid-cols-[1fr_1.8fr] gap-5 h-screen">
+            <div className="lg:grid grid-cols-[1fr_1.8fr] gap-5  animate-fade-up">
 
                 {/* Left */}
 
@@ -272,6 +274,10 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
                                 <input type="text" className="input-primary w-full" />
                             </div>
                             <div className="flex flex-col gap-1 w-full">
+                                <label htmlFor="c" className="text-[14px] px-2">Gender <span className="text-red-500">*</span></label>
+                                <input type="text" className="input-primary w-full" />
+                            </div>
+                              <div className="flex flex-col gap-1 w-full">
                                 <label htmlFor="c" className="text-[14px] px-2">Category <span className="text-red-500">*</span></label>
                                 <input type="text" className="input-primary w-full" />
                             </div>
@@ -317,6 +323,17 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
                 </div>
 
 
+            </div>
+
+            {/* Detail Desciption */}
+
+            <div className="w-full px-5 bg-wh rounded-lg mt-5 py-5">
+
+                {/* Header */}
+                <div className="font-accent text-lg flex justify-start font-bold text-black py-5">Detail Description</div>
+                <RichTextEditor content={Details} onChange={setDetails} />
+
+                
             </div>
 
         </div>
