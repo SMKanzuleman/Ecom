@@ -8,17 +8,53 @@ const ProductScheme = new mongoose.Schema<ProductType>({
         type: String,
         required: [true, "Name is required"]
     },
+    Brand: {
+        type: String,
+        required: true
+    },
+    Gender: {
+        type: String,
+        required: true
+    },
+    Category: {
+        type: String,
+        required: false
+    },
+    Tagline: {
+        type: String,
+        required: [true, "Tagline is required"]
+    },
+
+
     Price: {
         type: Number,
         required: [true, "Price is required"]
+    },
+    SalePrice: {
+        type: Number,
+        required: false
     },
     Stock: {
         type: Number,
         required: [true, "Stock is required"]
     },
+    SKU: {
+        type: String,
+        required: false
+    },
+
+
     Description: {
         type: String,
         required: [true, "Description is required"]
+    },
+
+
+
+    Images: {
+        type:[String],
+        required:true
+
     },
     Sizes: {
         type: [String],
@@ -28,19 +64,7 @@ const ProductScheme = new mongoose.Schema<ProductType>({
         type: [String],
         required: false
     },
-    Tags: {
-        type: [String],
-        required: false
-    },
-    Rating: {
-        type: Number,
-        default: "0",
-        required: false
-    },
-    Details: {
-        type: String,
-        required: true
-    }
+
 
 }, { timestamps: true })
 

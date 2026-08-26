@@ -2,10 +2,11 @@ import { Router } from "express";
 import { AddNewProduct, DeleteAllProduct, DeleteSingleProduct, EditProduct, GetAllProduct, GetSingleProduct } from "./product.controller";
 import { Authenticate } from "../middlewares/authentication";
 import { authorizeRoles } from "../middlewares/authorization";
+import { upload } from "../middlewares/upload";
 
 export const ProductRouter = Router()
 
-ProductRouter.post("/",Authenticate,authorizeRoles("Admin") ,AddNewProduct )
+ProductRouter.post("/",Authenticate,authorizeRoles("Admin"),upload.array("Imges",5) ,AddNewProduct )
 
 ProductRouter.get("/:id",GetSingleProduct)
 

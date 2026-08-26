@@ -47,7 +47,7 @@ export const RichTextEditor = ({
     editorProps: {
       attributes: {
         class:
-          'min-h-[250px] p-4 outline-none text-sm text-black [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:my-3 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:my-3 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:my-2 [&_p]:my-2 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6',
+          'min-h-[250px] p-4 outline-none text-lg text-black [&_h1]:text-3xl [&_h1]:font-bold [&_h1]:my-3 [&_h2]:text-2xl [&_h2]:font-bold [&_h2]:my-3 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:my-2 [&_p]:my-2 [&_ul]:list-disc [&_ul]:pl-6 [&_ol]:list-decimal [&_ol]:pl-6',
       },
     },
   });
@@ -59,6 +59,7 @@ export const RichTextEditor = ({
   const buttonClass = (active: boolean = false) => `
     w-8 h-8 flex items-center justify-center
     rounded-md
+    cursor-pointer
     hover:bg-gray-200
     ${active ? 'bg-black text-white' : 'text-gray-700'}
   `;

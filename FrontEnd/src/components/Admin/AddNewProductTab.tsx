@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import { ImImages } from "react-icons/im";
-import logo from '../../assets/logo.svg'
 import { RichTextEditor } from "./RichTextEditor";
+import axios from "axios";
+import { useAuth } from "../../context/AuthContext";
+import { toast } from 'react-toastify'
+import { showSuccessToast } from "../../Utils/toast";
+
 
 type ProductTypeProp = {
     setMenu: (m: string) => void
@@ -13,20 +16,42 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
 
     const Defaultsizes = ["XS", "S", "MD", "LG", "XL"]
 
-    const [Colors, setColors] = useState<any>([])
-    const [InputColor, setInputColor] = useState("")
-    const [Sizes, setSizes] = useState<any>([])
-    const [Details, setDetails] = useState("")
-
-
-
-
-
-
-
-
-
     const [Imges, setImges] = useState<any>([])
+    const [Sizes, setSizes] = useState<any>([])
+    const [Colors, setColors] = useState<any>([])
+    const [Details, setDetails] = useState("")
+    const [ProductName, setProductName] = useState("")
+    const [Brand, setBrand] = useState("")
+    const [Gender, setGender] = useState("Men")
+    const [Category, setCategory] = useState('T-Shirt');
+    const [Tagline, setTagline] = useState("");
+    const [Price, setPrice] = useState(0);
+    const [SalePrice, setSalePrice] = useState(0);
+    const [SKU, setSKU] = useState("PR-01");
+    const [Stock, setStock] = useState<number>(0);
+    const { Token } = useAuth()
+
+    const formData = new FormData();
+
+    formData.append("Name", ProductName)
+    formData.append("Brand", Brand)
+    formData.append("Gender", Gender)
+    formData.append("Category", Category)
+    formData.append("Tagline", Tagline)
+    formData.append("Price", String(Price))
+    formData.append("SalePrice", String(SalePrice))
+
+    formData.append("SKU", SKU)
+    formData.append("Stock", String(Stock))
+    formData.append("Description", Details)
+
+    Colors.forEach((c: string) => { formData.append("Colors", c) });
+    Sizes.forEach((s: string) => { formData.append("Sizes", s) });
+    Imges.forEach((i: string) => { formData.append("Imges", i) });
+
+
+
+    const [InputColor, setInputColor] = useState("")
     const [Previews, setPreviews] = useState<{ file: File, url: string }[]>([])
     const [SelectedImge, setSelectedImge] = useState<File | null>(null)
 
@@ -43,21 +68,59 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
     }
 
     const RemoveImage = (i: number) => {
-        
+
         const RemovedImg = Imges[i]
-        const NewImges=Imges.filter((img: File, index: number) => index !== i)
+        const NewImges = Imges.filter((img: File, index: number) => index !== i)
         setImges(NewImges)
-        
+
         if (SelectedImge?.name === RemovedImg?.name && SelectedImge?.size === RemovedImg?.size) {
             if (NewImges.length > 0) {
                 const file = NewImges[0]
                 setSelectedImge(file)
             }
-            else{
+            else {
                 setSelectedImge(null)
             }
         }
 
+    }
+
+    const AddColor = () => {
+        if (InputColor !== "" && !Colors.includes(InputColor)) {
+            setColors([...Colors, InputColor])
+            setInputColor("")
+        }
+    }
+
+    const AddSize = (input: string) => {
+        if (Sizes.includes(input)) {
+            setSizes(Sizes.filter((s: string) => s !== input))
+        }
+        else {
+            setSizes([...Sizes, input])
+        }
+    }
+
+    const ADDPRODUCT = async () => {
+        try {
+            const res = await axios.post("http://localhost:2026/products", formData, {
+                headers: {
+                    Authorization: `Bearer ${Token}`
+                }
+            })
+
+            if (res.data) {
+                toast.success(`${ProductName} added!`)
+                setMenu("Dashboard")
+            }
+            else {
+                toast.error("There is some error")
+            }
+
+        } catch (error) {
+            console.error(error)
+
+        }
     }
 
     useEffect(() => {
@@ -71,44 +134,9 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
 
     }, [Imges])
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    const AddColor = () => {
-        if (InputColor !== "" && !Colors.includes(InputColor)) {
-            setColors([...Colors, InputColor])
-            setInputColor("")
-        }
-    }
-    const AddSize = (input: string) => {
-        if (Sizes.includes(input)) {
-            setSizes(Sizes.filter((s: string) => s !== input))
-        }
-        else {
-            setSizes([...Sizes, input])
-        }
-    }
-
-
-
+    useEffect(() => {
+        console.log("category:", Category, "PName: ", ProductName)
+    }, [Category, ProductName])
 
     return (
         <div className="w-full flex flex-col">
@@ -116,8 +144,8 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
             <div className="w-full flex lg:flex-row flex-col lg:justify-between gap-5 lg:items-center py-5">
                 <div className="font-accent text-3xl font-bold text-black w-[40%]">Add Product</div>
                 <div className="w-full flex justify-end gap-5">
-                    <div><button className="btn-primary bg-wh text-black w-[120px]" > Discard</button></div>
-                    <div><button className="btn-primary w-[120px]" > Save</button></div>
+                    <div><button className="btn-primary bg-wh text-black w-[120px]" onClick={() => { showSuccessToast("Go Fuck ur asss")}} > Discard</button></div>
+                    <div><button className="btn-primary w-[120px]" onClick={() => ADDPRODUCT()} > Save</button></div>
                 </div>
             </div>
 
@@ -164,7 +192,8 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
                                                 <button
                                                     onClick={(e) => {
                                                         e.stopPropagation()
-                                                        RemoveImage(index)}}
+                                                        RemoveImage(index)
+                                                    }}
                                                     type="button" className="absolute top-0.5 right-0.5 bg-black/70 text-white rounded-full w-4 h-4 flex items-center justify-center text-[10px] hover:bg-red-500 cursor-pointer"
                                                     title="Remove Image">✕</button>
                                             </div>
@@ -263,56 +292,85 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
                 <div className="w-full flex flex-col gap-5">
 
                     <div className="w-full flex flex-col bg-wh rounded-lg px-5 gap-2 py-5">
+
                         <div className="w-full text-lg font-accent font-semibold text-black">Basic Information</div>
+
                         <div className="flex flex-col gap-1">
-                            <label htmlFor="pn" className="text-[14px] px-2">Product <span className="text-red-500">*</span></label>
-                            <input type="text" className="input-primary w-full" />
+                            <label htmlFor="pn" className="text-[14px] px-2">Product Name <span className="text-red-500">*</span></label>
+                            <input type="text" className="input-primary w-full" onChange={(e) => setProductName(e.target.value)} value={ProductName} />
                         </div>
+
                         <div className="flex gap-5 justify-between">
+
                             <div className="flex flex-col gap-1 w-full">
                                 <label htmlFor="b" className="text-[14px] px-2">Brand <span className="text-red-500">*</span></label>
-                                <input type="text" className="input-primary w-full" />
+                                <input type="text" className="input-primary w-full" value={Brand} onChange={(e) => setBrand(e.target.value)} />
                             </div>
+
                             <div className="flex flex-col gap-1 w-full">
                                 <label htmlFor="c" className="text-[14px] px-2">Gender <span className="text-red-500">*</span></label>
-                                <input type="text" className="input-primary w-full" />
+                                <select className="input-primary w-full relative" value={Gender} onChange={(e) => { setGender(e.target.value) }} >
+                                    <option value="Men">Men</option>
+                                    <option value="Women">Women</option>
+                                    <option value="Kids">Kids</option>
+                                </select>
+
+
                             </div>
-                              <div className="flex flex-col gap-1 w-full">
+
+                            <div className="flex flex-col gap-1 w-full">
                                 <label htmlFor="c" className="text-[14px] px-2">Category <span className="text-red-500">*</span></label>
-                                <input type="text" className="input-primary w-full" />
+                                <select className="input-primary w-full" value={Category} onChange={(e) => { setCategory(e.target.value) }}>
+                                    <option value="T-Shirt">T-Shirt</option>
+                                    <option value="Shirt">Shirt</option>
+                                    <option value="Trouser">Trouser</option>
+                                    <option value="Jeans">Jeans</option>
+                                    <option value="Hoodie">Hoodie</option>
+                                    <option value="Jacket">Jacket</option>
+                                    <option value="Sweater">Sweater</option>
+                                    <option value="Polo">Polo</option>
+                                    <option value="Shorts">Shorts</option>
+                                    <option value="Activewear">Activewear</option>
+                                </select>
+
                             </div>
+
                         </div>
+
                         <div className="flex flex-col gap-1">
                             <label htmlFor="tagline" className="text-[14px] px-2">TagLine <span className="text-red-500">*</span></label>
                             <textarea
                                 id="tagline"
                                 rows="2"
                                 className="input-primary w-full resize-none"
+                                value={Tagline}
+                                onChange={(e) => setTagline(e.target.value)}
                             ></textarea>
                         </div>
 
                     </div>
+
                     <div className="w-full flex flex-col bg-wh rounded-lg px-5 gap-2 py-5">
                         <div className="w-full text-lg font-accent font-semibold text-black">Pricing & Inventory</div>
 
                         <div className="flex gap-5 justify-between">
                             <div className="flex flex-col gap-1 w-full">
                                 <label htmlFor="b" className="text-[14px] px-2">Regular Price <span className="text-red-500">*</span></label>
-                                <input type="text" className="input-primary w-ful" />
+                                <input type="number" className="input-primary w-full" value={Price} onChange={(e) => setPrice(Number(e.target.value))} />
                             </div>
                             <div className="flex flex-col gap-1 w-full">
                                 <label htmlFor="c" className="text-[14px] px-2">Sale Price <span className="text-red-500">*</span></label>
-                                <input type="text" className="input-primary w-full " />
+                                <input type="number" className="input-primary w-full" value={SalePrice} onChange={(e) => setSalePrice(Number(e.target.value))} />
                             </div>
                         </div>
                         <div className="flex gap-5 justify-between">
                             <div className="flex flex-col gap-1 w-full">
                                 <label htmlFor="b" className="text-[14px] px-2">SKU <span className="text-red-500">*</span></label>
-                                <input type="text" className="input-primary w-full" />
+                                <input type="text" className="input-primary w-full" value={SKU} onChange={(e) => setSKU(e.target.value)} />
                             </div>
                             <div className="flex flex-col gap-1 w-full">
                                 <label htmlFor="c" className="text-[14px] px-2">Stock <span className="text-red-500">*</span></label>
-                                <input type="text" className="input-primary w-full" />
+                                <input type="number" className="input-primary w-full" value={Stock} onChange={(e) => setStock(Number(e.target.value))} />
                             </div>
                         </div>
 
@@ -331,10 +389,10 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
 
                 {/* Header */}
                 <div className="font-accent text-lg flex justify-start font-bold text-black py-5">Detail Description</div>
-               
+
                 <RichTextEditor content={Details} onChange={setDetails} />
 
-                
+
             </div>
 
         </div>

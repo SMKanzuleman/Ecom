@@ -5,7 +5,13 @@ export type ProductType = {
     Description: string
     Sizes?: string[]
     Colors?: string[]
-    Tags?: string[]
+    Category?: string
     Rating?: number
-    Details: string
+    Brand: string
+    Tagline:string
+    SalePrice?:number
+    SKU?:number
+    Gender?:string
+    Images:string[]
+
 }

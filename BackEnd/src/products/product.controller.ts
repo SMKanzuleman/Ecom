@@ -8,14 +8,17 @@ import { ProductType } from "../config/product.config";
 export const AddNewProduct = async (req: Request, res: Response) => {
     try {
 
-        let { Name, Price, Stock, Description, Sizes, Colours, Tags } = req.body
+        const Files=req.files as any[]
+        const Images=Files? Files.map((f:any)=>f.path):[]
 
-        if (!Name || !Price || !Stock || !Description) {
+        let { Name,Brand,Gender,Category,Tagline, Price,SalePrice, Stock,SKU, Description, Sizes, Colors } = req.body
+
+        if (!Name || !Price || !Stock || !Description || !Brand || !Gender || !Category || !Tagline || !Sizes || !Colors) {
             return SendError(res, 400, "Fill all required fields")
         }
 
         const NewProduct = new Product({
-            Name, Price, Stock, Description, Sizes, Colours, Tags
+            Name,Brand,Gender,Category,Tagline, Price,SalePrice, Stock,SKU, Description, Sizes, Colors,Images
         })
 
         await NewProduct.save()
@@ -23,6 +26,7 @@ export const AddNewProduct = async (req: Request, res: Response) => {
         return SendSuccess(res, 200, "Product created.", { AddedProduct: NewProduct })
 
     } catch (error) {
+        console.log("Error:",error)
         return SendError(res, 500, "Unknown error")
 
     }

@@ -240,7 +240,7 @@ const Shop = () => {
                     <p className="font-heading text-left text-black text-lg pt-2 px-3">{item.Name}</p>
                     <div className="flex justify-between px-3 py-1">
                       <p className="font-heading text-left text-black text-xl font-semibold py-0"><span className="font-heading">Rs.</span>{item.Price}</p>
-                      <div className="flex lg:gap-1.5 gap-0.5">
+                      {/* <div className="flex lg:gap-1.5 gap-0.5">
                         {[1, 2, 3, 4, 5].map((index) => {
                           if (item.Rating >= index) {
                             return (<FaStar className="text-yellow-400" />)
@@ -253,7 +253,7 @@ const Shop = () => {
                           }
                         })}
 
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                 </Link>

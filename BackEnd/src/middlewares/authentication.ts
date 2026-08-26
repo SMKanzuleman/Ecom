@@ -20,7 +20,8 @@ export const Authenticate =async (req:AuthRequest,res:Response,next:NextFunction
         req.User =Decoded
         next()
     } catch (error) {
-        return SendError(res,500,"There is some error")
+        console.log("JWT Error Details:", error); 
+        return SendError(res,500,"There is  soome error")
         
     }
 

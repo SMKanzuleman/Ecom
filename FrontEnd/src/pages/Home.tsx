@@ -31,8 +31,8 @@ const Home = () => {
         <div className="animate-fade-up">
             <HeroSection />
             <Brands />
-            <ProductsSection title={"Top Selling"} tag={"top_selling"} products={Products} />
-            <ProductsSection title={"New Arrivals"} tag={"new_arrival"} products={Products} />
+            {/* <ProductsSection title={"Top Selling"} tag={"top_selling"} products={Products} />
+            <ProductsSection title={"New Arrivals"} tag={"new_arrival"} products={Products} /> */}
             <div className="py-5 bg-wh"></div>
             <Newsletter />
             {/* <Auth /> */}

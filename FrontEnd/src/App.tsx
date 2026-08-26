@@ -8,11 +8,16 @@ import Checkout from './pages/Checkout';
 import Shop from './pages/Shop';
 import AdminGuard from './Middlewares/AdminGuard';
 import { AdminDashboard } from './pages/AdminDashboard';
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/dist/ReactToastify.css"
+
+
 export const App = () => {
   const location=useLocation()
   const IsAdminpage=location.pathname==="/dashboard"
   return (
     <div>
+      <ToastContainer position='top-right'  style={{ top: "110px", right: "20px" }} />
       {!IsAdminpage && <Navbar />}
       {!IsAdminpage && <Cart />}
       
