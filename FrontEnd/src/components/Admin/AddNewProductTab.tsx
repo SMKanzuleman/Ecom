@@ -331,6 +331,7 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
 
                 {/* Header */}
                 <div className="font-accent text-lg flex justify-start font-bold text-black py-5">Detail Description</div>
+               
                 <RichTextEditor content={Details} onChange={setDetails} />
 
                 
