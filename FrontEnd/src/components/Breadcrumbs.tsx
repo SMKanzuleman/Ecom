@@ -12,9 +12,9 @@ const Breadcrumbs = ({product}: ProductProp) => {
           <p className="hover:text-black cursor-pointer transition-all duration-500">&gt;</p>
           <p className="hover:text-black cursor-pointer transition-all duration-500">Shop</p>
           <p className="hover:text-black cursor-pointer transition-all duration-500">&gt;</p>
-          <p className="hover:text-black cursor-pointer transition-all duration-500 hidden sm:block">{product.category || "Clothing"}</p>
+          <p className="hover:text-black cursor-pointer transition-all duration-500 hidden sm:block">{product?.category || "Clothing"}</p>
           <p className="hover:text-black cursor-pointer transition-all duration-500 hidden sm:block">&gt;</p>
-          <p className="hover:text-black cursor-pointer transition-all duration-500">{product.Name}</p>
+          <p className="hover:text-black cursor-pointer transition-all duration-500">{product?.Name}</p>
 
       </div>
   )

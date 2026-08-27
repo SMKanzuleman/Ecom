@@ -35,30 +35,10 @@ const PDContent2 = ({Product }:any) => {
                           <h3 className="text-xl font-bold font-heading text-black uppercase tracking-tight mb-3">
                               Product Overview
                           </h3>
-                          <p className="text-sm lg:text-base leading-relaxed text-zinc-600">
-                              {Product?.Details || "Crafted from 100% heavy organic ring-spun cotton (240 GSM) engineered for exceptional durability and structure. Features our signature relaxed silhouette with dropped shoulders, twin-needle reinforced hems, and custom silicon-washed softness that prevents pilling and maintains color depth wash after wash."}
-                          </p>
-                      </div>
+                          <p   className="[&_h2]:text-2xl [&_h2]:font-bold [&_h2]:my-3 [&_h3]:text-xl [&_h3]:font-semibold [&_h3]:my-2 [&_ul]:list-disc [&_ul]:pl-5 [&_p]:my-2 text-text" dangerouslySetInnerHTML={{__html: Product?.Description}}>
+                              </p>
 
-                      {/* 2. Key Specifications Grid */}
-                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 p-6 bg-bg rounded-2xl">
-                          <div>
-                              <span className="text-xs uppercase text-zinc-400 font-semibold tracking-wider">Material</span>
-                              <p className="font-semibold text-black text-sm mt-1">100% Organic Cotton</p>
-                          </div>
-                          <div>
-                              <span className="text-xs uppercase text-zinc-400 font-semibold tracking-wider">Fabric Weight</span>
-                              <p className="font-semibold text-black text-sm mt-1">240 GSM (Heavyweight)</p>
-                          </div>
-                          <div>
-                              <span className="text-xs uppercase text-zinc-400 font-semibold tracking-wider">Silhouette</span>
-                              <p className="font-semibold text-black text-sm mt-1">Relaxed / Boxy Fit</p>
-                          </div>
-                          <div>
-                              <span className="text-xs uppercase text-zinc-400 font-semibold tracking-wider">Origin</span>
-                              <p className="font-semibold text-black text-sm mt-1">Crafted in Portugal</p>
-                          </div>
-                      </div>
+                        </div>
 
                       {/* 3. Two-Column Detailed Breakdown (Features & Care) */}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

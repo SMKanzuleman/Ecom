@@ -9,7 +9,7 @@ import PDContent2 from "../components/PDContent2";
 const ProductDetail = () => {
 
     const { id } = useParams();
-    const [Product, setProduct] = useState<any>("")
+    const [Product, setProduct] = useState<any>(null)
 
     const FetchProduct = async () => {
         try {
@@ -30,9 +30,11 @@ const ProductDetail = () => {
 
             <Breadcrumbs product={Product} />
 
-            <PDContent productId={ id}  Product={Product}/>
-            
-            <PDContent2 Product={ Product} />
+           
+                <PDContent Product={Product} />
+             
+
+            <PDContent2 Product={Product} />
 
             <Newsletter />
 
