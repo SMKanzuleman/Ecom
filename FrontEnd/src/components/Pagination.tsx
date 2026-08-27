@@ -6,7 +6,7 @@ type Paginnationtype = {
 }
 const Pagination = ({ Products, PostPerPage,setCurrentPage,CurrentPage }: Paginnationtype) => {
     let Pages: number[] = []
-    for (let i = 1; i < Math.ceil(Products.length / PostPerPage); i++) {
+    for (let i = 1; i <= Math.ceil(Products.length / PostPerPage); i++) {
         Pages.push(i)
     }
 

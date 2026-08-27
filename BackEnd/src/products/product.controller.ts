@@ -1,24 +1,26 @@
 import { SendError, SendSuccess } from "../utils/responce";
 import { Request, Response } from 'express';
+import { Style } from "./styles.model";
 import { Product } from './product.model';
 import { ProductType } from "../config/product.config";
+import { AuthRequest } from "../config/auth.config";
 
 //Create
 
 export const AddNewProduct = async (req: Request, res: Response) => {
     try {
 
-        const Files=req.files as any[]
-        const Images=Files? Files.map((f:any)=>f.path):[]
+        const Files = req.files as any[]
+        const Images = Files ? Files.map((f: any) => f.path) : []
 
-        let { Name,Brand,Gender,Category,Tagline, Price,SalePrice, Stock,SKU, Description, Sizes, Colors } = req.body
+        let { Name, Brand, Gender, Category, Tagline, Price, SalePrice, Stock, SKU, Description, Sizes, Colors } = req.body
 
         if (!Name || !Price || !Stock || !Description || !Brand || !Gender || !Category || !Tagline || !Sizes || !Colors) {
             return SendError(res, 400, "Fill all required fields")
         }
 
         const NewProduct = new Product({
-            Name,Brand,Gender,Category,Tagline, Price,SalePrice, Stock,SKU, Description, Sizes, Colors,Images
+            Name, Brand, Gender, Category, Tagline, Price, SalePrice, Stock, SKU, Description, Sizes, Colors, Images
         })
 
         await NewProduct.save()
@@ -26,7 +28,7 @@ export const AddNewProduct = async (req: Request, res: Response) => {
         return SendSuccess(res, 200, "Product created.", { AddedProduct: NewProduct })
 
     } catch (error) {
-        console.log("Error:",error)
+        console.log("Error:", error)
         return SendError(res, 500, "Unknown error")
 
     }
@@ -55,7 +57,27 @@ export const GetSingleProduct = async (req: Request, res: Response) => {
 export const GetAllProduct = async (req: Request, res: Response) => {
     try {
 
-        const AllProducts: ProductType[] = await Product.find({}).limit(30)
+        const { category, MaxPrice, MinPrice, style, color } = req.query
+
+        let Query: any = {}
+
+        if (category) {
+            Query.Category = category
+        }
+        if (color) {
+            Query.Colors = color
+        }
+        if (style) {
+            const catsArray = (style as string).split(",");
+            Query.Category = { $in: catsArray };
+        }
+        if (MinPrice || MaxPrice) {
+            Query.Price = {};
+            if (MinPrice) Query.Price.$gte = Number(MinPrice);
+            if (MaxPrice) Query.Price.$lte = Number(MaxPrice);
+        }
+
+        const AllProducts: ProductType[] = await Product.find(Query)
 
         return SendSuccess(res, 200, "Products found.", { AllProducts })
 
@@ -127,3 +149,21 @@ export const DeleteAllProduct = async (req: Request, res: Response) => {
 
     }
 }
+
+export const GetFilterData = async (req: Request, res: Response) => {
+    try {
+        const Categories = await Product.distinct("Category");
+        const Colors = await Product.distinct("Colors");
+        const Styles = await Style.find();
+        return SendSuccess(res, 200, "Shop filters data fetched", {
+            Categories,
+            Colors,
+            Styles
+        });
+    } catch (error) {
+        console.error("GetShopFiltersData Error:", error);
+        SendError(res, 500, "Server Error")
+    }
+}
+
+

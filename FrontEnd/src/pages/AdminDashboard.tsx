@@ -10,6 +10,7 @@ import Dashboard from "../components/Admin/Dashboard";
 import ProductsTab from "../components/Admin/ProductsTab";
 import CustomersTab from "../components/Admin/CustomersTab";
 import AddNewProductTab from "../components/Admin/AddNewProductTab";
+import Setting from "../components/Admin/Setting";
 
 export const AdminDashboard = () => {
 
@@ -157,9 +158,11 @@ export const AdminDashboard = () => {
                 {Menu === "Products" && (<ProductsTab setMenu={setMenu} />)}
                 {Menu === "Orders" && (<OrdersTab />)}
                 {Menu === "Customers" && ( <CustomersTab />)}
+                {Menu === "Setting" && ( <Setting />)}
                 {Menu === "AddNewProduct" && (
                   <AddNewProductTab setMenu={setMenu} />
                 )}
+             
             </div>
 
             <BottomNav Menu={Menu} setMenu={setMenu} />

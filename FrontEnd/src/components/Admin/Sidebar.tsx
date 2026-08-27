@@ -38,9 +38,9 @@ const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
                     <div><FaUsers /></div>
                     <div className="font-body">Customers</div>
                 </div>
-                <div className={`flex cursor-pointer ${Menu === "Analytics" ? "border-l-4 border-white bg-wh/10 animate-fadding rounded-sm" : "bg-black"} w-full p-3 items-center gap-3`} onClick={() => { setMenu("Analytics") }}>
+                <div className={`flex cursor-pointer ${Menu === "Analytics" ? "border-l-4 border-white bg-wh/10 animate-fadding rounded-sm" : "bg-black"} w-full p-3 items-center gap-3`} onClick={() => { setMenu("Setting") }}>
                     <div><SiGoogleanalytics /></div>
-                    <div className="font-body">Analytics</div>
+                    <div className="font-body">Setting</div>
                 </div>
             </div>
 

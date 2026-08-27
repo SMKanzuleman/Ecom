@@ -36,3 +36,18 @@ export const showErrorToast = (message: string) => {
         autoClose: 2000,
     });
 };
+
+{/* <div className="flex lg:gap-1.5 gap-0.5">
+    {[1, 2, 3, 4, 5].map((index) => {
+        if (item.Rating >= index) {
+            return (<FaStar className="text-yellow-400" />)
+        }
+        else if (item.Rating >= index - 0.5) {
+            return (<FaStarHalfAlt className="text-yellow-400" />)
+        }
+        else {
+            return (<FaRegStar />)
+        }
+    })}
+
+</div> */}

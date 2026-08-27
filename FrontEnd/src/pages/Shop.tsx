@@ -11,18 +11,45 @@ import { IoChevronUp } from "react-icons/io5";
 import { FaChevronDown } from "react-icons/fa6";
 
 const Shop = () => {
-  const [Products, setProducts] = useState<any>([])
-  const [CurrentPage, setCurrentPage] = useState(1)
-  const [PostPerPage, setPostPerPage] = useState(10)
 
   const MIN = 0;
   const MAX = 10000;
-
-  const [MinPrice, setMinPrice] = useState(2000)
-  const [MaxPrice, setMaxPrice] = useState(5000)
-
+  const [MinPrice, setMinPrice] = useState(MIN)
+  const [MaxPrice, setMaxPrice] = useState(MAX)
   const MinPos = ((MinPrice - MIN) / (MAX - MIN) * 100)
   const MaxPos = ((MaxPrice - MIN) / (MAX - MIN) * 100)
+
+  const [Products, setProducts] = useState<any>([])
+
+
+  const [Categories, setCategories] = useState<any>([]);
+  const [Colors, setColors] = useState<any>([]);
+  const [Styles, setStyles] = useState<any>([]);
+
+  const [SelectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [SelectedColor, setSelectedColors] = useState<string | null>(null);
+  const [SelectedStyle, setSelectedStyle] = useState<string | null>(null);
+
+  const FilteredProducts = Products.filter((p: any) => {
+
+    const MatchCategory = SelectedCategory ? p.Category === SelectedCategory : true;
+    const MatchColor = SelectedColor ? p.Colors.includes(SelectedColor) : true;
+    const MatchStyle = SelectedStyle ? SelectedStyle.includes(p.Category) : true;
+    const MatchPrice = p.Price >= MinPrice && p.Price <= MaxPrice
+
+    return (MatchCategory && MatchColor && MatchPrice && MatchStyle)
+
+
+  })
+
+  const [CurrentPage, setCurrentPage] = useState(1)
+  const [PostPerPage, setPostPerPage] = useState(15)
+  const LastIndex = CurrentPage * PostPerPage;
+  const FirstIndex = LastIndex - PostPerPage;
+
+
+
+
 
   const [PriceToggle, setPriceToggle] = useState(false)
   const [StyleToggle, setStyleToggle] = useState(false)
@@ -31,7 +58,15 @@ const Shop = () => {
 
   const FetchProducts = async () => {
     try {
-      const res = await axios.get("http://localhost:2026/products")
+      const res = await axios.get("http://localhost:2026/products", {
+        params: {
+          category: SelectedCategory,
+          color: SelectedColor,
+          style: SelectedStyle ? SelectedStyle?.Categories?.join(",") : undefined,
+          MinPrice,
+          MaxPrice
+        }
+      })
       if (res.data.AllProducts) {
         setProducts(res.data.AllProducts)
       }
@@ -39,14 +74,48 @@ const Shop = () => {
       console.error(err)
     }
   }
+  const FetchFilterData = async () => {
+    try {
+      const res = await axios.get("http://localhost:2026/products/FilterData")
+      const { Categories, Colors, Styles } = res.data.data || res.data;
+      if (res.data) {
+        setCategories(Categories)
+        setColors(Colors)
+        setStyles(Styles)
+      }
+      console.log(res.data);
 
-  const FirstIndex = CurrentPage * PostPerPage;
-  const LastIndex = FirstIndex + PostPerPage;
+    } catch (err) {
+      console.error(err)
+    }
+  }
 
-  const CurrentProducts = Products.slice(FirstIndex, LastIndex)
+  const ClearAllFilters = () => {
+    setSelectedCategory(null)
+    setSelectedColors(null)
+    setSelectedStyle(null)
+    setMinPrice(MIN)
+    setMaxPrice(MAX)
+    setCurrentPage(1)
+
+  }
+  const hasActiveFilters =
+    SelectedCategory !== null ||
+    SelectedColor !== null ||
+    SelectedStyle !== null ||
+    MinPrice !== MIN ||
+    MaxPrice !== MAX;
+
+
+
+
   useEffect(() => {
     FetchProducts()
-  }, [])
+    FetchFilterData()
+  }, [SelectedCategory, SelectedColor, SelectedStyle, MinPrice, MaxPrice])
+
+
+
   return (
     <div className="w-full bg-wh animate-fade-up duration-700 flex flex-col">
       {/*Header*/}
@@ -60,36 +129,27 @@ const Shop = () => {
       </div>
       {/*Body*/}
       <div className="w-full flex flex-col lg:flex-row lg:px-10 py-32">
+
         {/*Left sidebar*/}
-        <div className='lg:w-[20%] w-full rounded-4xl  bg-bg flex flex-col px-10 py-5'>
+
+        <div className='lg:w-[20%] w-full rounded-4xl  bg-bg flex flex-col px-10 py-5 h-fit'>
 
           <div className='w-full flex justify-between items-center py-5 border-b-2 border-gray-400/30'>
             <div className='text-black text-xl font-semibold'>Filters</div>
-            <div className='text-text font-body text-2xl'><IoFilterSharp /></div>
+            { hasActiveFilters && <button className='btn-primary py-2 rounded-full bg-red-600' onClick={() => ClearAllFilters()}>clear</button>}
           </div>
 
+          {/* categories */}
           <div className='w-full flex flex-col  py-5 gap-5 border-b-2 border-gray-400/30'>
 
-            <div className='w-full flex justify-between'>
-              <div className='text-text '>T-Shirt</div>
-              <div className='cursor-pointer'><VscChevronRightCompact /></div>
-            </div>
-            <div className='w-full flex justify-between'>
-              <div className='text-text'>T-Shirt</div>
-              <div className='cursor-pointer'><VscChevronRightCompact /></div>
-            </div>
-            <div className='w-full flex justify-between'>
-              <div className='text-text'>T-Shirt</div>
-              <div className='cursor-pointer'><VscChevronRightCompact /></div>
-            </div>
-            <div className='w-full flex justify-between'>
-              <div className='text-text'>T-Shirt</div>
-              <div className='cursor-pointer'><VscChevronRightCompact /></div>
-            </div>
-            <div className='w-full flex justify-between'>
-              <div className='text-text'>T-Shirt</div>
-              <div className='cursor-pointer'><VscChevronRightCompact /></div>
-            </div>
+            {Categories.slice(10,15).map((cat, index) => (
+              <div key={index} className='w-full flex justify-between  cursor-pointer' onClick={() => setSelectedCategory(cat)}>
+                <div className='text-text hover:text-black'>{cat}</div>
+                <div className=' hover:text-black'><VscChevronRightCompact /></div>
+              </div>
+
+            ))}
+
 
           </div>
 
@@ -170,104 +230,61 @@ const Shop = () => {
             <div className='text-black text-xl font-semibold'>Colors</div>
             <div className='text-black font-body text-2xl cursor-pointer' onClick={() => setColorToggle(!ColorToggle)}>{ColorToggle ? <FaChevronUp className='text-[16px]' /> : <FaChevronDown className='text-[16px]' />}</div>
           </div>
-
-          { ColorToggle && (
+          {/* Colors */}
+          {ColorToggle && (
             <div className='w-full animate-fade-up flex flex-wrap gap-2 justify-start items-center px-2'>
-              <h1 className='cursor-pointer w-10 h-10 rounded-full bg-amber-400'></h1>
-              <h1 className='cursor-pointer w-10 h-10 rounded-full bg-amber-200'></h1>
-              <h1 className='cursor-pointer w-10 h-10 rounded-full bg-amber-500'></h1>
-              <h1 className='cursor-pointer w-10 h-10 rounded-full bg-amber-600'></h1>
-              <h1 className='cursor-pointer w-10 h-10 rounded-full bg-amber-700'></h1>
-              <h1 className='cursor-pointer w-10 h-10 rounded-full bg-amber-800'></h1>
-              <h1 className='cursor-pointer w-10 h-10 rounded-full bg-green-400'></h1>
-              <h1 className='cursor-pointer w-10 h-10 rounded-full bg-amber-400'></h1>
-              <h1 className='cursor-pointer w-10 h-10 rounded-full bg-amber-400'></h1>
-              <h1 className='cursor-pointer w-10 h-10 rounded-full bg-amber-400'></h1>
+              {Colors.slice(0,10).map((c: any) => (
+                <div onClick={() => setSelectedColors(c)} style={{ background: c }} className={`cursor-pointer w-10 h-10 rounded-full `}></div>
+
+              ))}
 
             </div>
           )}
-
-
 
           <div className='w-full flex justify-between items-center py-5'>
             <div className='text-black text-xl font-semibold'>Dress Style</div>
             <div className='text-black font-body text-2xl cursor-pointer' onClick={() => setStyleToggle(!StyleToggle)}>{StyleToggle ? <FaChevronUp className='text-[16px]' /> : <FaChevronDown className='text-[16px]' />}</div>
           </div>
 
+          {/* Dress Style */}
           {StyleToggle && (
             <div className='w-full flex flex-col pb-5 gap-4 border-b-2 border-gray-400/30 animate-fade-up'>
 
-              <div className='w-full flex justify-between'>
-                <div className='text-text '>T-Shirt</div>
-                <div className='cursor-pointer'><VscChevronRightCompact /></div>
-              </div>
-              <div className='w-full flex justify-between'>
-                <div className='text-text'>T-Shirt</div>
-                <div className='cursor-pointer'><VscChevronRightCompact /></div>
-              </div>
-              <div className='w-full flex justify-between'>
-                <div className='text-text'>T-Shirt</div>
-                <div className='cursor-pointer'><VscChevronRightCompact /></div>
-              </div>
-              <div className='w-full flex justify-between'>
-                <div className='text-text'>T-Shirt</div>
-                <div className='cursor-pointer'><VscChevronRightCompact /></div>
-              </div>
-              <div className='w-full flex justify-between'>
-                <div className='text-text'>T-Shirt</div>
-                <div className='cursor-pointer'><VscChevronRightCompact /></div>
-              </div>
+              {Styles.map((s, index) => (
+                <div onClick={() => setSelectedStyle(s)} key={index} className='w-full flex justify-between  cursor-pointer'>
+                  <div className='text-text hover:text-black'>{s.Name}</div>
+                  <div className=' hover:text-black'><VscChevronRightCompact /></div>
+                </div>
 
+              ))}
             </div>
 
           )}
-
-
-
 
 
         </div>
 
         {/*Right sidebar*/}
         <div className='lg:w-[80%] w-full rounded-4xl flex flex-col'>
-          <div className=" grid grid-cols-2 lg:grid-cols-4 px-2  lg:px  justify-items-center">
+          <div className=" grid grid-cols-2 lg:grid-cols-4 px-2  lg:gap-3  justify-items-center">
 
-            {CurrentProducts.map((item: any) => {
-              return (
-                <Link to={`/product/${item._id}`} key={item._id} >
-                  <div key={item._id} className="lg:w-62.5 w-50 py-3 lg:py-0 h-auto animate-fade-up hover:scale-105 transition-transform duration-300 cursor-pointer ">
-                    <img src={logo} alt="" className="w-full bg-bg p-5 rounded-4xl " />
-                    <p className="font-heading text-left text-black text-lg pt-2 px-3">{item.Name}</p>
-                    <div className="flex justify-between px-3 py-1">
-                      <p className="font-heading text-left text-black text-xl font-semibold py-0"><span className="font-heading">Rs.</span>{item.Price}</p>
-                      {/* <div className="flex lg:gap-1.5 gap-0.5">
-                        {[1, 2, 3, 4, 5].map((index) => {
-                          if (item.Rating >= index) {
-                            return (<FaStar className="text-yellow-400" />)
-                          }
-                          else if (item.Rating >= index - 0.5) {
-                            return (<FaStarHalfAlt className="text-yellow-400" />)
-                          }
-                          else {
-                            return (<FaRegStar />)
-                          }
-                        })}
-
-                      </div> */}
-                    </div>
+            {Products.slice(FirstIndex, LastIndex).map((item: any) => {
+              return (<Link to={`/product/${item._id}`} key={item._id} >
+                <div key={item._id} className="lg:w-62.5 w-50 py-3 lg:py-0 h-auto animate-fade-up hover:scale-105 transition-transform duration-300 cursor-pointer ">
+                  <img src={item.Images?.[0] || logo} alt="" className="w-full aspect-[4/5] object-cover bg-bg p-2 rounded-4xl " />
+                  <p className="font-heading text-left text-black text-lg pt-2 px-3">{item.Name}</p>
+                  <div className="flex justify-between px-3 py-1">
+                    <p className="font-heading text-left text-black text-xl font-semibold py-0"><span className="font-heading">Rs.</span>{item.Price}</p>
                   </div>
-                </Link>
-
+                </div>
+              </Link>
               )
             })}
-
-
-
 
           </div>
 
           <Pagination
-            Products={Products}
+            Products={FilteredProducts}
             PostPerPage={PostPerPage}
             setCurrentPage={setCurrentPage}
             CurrentPage={CurrentPage} />
