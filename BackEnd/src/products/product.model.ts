@@ -64,6 +64,11 @@ const ProductScheme = new mongoose.Schema<ProductType>({
         type: [String],
         required: false
     },
+    Sold: {
+    type: Number,
+    default: 0,
+    required: false
+}
 
 
 }, { timestamps: true })

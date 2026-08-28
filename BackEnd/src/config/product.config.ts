@@ -13,5 +13,6 @@ export type ProductType = {
     SKU?:number
     Gender?:string
     Images:string[]
+    Sold?:Number
 
 }
