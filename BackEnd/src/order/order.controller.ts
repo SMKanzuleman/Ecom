@@ -32,7 +32,7 @@ export const MakeOrder = async (req: AuthRequest, res: Response) => {
 
         })
 
-        const PStatus=Payment.type==="bank"? "paid" : "pending" 
+        const PStatus = Payment.type === "bank" ? "paid" : "pending"
 
         const NewOrder = await Order.create({
             UserId: userId,
@@ -44,13 +44,13 @@ export const MakeOrder = async (req: AuthRequest, res: Response) => {
                 Location: Address.Address,
                 LandMark: Address.LandMark
             },
-            PaymentStatus:PStatus,
+            PaymentStatus: PStatus,
             Recipient: {
                 FName: Address.RFName,
                 LName: Address.RLName,
-                Phone:Address.Phone
+                Phone: Address.Phone
             },
-            PaymentDetails:{
+            PaymentDetails: {
                 Method: Payment.Type,
                 CardNumber: Payment.CardNumber,
                 CVV: Payment.CVV,
@@ -58,6 +58,9 @@ export const MakeOrder = async (req: AuthRequest, res: Response) => {
             },
             OrderItems: FoundedItems
         })
+        foundedCart.Items = [];
+        foundedCart.CartPrice = 0;
+        await foundedCart.save();
 
         return SendSuccess(res, 200, "Order Placed", { NewOrder })
     } catch (error) {

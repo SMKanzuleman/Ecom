@@ -13,7 +13,7 @@ type CartType = {
     AddTocart: (product: any, size: string, color: string, quantity: number) => void
     RemoveFromCart: (id: string, quantity: number) => void
     UpdateQuantity: (Id: string, Size: string, Color: string, newQuan: number) => void
-    ClearCart:()=>void
+    ClearCart: () => Promise<void>
 }
 
 
@@ -22,9 +22,9 @@ const CartContext = createContext<CartType | undefined>(undefined)
 
 
 const CartProvider = ({ children }: { children: React.ReactNode }) => {
-    
+
     const { Token } = useAuth()
-    
+
     const [Cart, setCart] = useState<any[]>(() => {
         const savedcart = localStorage.getItem("User_Cart");
         console.log("Cart loaded from localStorage")
@@ -32,7 +32,7 @@ const CartProvider = ({ children }: { children: React.ReactNode }) => {
     })
 
     const CartPrice = Cart.reduce((total, item) => total + (item.Quantity * item.Price), 0);
-    
+
     const [IsCartOpen, setIsCartOpen] = useState(false)
 
     const SyncCart = async () => {
@@ -45,7 +45,7 @@ const CartProvider = ({ children }: { children: React.ReactNode }) => {
                 const itemsFromDb = res.data.FoundedCart.Items.map((item: any) => ({
                     _id: item.ProductId?._id || item._id,
                     Name: item.ProductId?.Name || "Product",
-                    Imges:item.Images,
+                    Imges: item.Images,
                     Price: item.ProductId?.Price || 0,
                     Size: item.Sizes || "Large",
                     Color: item.Colors || "",
@@ -60,15 +60,23 @@ const CartProvider = ({ children }: { children: React.ReactNode }) => {
         }
     };
 
-    const ClearCart=()=>{
-        setCart([])
-        localStorage.removeItem("User_Cart")
-        showSuccessToast("Cart cleared.")
+    const ClearCart = async () => {
+        try {
+            const res = await API.delete("/cart");
+            if (res.data) {
+                setCart([])
+                localStorage.removeItem("User_Cart")
+                showSuccessToast("Cart cleared.")
+            }
+        } catch (error) {
+            console.error(error)
+        }
+
     }
 
     useEffect(() => {
         localStorage.setItem("User_Cart", JSON.stringify(Cart))
-        
+
     }, [Cart])
 
     useEffect(() => {
@@ -93,7 +101,7 @@ const CartProvider = ({ children }: { children: React.ReactNode }) => {
             else {
                 const NewItem = {
                     _id: product._id,
-                    Imges:product.Images,
+                    Imges: product.Images,
                     Name: product.Name,
                     Color: color,
                     Size: size,
@@ -104,7 +112,7 @@ const CartProvider = ({ children }: { children: React.ReactNode }) => {
             }
         });
     }
-    
+
     const RemoveFromCart = (id: string) => {
         setCart((prev) => prev.filter((item) => { return item._id !== id }))
     }
@@ -122,7 +130,7 @@ const CartProvider = ({ children }: { children: React.ReactNode }) => {
             ))
             showSuccessToast("quantity updated in Localstorage+ frontend")
         }
-        
+
         try {
             const res = await API.put(`/cart/${Id}`, { q: newQuan })
             console.log(res.data)
@@ -135,7 +143,7 @@ const CartProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     return (
-        <CartContext.Provider value={{ Cart,ClearCart, setCart, AddTocart, RemoveFromCart, IsCartOpen, setIsCartOpen, UpdateQuantity, CartPrice }}>
+        <CartContext.Provider value={{ Cart, ClearCart, setCart, AddTocart, RemoveFromCart, IsCartOpen, setIsCartOpen, UpdateQuantity, CartPrice }}>
             {children}
         </CartContext.Provider>
     )

@@ -42,10 +42,8 @@ const Checkout = () => {
       const res=await API.post("/order",{Address:ShippingAddress,Payment:PaymentDetail})
       if(res.data){
         showSuccessToast("🥳Congratulation.🎉")
-        ClearCart()
+        await ClearCart()
         Navigate("/")
-        
-        
       }
 
     } catch (error: any) {
