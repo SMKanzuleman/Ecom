@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { RichTextEditor } from "./RichTextEditor";
-import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from 'react-toastify'
 import { showSuccessToast } from "../../Utils/toast";
+import API from "../../Utils/API";
 
 
 type ProductTypeProp = {
@@ -103,11 +103,7 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
 
     const ADDPRODUCT = async () => {
         try {
-            const res = await axios.post("http://localhost:2026/products", formData, {
-                headers: {
-                    Authorization: `Bearer ${Token}`
-                }
-            })
+            const res = await API.post("/products", formData, )
 
             if (res.data) {
                 toast.success(`${ProductName} added!`)

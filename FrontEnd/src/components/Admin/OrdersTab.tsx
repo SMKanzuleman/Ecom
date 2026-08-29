@@ -3,6 +3,7 @@ import { FaDownload } from "react-icons/fa6";
 import axios from "axios";
 import AdminPagenation from "./AdminPagenation";
 import { useAuth } from "../../context/AuthContext";
+import API from "../../Utils/API";
 
 
 
@@ -20,7 +21,7 @@ export const OrdersTab = () => {
 
     const FetchOrders = async () => {
         try {
-            const res = await axios.get("http://localhost:2026/order/", { headers: { Authorization: `Bearer ${Token}` }, withCredentials: true })
+            const res = await API.get("/order",)
             if (res.data.Order) {
                 console.log("Setting orders")
                 console.log(res.data.Order);

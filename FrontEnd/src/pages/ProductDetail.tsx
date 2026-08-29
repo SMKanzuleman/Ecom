@@ -5,6 +5,7 @@ import Newsletter from "../components/Newsletter";
 import Breadcrumbs from "../components/Breadcrumbs";
 import PDContent from "../components/PDContent1";
 import PDContent2 from "../components/PDContent2";
+import API from "../Utils/API";
 
 const ProductDetail = () => {
 
@@ -13,7 +14,7 @@ const ProductDetail = () => {
 
     const FetchProduct = async () => {
         try {
-            const res = await axios.get("http://localhost:2026/products/" + id)
+            const res = await API.get("/products/" + id)
             setProduct(res.data.FoundedProduct)
         } catch (err) {
             console.error(err)
@@ -31,7 +32,7 @@ const ProductDetail = () => {
             <Breadcrumbs product={Product} />
 
            
-                <PDContent Product={Product} />
+            <PDContent Product={Product} />
              
 
             <PDContent2 Product={Product} />

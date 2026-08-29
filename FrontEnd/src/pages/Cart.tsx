@@ -4,22 +4,26 @@ import logo from '../assets/logo.svg'
 import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
+import { showErrorToast } from "../Utils/toast";
+import API from "../Utils/API";
 
 
 const Cart = () => {
+
   const { Cart, setCart, setIsCartOpen, IsCartOpen, CartPrice, UpdateQuantity } = useCart();
+
   const { Token, Name } = useAuth()
 
   const Remove = async (id: string, size: string, color: string, quantity: number) => {
     try {
       setCart((prev: any) => (
         prev.filter((item: any) =>
-          !(item._id === id && item.Color === color && item.Size === size, item.Quantity === quantity)
+          !(item._id === id && item.Color === color && item.Size === size && item.Quantity === quantity)
         )))
-      console.log("Deleted from Frontend",)
-      const res = await axios.delete(`http://localhost:2026/cart/${id}`, { headers: { Authorization: `Bearer ${Token}` }, data: { Quantity: quantity, Size: size, Color: color }, })
+      showErrorToast("Deleted from Frontend",)
+      const res = await API.delete(`/cart/${id}`, {data: { Quantity: quantity, Sizes: size, Colors: color } })
       if (res.data) {
-        console.log("Dleted from DB also")
+        showErrorToast("Dleted from DB also")
       }
     } catch (error) {
       console.error(error)
@@ -51,44 +55,55 @@ const Cart = () => {
 
           {Cart.map((item) => {
             return (
-              <div key={item._id} className="w-full bg-bg backdrop-blur-xs border border-gray-400/30 rounded-xl p-3.5 flex items-center justify-between gap-3 shadow-xs hover:border-gray-400/60 transition-all">
+              <div key={item._id} className="w-full bg-bg backdrop-blur-xs border border-gray-400/30 rounded-full p-3.5 flex items-center justify-between gap-2 shadow-xs hover:border-gray-400/60 transition-all">
 
-                <div className="w-[10%]  flex items-center h-auto rounded-4xl">
-                  <img src={logo} alt="Logo" />
+                <div className="w-[20%] aspect-square flex items-center justify-center">
+                 
+                  <img
+                    src={item.Imges?.[0]}
+                    alt="Product"
+                    className="w-full h-full aspect-square object-contain rounded-full"
+                  />
                 </div>
 
-                <div className="w-[60%] flex flex-col items-start text-black">
+                <div className="w-[70%] flex flex-col items-start text-black">
                   <p>{item.Name}</p>
-                  <div className="w-full flex items-center justify-start gap-5">
-                    <p className="text-text">{item.Size}</p>
-                    <p className={`w-5 h-5 rounded-full`}
-                      style={{ backgroundColor: item.Color }}></p>
+
+                  <div className="w-full flex items-center justify-start gap-15 px-2">
+
+                    <div className="flex items-center gap-2">
+
+                      <p className="text-wh px-2 text-xs flex justify-center items-center p-1  rounded-full bg-black">{item.Size}</p>
+                      <p className={`w-7 h-7 rounded-full`}
+                        style={{ backgroundColor: item.Color }}></p>
+                    </div>
+
+                    <div className=" bg-black rounded-full flex items-center justify-between overflow-hidden gap-3 px-3">
+                      <button onClick={() => {
+                        UpdateQuantity(item._id, item.Size, item.Color, item.Quantity - 1)
+
+                      }}
+                        className=" w-[30%] py-1 cursor-pointer font-bold hover:scale-150 duration-100 text-wh">
+                        -
+                      </button>
+                      <div className="w-[40%] py-1 text-wh text-center">{item.Quantity}</div>
+                      <button onClick={() => {
+                        UpdateQuantity(item._id, item.Size, item.Color, item.Quantity + 1)
+                      }}
+                        className="w-[30%] text-wh py-1 cursor-pointer font-bold hover:scale-150 duration-100">
+                        +
+                      </button>
+                    </div>
+
                   </div>
                 </div>
 
-                <div className="w-[30%] flex items-center justify-between gap-2">
-
-                  <div className="w-[80%] bg-black rounded-full flex items-center justify-between overflow-hidden px-3">
-                    <button onClick={() => {
-                      UpdateQuantity(item._id, item.Size, item.Color, item.Quantity - 1)
-
-                    }}
-                      className=" w-[30%] py-1 cursor-pointer font-bold hover:scale-150 duration-100 text-wh">
-                      -
-                    </button>
-                    <div className="w-[40%] py-1 text-wh text-center">{item.Quantity}</div>
-                    <button onClick={() => {
-                      UpdateQuantity(item._id, item.Size, item.Color, item.Quantity + 1)
-                    }}
-                      className="w-[30%] text-wh py-1 cursor-pointer font-bold hover:scale-150 duration-100">
-                      +
-                    </button>
-                  </div>
-
+                <div className="w-[10%] flex items-center justify-center gap-2">
                   <div className="text-black cursor-pointer hover:scale-110 transition-transform duration-300" onClick={() => { Remove(item._id, item.Size, item.Color, item.Quantity) }}>
-                    <MdDelete />
+                    <MdDelete className="text-xl" />
                   </div>
                 </div>
+
               </div>
             )
           })}

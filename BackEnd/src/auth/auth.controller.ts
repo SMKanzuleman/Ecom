@@ -135,6 +135,7 @@ const Refresh = async (req: Request, res: Response) => {
     
     return SendSuccess(res, 200, "Token genrated successfully", {
       token: AccessToken,
+      UserName: FoundedUser.FName
     });
   } catch (error) {
     res.clearCookie("token")

@@ -1,5 +1,5 @@
-import axios from "axios";
-import { useState,useEffect } from "react";
+
+import { useState, useEffect } from "react";
 import { FaCheck } from "react-icons/fa";
 import { IoMdCloseCircle } from "react-icons/io";
 import { useAuth } from "../context/AuthContext";
@@ -11,6 +11,7 @@ import ProductsTab from "../components/Admin/ProductsTab";
 import CustomersTab from "../components/Admin/CustomersTab";
 import AddNewProductTab from "../components/Admin/AddNewProductTab";
 import Setting from "../components/Admin/Setting";
+import API from "../Utils/API";
 
 export const AdminDashboard = () => {
 
@@ -21,8 +22,8 @@ export const AdminDashboard = () => {
 
     const [Filter, setFilter] = useState(false)
     const [Menu, setMenu] = useState("Dashboard")
-   
-   
+
+
     const [Selected, setSelected] = useState("T-shirts")
     const [SelectedStatus, setSelectedStatus] = useState("Draft")
     const [SelectedUser, setSelectedUser] = useState<any>(null)
@@ -30,16 +31,15 @@ export const AdminDashboard = () => {
     const { Token } = useAuth()
 
 
- 
+
     const categories = ["T-shirts", "Shirts", "Jeans", "Hoodie"];
     const Status = ["Active", "Draft", "Saved"]
 
     const FetchProducts = async () => {
         try {
-            const res = await axios.get("http://localhost:2026/products")
+            const res = await API.get("/products")
             if (res.data.AllProducts) {
                 setProducts(res.data.AllProducts)
-
             }
         } catch (err) {
             console.error(err)
@@ -47,7 +47,7 @@ export const AdminDashboard = () => {
     }
     const FetchUsers = async () => {
         try {
-            const res = await axios.get("http://localhost:2026/dashboard/AllUsers", { headers: { Authorization: `Bearer ${Token}` }, withCredentials: true })
+            const res = await API.get("/dashboard/AllUsers")
             if (res.data.Users) {
                 setUsers(res.data.Users)
 
@@ -58,7 +58,7 @@ export const AdminDashboard = () => {
     }
     const FetchOrders = async () => {
         try {
-            const res = await axios.get("http://localhost:2026/order/", { headers: { Authorization: `Bearer ${Token}` }, withCredentials: true })
+            const res = await API.get("order")
             if (res.data.Order) {
                 console.log("Setting orders")
                 setOrders(res.data.Order)
@@ -154,15 +154,15 @@ export const AdminDashboard = () => {
             <Sidebar Menu={Menu} setMenu={setMenu} />
 
             <div className="w-full pb-20 lg:pb-5 py-5 lg:w-[83%] overflow-y-auto bg-bg no-scrollbar px-10">
-                {Menu === "Dashboard" && ( <Dashboard />)}
+                {Menu === "Dashboard" && (<Dashboard />)}
                 {Menu === "Products" && (<ProductsTab setMenu={setMenu} />)}
                 {Menu === "Orders" && (<OrdersTab />)}
-                {Menu === "Customers" && ( <CustomersTab />)}
-                {Menu === "Setting" && ( <Setting />)}
+                {Menu === "Customers" && (<CustomersTab />)}
+                {Menu === "Setting" && (<Setting />)}
                 {Menu === "AddNewProduct" && (
-                  <AddNewProductTab setMenu={setMenu} />
+                    <AddNewProductTab setMenu={setMenu} />
                 )}
-             
+
             </div>
 
             <BottomNav Menu={Menu} setMenu={setMenu} />

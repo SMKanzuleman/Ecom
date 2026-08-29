@@ -10,6 +10,7 @@ import { useAuth } from '../../context/AuthContext';
 
 import axios from 'axios';
 import AdminPagenation from './AdminPagenation';
+import API from "../../Utils/API";
 
 const CustomersTab = () => {
 
@@ -23,7 +24,7 @@ const CustomersTab = () => {
 
     const FetchUsers = async () => {
         try {
-            const res = await axios.get("http://localhost:2026/dashboard/AllUsers", { headers: { Authorization: `Bearer ${Token}` }, withCredentials: true })
+            const res = await API.get("/dashboard/AllUsers", )
             if (res.data.Users) {
                 setUsers(res.data.Users)
 

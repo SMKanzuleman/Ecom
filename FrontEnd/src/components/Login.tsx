@@ -5,6 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import GoogleIcon from "../assets/Google_Symbol_1.png";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
+import API from "../Utils/API";
 
 
 const Login = () => {
@@ -24,10 +25,10 @@ const Login = () => {
         e.preventDefault();
         try {
             if (LoginEmail != "someone@gmail.com") {
-                const responce = await axios.post("http://localhost:2026/auth/login", {
+                const responce = await API.post("/auth/login", {
                     Email: LoginEmail,
                     Password: LoginPass,
-                }, {withCredentials: true});
+                });
                 if (responce) {
                     setToken(responce.data.token)
                     console.log("Token",responce.data.token)

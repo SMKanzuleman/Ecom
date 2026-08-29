@@ -8,6 +8,8 @@ import { useCart } from '../context/CartContext';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { showSuccessToast } from '../Utils/toast';
+import API from '../Utils/API';
 
 
 const PDContent = ({ productId, Product }: any) => {
@@ -30,16 +32,11 @@ const PDContent = ({ productId, Product }: any) => {
                 Navigate("/auth", { state: { from: Location.pathname } })
                 return
             }
-            const res = await axios.post(`http://localhost:2026/cart/${productId}`, { Quantity, Size, Color }, {
-                headers: {
-                    Authorization: `Bearer ${Token}`
-                }
-            })
+            const res = await API.post(`/cart/${Product._id}`, { Quantity, Size, Color })
             if (!res) {
                 throw console.error("error in buying product");
             }
-            console.log("added to cart", res.data)
-            console.log("Setted");
+            showSuccessToast(`${Product.Name} added to cart. 👌`)
 
         } catch (error) {
             console.error(error)
@@ -150,8 +147,12 @@ const PDContent = ({ productId, Product }: any) => {
                     <div className="w-[70%]">
                         <button className="btn-primary w-full"
                             onClick={() => {
+                                
                                 HandleAddToCart();
+                                showSuccessToast("Backend Done")
                                 AddTocart(Product, Size, Color, Quantity)
+                                showSuccessToast("LocalSTorage Done")
+                               
                             }}>
                             Add to Cart <FaCartShopping /></button>
                     </div>

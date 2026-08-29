@@ -5,6 +5,7 @@ import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import API from "../Utils/API";
 
 const Signup = () => {
 
@@ -23,12 +24,12 @@ const Signup = () => {
     const HandleSignUp = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const res = await axios.post("http://localhost:2026/auth/register", {
+            const res = await API.post("/auth/register", {
                 FName: Fname,
                 LName: Lname,
                 Email: SignEmail,
                 Password: SignPass,
-            }, { withCredentials: true });
+            });
             if (res) {
                 SetSuccMsg("Account Craeted successfully");
                 setToken(res.data.token)

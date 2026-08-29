@@ -2,5 +2,27 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
     "tailwindcss": "^4.3.3"
+  },
+  "name": "ecom",
+  "version": "1.0.0",
+  "description": "- [Introduction](#introduction)",
+  "main": "index.js",
+ "scripts": {
+    "dev": "concurrently \"npm run dev --prefix BackEnd\" \"npm run dev --prefix FrontEnd\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SMKanzuleman/Ecom.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/SMKanzuleman/Ecom/issues"
+  },
+  "homepage": "https://github.com/SMKanzuleman/Ecom#readme",
+  "devDependencies": {
+    "concurrently": "^10.0.5"
   }
 }

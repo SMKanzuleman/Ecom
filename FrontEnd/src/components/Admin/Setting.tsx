@@ -1,8 +1,9 @@
-import axios from 'axios';
+
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../context/AuthContext';
 
 import { showErrorToast, showSuccessToast } from '../../Utils/toast';
+import API from '../../Utils/API';
 
 
 
@@ -19,11 +20,7 @@ const Setting = () => {
     const FetchCategories = async () => {
         try {
 
-            const res = await axios.get("http://localhost:2026/dashboard/Categories", {
-                headers: {
-                    Authorization: `Bearer ${Token}`
-                }
-            })
+            const res = await API.get("/dashboard/Categories",)
             if (res.data) {
                 const allValues = Object.values(res.data);
                 const cleanCategoriesArray = allValues.filter(
@@ -42,11 +39,7 @@ const Setting = () => {
      const AddStyle = async () => {
         try {
 
-            const res = await axios.post("http://localhost:2026/dashboard/Styles",{StyleName:SName,StyleCategories:SCategories}, {
-                headers: {
-                    Authorization: `Bearer ${Token}`
-                }
-            })
+            const res = await API.post("/dashboard/Styles",{StyleName:SName,StyleCategories:SCategories},)
             if (res.data) {
                 showSuccessToast(`${SName} added!`)
             }

@@ -19,7 +19,7 @@ const Dashboard = () => {
 
     const FetchOrders = async () => {
         try {
-            const res = await axios.get("http://localhost:2026/order/", { headers: { Authorization: `Bearer ${Token}` }, withCredentials: true })
+            const res = await axios.get("/order/",)
             if (res.data.Order) {
                 console.log("Setting orders")
                 setOrders(res.data.Order)

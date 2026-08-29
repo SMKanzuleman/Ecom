@@ -10,18 +10,27 @@ import AdminGuard from './Middlewares/AdminGuard';
 import { AdminDashboard } from './pages/AdminDashboard';
 import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css"
+import { UserDashboard } from './pages/UserDashboard';
+import ProtectedRout from './Middlewares/ProtectedRout';
 
 
 export const App = () => {
-  const location=useLocation()
-  const IsAdminpage=location.pathname==="/dashboard"
+  const location = useLocation()
+  const IsDashboard = location.pathname === "/dashboard" || location.pathname === "/userdashboard"
+
+
+
+
   return (
     <div>
-      <ToastContainer position='top-right'  style={{ top: "110px", right: "20px" }} />
-      {!IsAdminpage && <Navbar />}
-      {!IsAdminpage && <Cart />}
-      
+      <ToastContainer position='top-right' style={{ top: "110px", right: "20px" }} />
+
+      {!IsDashboard && <Navbar />}
+      {!IsDashboard && <Cart />}
+
+
       <Routes>
+        {/* unpretected Route */}
         <Route path="/" element={<Home />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/auth" element={<Auth />} />
@@ -29,13 +38,20 @@ export const App = () => {
         <Route path="product/:id" element={<ProductDetail />} />
         <Route path="cart" element={<Cart />} />
 
+        {/* Protected rout */}
+        <Route element={<ProtectedRout />}>
+          <Route path="/userdashboard" element={<UserDashboard />} />
+        </Route>
+
+
+        {/* Admin protected rout */}
         <Route path="/dashboard" element={
           <AdminGuard>
             <AdminDashboard />
           </AdminGuard>
         }>
         </Route>
-        
+
       </Routes>
     </div>
   )

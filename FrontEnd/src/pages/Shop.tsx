@@ -9,6 +9,7 @@ import { IoFilterSharp } from "react-icons/io5";
 import { VscChevronRightCompact } from "react-icons/vsc";
 import { IoChevronUp } from "react-icons/io5";
 import { FaChevronDown } from "react-icons/fa6";
+import API from '../Utils/API';
 
 const Shop = () => {
 
@@ -58,7 +59,7 @@ const Shop = () => {
 
   const FetchProducts = async () => {
     try {
-      const res = await axios.get("http://localhost:2026/products", {
+      const res = await API.get("/products", {
         params: {
           category: SelectedCategory,
           color: SelectedColor,
@@ -76,7 +77,7 @@ const Shop = () => {
   }
   const FetchFilterData = async () => {
     try {
-      const res = await axios.get("http://localhost:2026/products/FilterData")
+      const res = await API.get("/products/FilterData")
       const { Categories, Colors, Styles } = res.data.data || res.data;
       if (res.data) {
         setCategories(Categories)

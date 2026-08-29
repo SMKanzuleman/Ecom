@@ -9,6 +9,7 @@ import AdminPagenation from "./AdminPagenation";
 
 import logo from "../../assets/logo.svg"
 import axios from "axios";
+import API from "../../Utils/API";
 
 type ProductTypeProp={
     setMenu: (m:string)=>void
@@ -33,7 +34,7 @@ const ProductsTab = ({setMenu}:ProductTypeProp) => {
 
     const FetchProducts = async () => {
         try {
-            const res = await axios.get("http://localhost:2026/products")
+            const res = await API.get("/products")
             if (res.data.AllProducts) {
                 setProducts(res.data.AllProducts)
             
