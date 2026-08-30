@@ -1,18 +1,20 @@
-import axios from 'axios';
 import React, { createContext, useContext, useEffect, useState } from 'react'
 import { useAuth } from './AuthContext';
 import { showErrorToast, showSuccessToast } from '../Utils/toast';
 import API from '../Utils/API';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 type CartType = {
     Cart: any[]
+    CartPrice: number
     setCart: (item: any) => void
     IsCartOpen: boolean
-    CartPrice: number
     setIsCartOpen: (open: boolean) => void
-    AddTocart: (product: any, size: string, color: string, quantity: number) => void
-    RemoveFromCart: (id: string, quantity: number) => void
+
+    AddToCart: (product: any, size: string, color: string, quantity: number) => void
+    DeleteFromCart: (id: string, size: string, color: string, quantity: number) => void
     UpdateQuantity: (Id: string, Size: string, Color: string, newQuan: number) => void
+    PlaceOrder: (e: React.FormEvent, ShippingAddress: any, PaymentDetail: any) => Promise<void>
     ClearCart: () => Promise<void>
 }
 
@@ -24,6 +26,8 @@ const CartContext = createContext<CartType | undefined>(undefined)
 const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     const { Token } = useAuth()
+    const Navigate = useNavigate()
+    const Location = useLocation()
 
     const [Cart, setCart] = useState<any[]>(() => {
         const savedcart = localStorage.getItem("User_Cart");
@@ -76,7 +80,6 @@ const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         localStorage.setItem("User_Cart", JSON.stringify(Cart))
-
     }, [Cart])
 
     useEffect(() => {
@@ -86,35 +89,67 @@ const CartProvider = ({ children }: { children: React.ReactNode }) => {
     }, [Token])
 
 
-    const AddTocart = (product: any, size: string, color: string, quantity: number) => {
 
-        setCart((prev) => {
+    const AddToCart = async (product: any, size: string, color: string, quantity: number) => {
+        try {
 
-            const index = prev.findIndex((item: any) => item._id === product._id && item.Name === product.Name && item.Size === size && item.Color === color)
-
-            if (index > -1) {
-                const UpdatedCart = [...prev]
-                UpdatedCart[index].Quantity += quantity
-                console.log("Updated cart", UpdatedCart);
-                return UpdatedCart
+            if (!Token) {
+                Navigate("/auth", { state: { from: Location.pathname } })
+                return
             }
-            else {
-                const NewItem = {
-                    _id: product._id,
-                    Imges: product.Images,
-                    Name: product.Name,
-                    Color: color,
-                    Size: size,
-                    Price: product.Price,
-                    Quantity: quantity
+
+            setCart((prev) => {
+
+                const index = prev.findIndex((item: any) => item._id === product._id && item.Name === product.Name && item.Size === size && item.Color === color)
+
+                if (index > -1) {
+                    const UpdatedCart = [...prev]
+                    UpdatedCart[index].Quantity += quantity
+                    console.log("Updated cart", UpdatedCart);
+                    return UpdatedCart
                 }
-                return [...prev, NewItem]
+                else {
+                    const NewItem = {
+                        _id: product._id,
+                        Imges: product.Images,
+                        Name: product.Name,
+                        Color: color,
+                        Size: size,
+                        Price: product.Price,
+                        Quantity: quantity
+                    }
+                    return [...prev, NewItem]
+                }
+            });
+
+            const res = await API.post(`/cart/${product._id}`, { Quantity: quantity, Size: size, Color: color })
+
+            if (res.data) {
+                showSuccessToast(`${product.Name} added to cart. 👌`)
+
             }
-        });
+
+        } catch (error) {
+            console.error(error)
+        }
     }
 
-    const RemoveFromCart = (id: string) => {
-        setCart((prev) => prev.filter((item) => { return item._id !== id }))
+    const DeleteFromCart = async (id: string, size: string, color: string, quantity: number) => {
+        try {
+
+            setCart((prev: any) => (
+                prev.filter((item: any) =>
+                    !(item._id === id && item.Color === color && item.Size === size, item.Quantity === quantity)
+                )))
+
+            const res = await API.delete(`/cart/${id}`, { data: { Quantity: quantity, Sizes: size, Colors: color } })
+
+            if (res.data) {
+                showSuccessToast("Item Deleted")
+            }
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     const UpdateQuantity = async (Id: string, Size: string, Color: string, newQuan: number) => {
@@ -128,13 +163,12 @@ const CartProvider = ({ children }: { children: React.ReactNode }) => {
                     item._id === Id && item.Size === Size && item.Color === Color ? { ...item, Quantity: newQuan } : item
                 ))
             ))
-            showSuccessToast("quantity updated in Localstorage+ frontend")
         }
 
         try {
             const res = await API.put(`/cart/${Id}`, { q: newQuan })
             console.log(res.data)
-            showSuccessToast("quantity updated in backend")
+            showSuccessToast("Quantity updated Everywhere")
             // console.log(`Quantity of ${Id} is changed to ${newQuan} and its resonce is`,res.data);
 
         } catch (error) {
@@ -142,8 +176,26 @@ const CartProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
+    const PlaceOrder = async (e: React.FormEvent, ShippingAddress: any, PaymentDetail: any) => {
+        try {
+            e.preventDefault()
+            const res = await API.post("/order", { Address: ShippingAddress, Payment: PaymentDetail })
+
+            if (res.data) {
+                showSuccessToast("🥳Congratulation.🎉")
+                await ClearCart()
+                Navigate("/")
+            }
+        } catch (error: any) {
+            console.error(error)
+            const message = error.response?.data?.message || error.message || "Something went wrong!";
+            showErrorToast(message)
+
+        }
+    }
+
     return (
-        <CartContext.Provider value={{ Cart, ClearCart, setCart, AddTocart, RemoveFromCart, IsCartOpen, setIsCartOpen, UpdateQuantity, CartPrice }}>
+        <CartContext.Provider value={{ Cart, ClearCart, PlaceOrder, setCart, AddToCart, DeleteFromCart, IsCartOpen, setIsCartOpen, UpdateQuantity, CartPrice }}>
             {children}
         </CartContext.Provider>
     )

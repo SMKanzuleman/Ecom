@@ -1,34 +1,16 @@
 import { useCart } from "../context/CartContext";
 import { MdDelete } from "react-icons/md";
-import logo from '../assets/logo.svg'
-import axios from "axios";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
-import { showErrorToast } from "../Utils/toast";
-import API from "../Utils/API";
+
 
 
 const Cart = () => {
 
-  const { Cart, setCart, setIsCartOpen, IsCartOpen, CartPrice, UpdateQuantity } = useCart();
+  const { Cart, DeleteFromCart, setIsCartOpen, IsCartOpen, CartPrice, UpdateQuantity } = useCart();
 
-  const { Token, Name } = useAuth()
+  const { Name } = useAuth()
 
-  const Remove = async (id: string, size: string, color: string, quantity: number) => {
-    try {
-      setCart((prev: any) => (
-        prev.filter((item: any) =>
-          !(item._id === id && item.Color === color && item.Size === size && item.Quantity === quantity)
-        )))
-      showErrorToast("Deleted from Frontend",)
-      const res = await API.delete(`/cart/${id}`, {data: { Quantity: quantity, Sizes: size, Colors: color } })
-      if (res.data) {
-        showErrorToast("Dleted from DB also")
-      }
-    } catch (error) {
-      console.error(error)
-    }
-  }
 
 
   return (
@@ -58,7 +40,7 @@ const Cart = () => {
               <div key={item._id} className="w-full bg-bg backdrop-blur-xs border border-gray-400/30 rounded-full p-3.5 flex items-center justify-between gap-2 shadow-xs hover:border-gray-400/60 transition-all">
 
                 <div className="w-[20%] aspect-square flex items-center justify-center">
-                 
+
                   <img
                     src={item.Imges?.[0]}
                     alt="Product"
@@ -99,7 +81,7 @@ const Cart = () => {
                 </div>
 
                 <div className="w-[10%] flex items-center justify-center gap-2">
-                  <div className="text-black cursor-pointer hover:scale-110 transition-transform duration-300" onClick={() => { Remove(item._id, item.Size, item.Color, item.Quantity) }}>
+                  <div className="text-black cursor-pointer hover:scale-110 transition-transform duration-300" onClick={() => { DeleteFromCart(item._id, item.Size, item.Color, item.Quantity) }}>
                     <MdDelete className="text-xl" />
                   </div>
                 </div>

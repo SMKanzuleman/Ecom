@@ -1,77 +1,30 @@
 import { useCart } from "../context/CartContext"
-import logo from '../assets/logo.svg'
 import { MdDelete } from "react-icons/md";
-import axios from "axios";
-import { useAuth } from "../context/AuthContext";
+
 import { useState } from "react";
 import { FaCartShopping } from "react-icons/fa6";
 import { MdOutlinePayment } from "react-icons/md";
-import { showErrorToast, showSuccessToast } from "../Utils/toast";
-import API from "../Utils/API";
-import { Navigate, useNavigate } from "react-router-dom";
 
 
 const Checkout = () => {
 
   const standard = 250;
   const express = 350;
-  const { Cart, setCart, CartPrice } = useCart()
-  const { Token } = useAuth()
+
+
+
+  const { Cart, CartPrice, DeleteFromCart, PlaceOrder } = useCart()
+
 
   const [Menu, setMenu] = useState("Shipping")
 
-  const {ClearCart}=useCart()
-  const Navigate=useNavigate()
-
-
-  const [Payment, setPayment] = useState<"cod" | "bank">("cod")
   const [DeliveryMethod, setDeliveryMethod] = useState("standard");
 
   const [ShippingAddress, setShippingAddress] = useState({ Phone: "", RFName: "", RLName: "", Address: "", LandMark: "", City: "", State: "", Zip: "" });
 
   const [PaymentDetail, setPaymentDetail] = useState<{ Type: "cod" | "bank"; CardNumber: string; CVV: string; MMYY: string; }>({ Type: "cod", CardNumber: "", CVV: "", MMYY: "", });
 
-
-
-
   const DeliveryPrice = DeliveryMethod === "standard" ? standard : express
-
-  const PlaceOrder = async (e:React.FormEvent) => {
-    try {
-      e.preventDefault()
-      const res=await API.post("/order",{Address:ShippingAddress,Payment:PaymentDetail})
-      if(res.data){
-        showSuccessToast("🥳Congratulation.🎉")
-        await ClearCart()
-        Navigate("/")
-      }
-
-    } catch (error: any) {
-      console.error(error)
-      const message = error.response?.data?.message || error.message || "Something went wrong!";
-      showErrorToast(message)
-
-    }
-  }
-
-
-
-  const Remove = async (id: string, size: string, color: string, quantity: number) => {
-    try {
-      setCart((prev: any) => (
-        prev.filter((item: any) =>
-          !(item._id === id && item.Color === color && item.Size === size, item.Quantity === quantity)
-        )))
-      showSuccessToast("Deleted from Frontend",)
-      const res = await API.delete(`/cart/${id}`,{ data: { Quantity: quantity, Sizes: size, Colors: color } })
-      if (res.data) {
-        showSuccessToast("Dleted from DB also")
-      }
-    } catch (error) {
-      console.error(error)
-      console.error(error)
-    }
-  }
 
 
 
@@ -244,23 +197,14 @@ const Checkout = () => {
 
             {/*SUbmit Button*/}
             <div className="w-full  flex justify-end">
-              <button className="btn-primary lg:w-[20%] w-full" onClick={(e)=>PlaceOrder(e)}>
+              <button className="btn-primary lg:w-[20%] w-full" onClick={(e) => PlaceOrder(e, ShippingAddress, PaymentDetail)}>
                 Place order
               </button>
 
             </div>
 
-
-
-
-
           </form>
         </div>
-
-
-
-
-
 
       </div>
 
@@ -288,7 +232,7 @@ const Checkout = () => {
 
                 <div className="w-[30%] flex items-center justify-between gap-2">
                   <div className="w-full py-2 text-black text-center font-accent">Rs.{item.Price}</div>
-                  <div className="text-black cursor-pointer hover:scale-110 transition-transform duration-300" onClick={() => { Remove(item._id, item.Size, item.Color, item.Quantity) }}>
+                  <div className="text-black cursor-pointer hover:scale-110 transition-transform duration-300" onClick={() => { DeleteFromCart(item._id, item.Size, item.Color, item.Quantity) }}>
                     <MdDelete />
                   </div>
                 </div>

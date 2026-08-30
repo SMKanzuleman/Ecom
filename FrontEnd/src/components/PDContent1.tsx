@@ -16,40 +16,33 @@ const PDContent = ({ productId, Product }: any) => {
 
     const [Images, setImages] = useState<string>([]);
     const [Thumb, setThumb] = useState<any>(logo)
-    const [Size, setSize] = useState<any>("Large")
+    const [Size, setSize] = useState<any>("")
     const [Quantity, setQuantity] = useState(1)
     const [Color, setColor] = useState("")
-    const { AddTocart } = useCart()
     const { Token } = useAuth()
     const Navigate = useNavigate();
     const Location = useLocation();
 
+    const { AddToCart } = useCart()
 
-    const HandleAddToCart = async () => {
-        try {
 
-            if (!Token) {
-                Navigate("/auth", { state: { from: Location.pathname } })
-                return
-            }
-            const res = await API.post(`/cart/${Product._id}`, { Quantity, Size, Color })
-            if (!res) {
-                throw console.error("error in buying product");
-            }
-            showSuccessToast(`${Product.Name} added to cart. 👌`)
-
-        } catch (error) {
-            console.error(error)
-
-        }
-    }
 
 
 
     useEffect(() => {
-        if (Product?.Images) {
-            setThumb(Product.Images[0])
+        if (Product) {
+            if (Product.Images.length > 0) {
+                setThumb(Product.Images[0])
+            }
+            if (Product.Sizes.length > 0) {
+                setSize(Product.Sizes[0])
+            }
+            if (Product.Colors.length > 0) {
+                setColor(Product.Colors[0])
+            }
+
         }
+
     }, [Product])
 
 
@@ -87,7 +80,7 @@ const PDContent = ({ productId, Product }: any) => {
                 <div className="flex items-center gap-5 py-1 font-heading">
                     <span className="text-3xl text-black">Rs.{Product?.Price}</span>
                     <span className="text-3xl line-through text-text px-5">{Product?.SalePrice}</span>
-                    <span className="w-auto px-4 py-2 h-auto bg-red-300 text-red-600 rounded-full text-center">{Math.round(((Product?.SalePrice-Product?.Price)/Product?.SalePrice)*100)}%</span>
+                    <span className="w-auto px-4 py-2 h-auto bg-red-300 text-red-600 rounded-full text-center">{Math.round(((Product?.SalePrice - Product?.Price) / Product?.SalePrice) * 100)}%</span>
                 </div>
 
                 <div className="flex items-center gap-5 py-7 font-heading border-b-2 border-gray-700/10">
@@ -147,12 +140,14 @@ const PDContent = ({ productId, Product }: any) => {
                     <div className="w-[70%]">
                         <button className="btn-primary w-full"
                             onClick={() => {
-                                
-                                HandleAddToCart();
-                                showSuccessToast("Backend Done")
-                                AddTocart(Product, Size, Color, Quantity)
-                                showSuccessToast("LocalSTorage Done")
-                               
+
+                                AddToCart(Product, Size, Color, Quantity)
+
+
+                                // HandleAddToCart();
+                                // showSuccessToast("Backend Done")
+                                // AddTocart(Product, Size, Color, Quantity)
+                                // showSuccessToast("LocalSTorage Done")
                             }}>
                             Add to Cart <FaCartShopping /></button>
                     </div>
