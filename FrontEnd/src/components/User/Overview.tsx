@@ -206,7 +206,7 @@ const Overview = () => {
       <div className="w-full grid lg:grid-cols-3 grid-cols-1 justify-center lg:px-0 px-5  gap-5">
         {/*KPI */}
 
-        <div className=" bg-wh px-10 flex justify-between rounded-full py-5 gap-0.5 relative">
+        <div className=" bg-wh px-10 flex justify-between rounded-lg py-5 gap-0.5 relative">
 
           <div className="flex flex-col justify-center items gap-1">
             <span className="font-accent text-xs tracking-wider  text-text tracking-wide">Total Orders</span>
@@ -219,7 +219,7 @@ const Overview = () => {
 
         </div>
 
-        <div className=" bg-wh px-10 flex justify-between rounded-full py-5 gap-0.5 relative">
+        <div className=" bg-wh px-10 flex justify-between rounded-lg py-5 gap-0.5 relative">
 
           <div className="flex flex-col justify-center items gap-1">
             <span className="font-accent text-xs tracking-wider  text-text">In Progress</span>
@@ -232,7 +232,7 @@ const Overview = () => {
 
         </div>
 
-        <div className=" bg-wh px-10 flex justify-between rounded-full py-7 gap-0.5 relative ">
+        <div className=" bg-wh px-10 flex justify-between rounded-lg py-7 gap-0.5 relative ">
 
           <div className="flex flex-col justify-center items gap-1">
             <span className="font-accent text-xs tracking-wider  text-text">Total Spent</span>
@@ -251,7 +251,7 @@ const Overview = () => {
 
       {/*Heading  */}
 
-      <div className="w-full text-3xl px-5 font-accent text-black font-bold  py-5 border-b-2 border-gray-700/10 ">
+      <div className="w-full text-3xl px-5 font-accent text-black font-bold  pt-10 border-b-2 border-gray-700/10 ">
         Most Recent Order
       </div>
 
@@ -268,13 +268,6 @@ const Overview = () => {
             <div className=" text-[14px]" >Placed on 25 April,2025 at 12:00</div>
           </div>
 
-          {/* <div className="flex flex-row items-center justify-start gap-3 px-5">
-            <div className="w-10 h-10  bg-bg rounded-full flex justify-center items-center">k</div>
-            <div className="flex flex-col justify-center items-start">
-              <div>Kan</div>
-              <div>Kan@gmail.com</div>
-            </div>
-          </div> */}
           <div className="px-5 bg-black text-wh rounded-full">Shipped</div>
         </div>
 
@@ -282,13 +275,13 @@ const Overview = () => {
 
         <div className=" py-5">
           {/* Left */}
-          <div className="grid grid-cols-5 flex-wrap gap-5 ">
+          <div className="grid grid-cols-2 lg:grid-cols-5 flex-wrap gap-5 ">
 
             {!Expend ?
               <>
                 {
-                  recentOrder.OrderItems.slice(0, 4).map((item, index) => (
-                    <div key={index} className="w-50 flex flex-col bg-bg p-1 gap-0 rounded-lg animate-fade-up">
+                  recentOrder.OrderItems.slice(0, 1).map((item, index) => (
+                    <div key={index} className="lg:w-50 w-40 flex flex-col bg-bg p-1 gap-0 rounded-lg animate-fade-up">
                       <img src={item.Images[0]} alt="" className="aspect-square object-cover rounded-lg" />
                       <div className="text-lg text-black  truncate  ">{item.Name}</div>
                       <div className="text-md font-b">Quantity:{item.Quantity}</div>
@@ -296,17 +289,13 @@ const Overview = () => {
 
                   ))}
 
-                <div className="bg-bg rounded-lg flex flex-col gap-2  p-5 justify-between h-full">
+                <div className="bg-bg rounded-lg flex flex-col gap-2 lg:col-span-1   p-5 justify-between h-full">
                   <div className="flex flex-col">
 
                     <div className="font-accent text-xl font-semibold text-black">Summary</div>
                     <div>Items: <span>18</span></div>
-                    <div>Payment: <span>COD</span></div>
-                    <div>Status: <span>Shipped</span></div>
-                    <div>Address: <span>lahore,KSK</span></div>
+                    <div>Price: <span>RS.2500</span></div>
                   </div>
-                  <div className="bg-black p-1 rounded-full flex items-center justify-center text-wh">Rs.2,501</div>
-
                   <div onClick={() => setExpend(!Expend)} className="w-full cursor-pointer border-2 border-black  rounded-full text-black flex items-center justify-center">
                     {recentOrder.OrderItems.length - 2}+ items
 
@@ -337,7 +326,7 @@ const Overview = () => {
 
 
           </div>
-          {/* Right */}
+      
 
         </div>
 

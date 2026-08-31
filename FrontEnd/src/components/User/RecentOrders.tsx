@@ -1,4 +1,4 @@
-import {  useState } from 'react'
+import { useState } from 'react'
 
 const RecentOrders = () => {
 
@@ -138,17 +138,19 @@ const RecentOrders = () => {
   return (
     <div className='w-full flex flex-col gap-5'>
       {/* Header */}
-      <div className="w-full flex justify-between py-5 px-7 items-center">
+      <div className="w-full flex lg:flex-row flex-col lg:justify-between py-5  items-center gap-5 overflow-hidden">
+
         <div className="lg:w-[80%] w-full font-accent text-black flex flex-col gap-1.5">
           <span className="font-bold text-4xl lg:text-4xl">My Orders</span>
           <span className="text-[14px] tracking text-text lg:block hidden font-heading">Here's a quick overview of your orders.</span>
         </div>
-        <div className='bg-wh rounded-full flex gap-3 h-fit p-1'>
-          <button onClick={() => setOrders("All")} className={`btn-primary py-1 ${Orders === "All" ? "bg-black  text-wh" : " bg-wh text-text"}`}>All</button>
+        <div className='bg-wh rounded-full flex  justify-between lg:gap-3 lg:text-[14px]  text-xs h-fit p-1 w-full overflow-hidden'>
+          <button onClick={() => setOrders("All")} className={`btn-primary py-3  ${Orders === "All" ? "bg-black  text-wh" : " bg-wh text-text"}`}>All</button>
           <button onClick={() => setOrders("Processing")} className={`btn-primary py-1 ${Orders === "Processing" ? "bg-black  text-wh" : " bg-wh text-text"}`}>Processing</button>
           <button onClick={() => setOrders("Shipped")} className={`btn-primary py-1 ${Orders === "Shipped" ? "bg-black  text-wh" : " bg-wh text-text"}`}>Shipped</button>
           <button onClick={() => setOrders("Delivered")} className={`btn-primary py-1 ${Orders === "Delivered" ? "bg-black  text-wh" : " bg-wh text-text"}`}>Delivered</button>
         </div>
+
       </div>
 
       {/* Orders */}
@@ -171,13 +173,13 @@ const RecentOrders = () => {
 
           <div className=" py-5">
             {/* Left */}
-            <div className="grid grid-cols-5 flex-wrap gap-5 ">
+            <div className="grid grid-cols-2 lg:grid-cols-5 flex-wrap gap-5 ">
 
               {!Expend ?
                 <>
                   {
-                    o.OrderItems.slice(0, 4).map((item, index) => (
-                      <div key={index} className="w-50 flex flex-col bg-bg p-1 gap-0 rounded-lg animate-fade-up">
+                    o.OrderItems.slice(0, 1).map((item, index) => (
+                      <div key={index} className=" flex flex-col bg-bg p-1 gap-0 rounded-lg animate-fade-up">
                         <img src={item.Images[0]} alt="" className="aspect-square object-cover rounded-lg" />
                         <div className="text-lg text-black  truncate  ">{item.Name}</div>
                         <div className="text-md font-b">Quantity:{item.Quantity}</div>
@@ -185,16 +187,15 @@ const RecentOrders = () => {
 
                     ))}
 
-                  <div className="bg-bg rounded-lg flex flex-col gap-2  p-5 justify-between h-full">
+                  <div className="bg-bg rounded-lg col-span-1 flex flex-col gap-2  p-5 justify-between h-full">
                     <div className="flex flex-col">
 
                       <div className="font-accent text-xl font-semibold text-black">Summary</div>
-                      <div>Items: <span>18</span></div>
-                      <div>Payment: <span>COD</span></div>
-                      <div>Status: <span>Shipped</span></div>
-                      <div>Address: <span>lahore,KSK</span></div>
+                      <div className='text-md'>Items: <span>18</span></div>
+                      <div className='text-md'>Price: <span>Rs.2,501</span></div>
+
                     </div>
-                    <div className="bg-black p-1 rounded-full flex items-center justify-center text-wh">Rs.2,501</div>
+                    
 
                     <div onClick={() => setExpend(!Expend)} className="w-full cursor-pointer border-2 border-black  rounded-full text-black flex items-center justify-center">
                       {o.OrderItems.length - 2}+ items
@@ -209,7 +210,7 @@ const RecentOrders = () => {
                 <>
                   {
                     o.OrderItems.map((item, index) => (
-                      <div key={index} className="w-50 flex flex-col bg-bg p-1 rounded-lg animate-fade-up">
+                      <div key={index} className="lg:w-50 w-40 flex flex-col bg-bg p-1 rounded-lg animate-fade-up">
                         <img src={item.Images[0]} alt="" className="aspect-square object-cover rounded-lg" />
                         <div className="text-lg text-black font-bold truncate ">{item.Name}</div>
                         <div className="text-md ">Q:{item.Quantity}</div>

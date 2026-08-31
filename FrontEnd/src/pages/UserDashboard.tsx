@@ -4,6 +4,7 @@ import Overview from "../components/User/Overview";
 import RecentOrders from "../components/User/RecentOrders";
 import Profile from "../components/User/Profile";
 import ForgetPassword from "../components/User/ForgetPassword";
+import BottomNav from "../components/User/BottomNav";
 
 
 export const UserDashboard = () => {
@@ -22,8 +23,7 @@ export const UserDashboard = () => {
                 {Menu === "Password" && (<ForgetPassword />)}
             </div>
 
-
-
+            <BottomNav Menu={Menu} setMenu={setMenu} />
 
         </div>
     )

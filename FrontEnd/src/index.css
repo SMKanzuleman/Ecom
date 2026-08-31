@@ -121,7 +121,7 @@
 }
 
 @utility input-primary {
-  @apply flex justify-center items-center bg-bg/70 text-black font-heading py-3 px-6 gap-2 rounded-full cursor-pointer outline-none;
+  @apply flex justify-center  items-center bg-bg/70 text-black font-heading py-3 px-6 gap-2 rounded-full cursor-pointer outline-none;
 }
 
 html {
