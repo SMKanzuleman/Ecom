@@ -61,6 +61,10 @@ const LoginUser = async (req: Request, res: Response) => {
     if (!FoundedUser) {
       return SendError(res, 404, "You does not have an account");
     }
+    if(FoundedUser.Password!==Password){
+      return SendError(res, 400, "Enter valid credientials");
+
+    }
     const AccessToken = GenerateToken(
       FoundedUser._id.toString(),
       FoundedUser.Role,

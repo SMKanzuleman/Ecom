@@ -18,10 +18,7 @@ import ForgetPassword from './components/User/ForgetPassword';
 export const App = () => {
   const location = useLocation()
   const IsDashboard = location.pathname === "/dashboard" || location.pathname === "/userdashboard"
-
-
-
-
+  
   return (
     <div>
       <ToastContainer position='top-right' style={{ top: "110px", right: "20px" }} />

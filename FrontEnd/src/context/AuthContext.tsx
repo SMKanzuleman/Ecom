@@ -6,6 +6,7 @@ type ContextType = {
     Token: string | null
     Name: string | null
     Role: string
+    Loading:boolean
     setRole: (r: string) => void
     setToken: (t: string | null) => void
     setName: (n: string | null) => void
@@ -19,6 +20,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [Token, setToken] = useState<string | null>(null)
     const [Name, setName] = useState<string | null>("User")
     const [Role, setRole] = useState("")
+    const [Loading, setLoading] = useState(true);
 
 
     useEffect(() => {
@@ -32,7 +34,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 API.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`
             } catch (error) {
                 setToken(null)
+            }finally{
+                setLoading(false)
             }
+
         }
         refresh()
     }, [])
@@ -49,7 +54,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, [])
 
     return (
-        <AuthContext.Provider value={{ Token, setToken, Name, setName, Role, setRole }}>
+        <AuthContext.Provider value={{ Token, setToken, Name, setName, Role, setRole,Loading }}>
             { children}
         </AuthContext.Provider>
 

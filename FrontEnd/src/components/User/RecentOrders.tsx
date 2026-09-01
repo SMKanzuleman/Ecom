@@ -132,12 +132,13 @@ const RecentOrders = () => {
   const FilteredOrders = Orders === "All" ? OrderList : OrderList.filter((item) => item.OrderStatus === Orders);
 
 
-
-  const [Expend, setExpend] = useState<boolean>(false);
+  const [ExpendId, setExpendId] = useState<string | null>(null);
 
   return (
     <div className='w-full flex flex-col gap-5'>
+
       {/* Header */}
+      
       <div className="w-full flex lg:flex-row flex-col lg:justify-between py-5  items-center gap-5 overflow-hidden">
 
         <div className="lg:w-[80%] w-full font-accent text-black flex flex-col gap-1.5">
@@ -155,85 +156,90 @@ const RecentOrders = () => {
 
       {/* Orders */}
 
-      {FilteredOrders.map((o, index) => (
-        <div className="w-full bg-wh rounded-lg shadow-xs border-2 border-gray-700/5 p-5 ">
+      <div className='grid lg:grid-cols-2 gap-2'>
 
-          {/* Header */}
+        {FilteredOrders.map((o, index) => {
 
-          <div className="w-full flex justify-between items-center">
+          const Expend = ExpendId === o._id
 
-            <div className="flex flex-col justify-center items-start">
-              <div className="text-xl font-semibold text-black font-accent" >Order :{o._id}</div>
-              <div className=" text-[14px]" >Placed ${o.createdAt}</div>
-            </div>
-            <div className="px-5 bg-black text-wh rounded-full">{o.OrderStatus}</div>
-          </div>
+          return (
 
-          {/* Content */}
+            <div className="w-full  bg-wh rounded-lg shadow-xs border-2 border-gray-700/5 p-5 ">
 
-          <div className=" py-5">
-            {/* Left */}
-            <div className="grid grid-cols-2 lg:grid-cols-5 flex-wrap gap-5 ">
+              {/* Header */}
 
-              {!Expend ?
-                <>
-                  {
-                    o.OrderItems.slice(0, 1).map((item, index) => (
-                      <div key={index} className=" flex flex-col bg-bg p-1 gap-0 rounded-lg animate-fade-up">
-                        <img src={item.Images[0]} alt="" className="aspect-square object-cover rounded-lg" />
-                        <div className="text-lg text-black  truncate  ">{item.Name}</div>
-                        <div className="text-md font-b">Quantity:{item.Quantity}</div>
+              <div className="w-full flex justify-between items-center">
+
+                <div className="flex flex-col justify-center items-start">
+                  <div className="text-xl font-semibold text-black font-accent" >Order :{o._id}</div>
+                  <div className=" text-[14px]" >Placed ${o.createdAt}</div>
+                </div>
+                <div className="px-5 bg-black text-wh rounded-full">{o.OrderStatus}</div>
+              </div>
+
+              {/* Content */}
+
+              <div className="grid grid-cols-2 lg:grid-cols-2 flex-wrap gap-5  py-5 ">
+
+                {!Expend ?
+                  <>
+                    {
+                      o.OrderItems.slice(0, 1).map((item, index) => (
+                        <div key={index} className=" flex flex-col bg-bg p-1 gap-0 rounded-lg animate-fade-up">
+                          <img src={item.Images[0]} alt="" className="aspect-square object-cover rounded-lg" />
+                          <div className="text-lg text-black  truncate  ">{item.Name}</div>
+                          <div className="text-md font-b">Quantity:{item.Quantity}</div>
+                        </div>
+
+                      ))}
+
+                    <div className="bg-bg rounded-lg col-span-1 flex flex-col gap-2  p-5 justify-between h-full">
+                      <div className="flex flex-col">
+
+                        <div className="font-accent text-xl font-semibold text-black">Summary</div>
+                        <div className='text-md'>Items: <span>18</span></div>
+                        <div className='text-md'>Price: <span>Rs.2,501</span></div>
+
                       </div>
 
-                    ))}
 
-                  <div className="bg-bg rounded-lg col-span-1 flex flex-col gap-2  p-5 justify-between h-full">
-                    <div className="flex flex-col">
+                      <div onClick={(e) => {
+                        e.stopPropagation()
+                        setExpendId(o._id)
+                      }} className="w-full cursor-pointer border-2 border-black  rounded-full text-black flex items-center justify-center">
+                        {o.OrderItems.length - 2}+ items
 
-                      <div className="font-accent text-xl font-semibold text-black">Summary</div>
-                      <div className='text-md'>Items: <span>18</span></div>
-                      <div className='text-md'>Price: <span>Rs.2,501</span></div>
-
-                    </div>
-                    
-
-                    <div onClick={() => setExpend(!Expend)} className="w-full cursor-pointer border-2 border-black  rounded-full text-black flex items-center justify-center">
-                      {o.OrderItems.length - 2}+ items
-
-                    </div>
-
-                  </div>
-
-
-                </>
-                :
-                <>
-                  {
-                    o.OrderItems.map((item, index) => (
-                      <div key={index} className="lg:w-50 w-40 flex flex-col bg-bg p-1 rounded-lg animate-fade-up">
-                        <img src={item.Images[0]} alt="" className="aspect-square object-cover rounded-lg" />
-                        <div className="text-lg text-black font-bold truncate ">{item.Name}</div>
-                        <div className="text-md ">Q:{item.Quantity}</div>
                       </div>
-                    ))
-                  }
-                  <div onClick={() => setExpend(!Expend)} className="w-40 cursor-pointer  rounded-lg flex items-center justify-center">
-                    <div className="border-2 border-black rounded-full px-5 text-black font-semibold">Show Less</div>
 
-                  </div>
+                    </div>
 
-                </>
-              }
+                  </>
+                  :
+                  <>
+                    {
+                      o.OrderItems.map((item, index) => (
+                        <div key={index} className="lg:w-50 w-40 flex flex-col bg-bg p-1 rounded-lg animate-fade-up">
+                          <img src={item.Images[0]} alt="" className="aspect-square object-cover rounded-lg" />
+                          <div className="text-lg text-black font-bold truncate ">{item.Name}</div>
+                          <div className="text-md ">Q:{item.Quantity}</div>
+                        </div>
+                      ))
+                    }
+                    <div onClick={() => setExpendId(null)} className="w-40 cursor-pointer  rounded-lg flex items-center justify-center">
+                      <div className="border-2 border-black rounded-full px-5 text-black font-semibold">Show Less</div>
 
+                    </div>
+
+                  </>
+                }
+
+              </div>
 
             </div>
-            {/* Right */}
+          )
+        })}
 
-          </div>
-
-
-        </div>
-      ))}
+      </div>
 
     </div>
   )

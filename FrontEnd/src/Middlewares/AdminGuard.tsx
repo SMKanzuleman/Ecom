@@ -4,7 +4,10 @@ import { Navigate } from 'react-router-dom'
 import { showWaringToast } from '../Utils/toast'
 
 const AdminGuard = ({ children }: { children: React.ReactNode }) => {
-    const { Role, Token } = useAuth()
+    const { Role, Token,Loading } = useAuth()
+    if(Loading){
+        <div>Loading</div>
+    }
     if (!Token) {
         showWaringToast("Please login first")
         return <Navigate to={`/auth`} replace />;

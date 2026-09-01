@@ -1,21 +1,15 @@
+import { showErrorToast, showSuccessToast } from "../../Utils/toast"
 import { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
 import { FaCloudUploadAlt } from "react-icons/fa";
 import { RichTextEditor } from "./RichTextEditor";
-import { useAuth } from "../../context/AuthContext";
-import { toast } from 'react-toastify'
-import { showSuccessToast } from "../../Utils/toast";
+
 import API from "../../Utils/API";
 
 
-type ProductTypeProp = {
-    setMenu: (m: string) => void
-}
 
-const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
-
+const EditProduct = ({ EditId }: any) => {
     const Defaultsizes = ["XS", "S", "MD", "LG", "XL"]
-
     const [Imges, setImges] = useState<any>([])
     const [Sizes, setSizes] = useState<any>([])
     const [Colors, setColors] = useState<any>([])
@@ -29,7 +23,41 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
     const [SalePrice, setSalePrice] = useState(0);
     const [SKU, setSKU] = useState("PR-01");
     const [Stock, setStock] = useState<number>(0);
-    const { Token } = useAuth()
+
+    const PreFill = async () => {
+        try {
+            const p = await API.get(`/products/${EditId}`)
+            if (p.data?.FoundedProduct) {
+                setProductName(p.data.FoundedProduct.Name)
+                setStock(p.data.FoundedProduct.Stock)
+                setSKU(p.data.FoundedProduct.SKU)
+                setPrice(p.data.FoundedProduct.Price)
+                setSalePrice(p.data.FoundedProduct.SalePrice)
+                setTagline(p.data.FoundedProduct.Tagline)
+                setGender(p.data.FoundedProduct.Gender)
+                setCategory(p.data.FoundedProduct.Category)
+                setBrand(p.data.FoundedProduct.Brand)
+                setDetails(p.data.FoundedProduct.Description)
+                setColors(p.data.FoundedProduct.Colors)
+                setSizes(p.data.FoundedProduct.Sizes)
+                setImges(p.data.FoundedProduct.Images)
+                if (p.data.FoundedProduct.Images.length >= 1) {
+                    setSelectedImge(p.data.FoundedProduct.Images[0])
+                }
+            }
+
+        } catch (error) {
+            showErrorToast("Error in Prefiling")
+            console.error(error)
+        }
+    }
+    const GetSelectedImageUrl = () => {
+        if (SelectedImge === null) return ""
+        if (typeof (SelectedImge) === "string") return SelectedImge
+        return Previews.find((p) => p.file === SelectedImge)?.url
+    }
+
+
 
     const formData = new FormData();
 
@@ -47,11 +75,9 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
     Sizes.forEach((s: string) => { formData.append("Sizes", s) });
     Imges.forEach((i: string) => { formData.append("Imges", i) });
 
-
-
     const [InputColor, setInputColor] = useState("")
     const [Previews, setPreviews] = useState<{ file: File, url: string }[]>([])
-    const [SelectedImge, setSelectedImge] = useState<File | null>(null)
+    const [SelectedImge, setSelectedImge] = useState<File | String | null>(null)
 
 
     const AddImage = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -101,14 +127,15 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
 
     const ADDPRODUCT = async () => {
         try {
-            const res = await API.post("/products", formData, )
+            const res = await API.post("/products", formData,)
+
 
             if (res.data) {
-                toast.success(`${ProductName} added!`)
-                setMenu("Dashboard")
+                showSuccessToast(`${ProductName} added!`)
+
             }
             else {
-                toast.error("There is some error")
+                showErrorToast("There is some error")
             }
 
         } catch (error) {
@@ -119,28 +146,52 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
 
     useEffect(() => {
 
-        const PUrls = Imges.map((img: File) => ({
-            file: img,
-            url: URL.createObjectURL(img)
-        }))
+        const PUrls = Imges.map((img: File) => {
+
+            if (typeof (img) === "string") {
+                return {
+                    file: null, url: img
+                }
+            }
+            return {
+                file: img,
+                url: URL.createObjectURL(img)
+            }
+        })
         setPreviews(PUrls)
         console.log("New Previews set hogiyy")
 
     }, [Imges])
 
+    useEffect(() => { PreFill() }, [])
+
+    const HandleEditProduct = async () => {
+        try {
+            const res = await API.put(`/products/${EditId}`,formData)
+            console.log(res.data)
+            showSuccessToast("saved")
+            
+        } catch (error) {
+            showSuccessToast("Error")
+            console.error(error)
+
+        }
+    }
+
+
 
     return (
+
         <div className="w-full flex flex-col">
-            
+
             {/* Header */}
-            
-            <div className="w-full flex lg:flex-row flex-col lg:justify-between gap-5 lg:items-center py-5">
-                <div className="font-accent text-3xl font-bold text-black w-[40%]">Add Product</div>
-                <div className="w-full flex justify-end gap-5">
-                    <div><button className="btn-primary bg-wh text-black w-[120px]" onClick={() => { showSuccessToast("Go Fuck ur asss")}} > Discard</button></div>
-                    <div><button className="btn-primary w-[120px]" onClick={() => ADDPRODUCT()} > Save</button></div>
-                </div>
+            <div className="w-full flex justify-between py-5">
+                <span className=" font-accent text-black  font-bold lg:text-3xl text-xl decoration-dotted underline underline-offset-8">Edit Product </span>
+                <button onClick={()=>HandleEditProduct()} className="btn-primary py-1">Save</button>
             </div>
+
+            {/* Edit Product */}
+
 
             {/* Outer Container */}
 
@@ -163,7 +214,9 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
                             :
                             <div className="w-full h-72 bg-bg">
 
-                                <img src={Previews.find((p) => p.file === SelectedImge)?.url} alt="select image" className="object-contain h-full w-full rounded-lg" />
+                                <img src={
+                                    GetSelectedImageUrl()
+                                } alt="select image" className="object-contain h-full w-full rounded-lg" />
 
                             </div>
 
@@ -173,14 +226,14 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
                         {Imges.length > 0 && (
                             <div className="flex items-center justify-between gap-3 mt-2">
                                 <div className="flex items-center flex-wrap gap-3 mt-2">
-                                    {Imges.map((file: File, index: number) => {
+                                    {Imges.map((img: any, index: number) => {
                                         return (
                                             <div className="w-15 h-15 cursor-pointer rounded-lg overflow-hidden shadow-2xl relative" onClick={(e) => {
                                                 e.stopPropagation()
-                                                setSelectedImge(file)
+                                                setSelectedImge(img)
                                             }}>
 
-                                                <img src={Previews.find((p) => p.file === file)?.url} alt="" className="w-full h-full object-cover" />
+                                                <img src={typeof img === "string" ? img : Previews.find((p) => p.file === img)?.url} alt="" className="w-full h-full object-cover" />
 
                                                 <button
                                                     onClick={(e) => {
@@ -232,7 +285,7 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
                                         <div key={index} className="w-10 relative h-10 rounded-full z-10 cursor-pointer border-2 border-gray-300 hover:border-black hover:scale-105 transition-all duration-100" style={{ background: color }} >
                                             <button
                                                 type="button"
-                                                onClick={() => setColors(Colors.filter((_, i) => i !== index))}
+                                                onClick={() => setColors(Colors.filter((_: any, i) => i !== index))}
                                                 className="absolute -top-1 -right-1 bg-wh rounded-full p-0.5 text-black hover:text-red-500 shadow-md border border-gray-300 transition-transform hover:scale-110 z-20 cursor-pointer"
                                                 title="Remove Color"
                                             >
@@ -383,13 +436,13 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
                 {/* Header */}
                 <div className="font-accent text-lg flex justify-start font-bold text-black py-5">Detail Description</div>
 
-                <RichTextEditor content={Details} onChange={setDetails} />
+                <RichTextEditor key={Details} content={Details} onChange={setDetails} />
 
 
             </div>
 
         </div>
+
     )
 }
-
-export default AddNewProductTab
+export default EditProduct

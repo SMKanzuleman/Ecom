@@ -12,12 +12,14 @@ import CustomersTab from "../components/Admin/CustomersTab";
 import AddNewProductTab from "../components/Admin/AddNewProductTab";
 import Setting from "../components/Admin/Setting";
 import API from "../Utils/API";
+import EditProduct from "../components/Admin/EditProduct";
 
 export const AdminDashboard = () => {
 
     const [Products, setProducts] = useState<any>([])
     const [Orders, setOrders] = useState<any>([])
     const [Users, setUsers] = useState<any>([])
+    const [SelectedProductId, setSelectedProductId] = useState(null);
 
 
     const [Filter, setFilter] = useState(false)
@@ -155,13 +157,14 @@ export const AdminDashboard = () => {
 
             <div className="w-full pb-20 lg:pb-5 py-5 lg:w-[83%] overflow-y-auto bg-bg no-scrollbar px-10">
                 {Menu === "Dashboard" && (<Dashboard />)}
-                {Menu === "Products" && (<ProductsTab setMenu={setMenu} />)}
+                {Menu === "Products" && (<ProductsTab setMenu={setMenu}  setSelectedProductId={setSelectedProductId} />)}
                 {Menu === "Orders" && (<OrdersTab />)}
                 {Menu === "Customers" && (<CustomersTab />)}
                 {Menu === "Setting" && (<Setting />)}
                 {Menu === "AddNewProduct" && (
                     <AddNewProductTab setMenu={setMenu} />
                 )}
+                {Menu=="EditProduct" && (<EditProduct EditId={SelectedProductId} />) }
 
             </div>
 

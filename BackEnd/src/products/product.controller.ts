@@ -4,6 +4,7 @@ import { Style } from "./styles.model";
 import { Product } from './product.model';
 import { ProductType } from "../config/product.config";
 import { AuthRequest } from "../config/auth.config";
+import { isArray } from "node:util";
 
 //Create
 
@@ -11,6 +12,7 @@ export const AddNewProduct = async (req: Request, res: Response) => {
     try {
 
         const Files = req.files as any[]
+
         const Images = Files ? Files.map((f: any) => f.path) : []
 
         let { Name, Brand, Gender, Category, Tagline, Price, SalePrice, Stock, SKU, Description, Sizes, Colors } = req.body
@@ -102,8 +104,41 @@ export const EditProduct = async (req: Request, res: Response) => {
             return SendError(res, 400, "No product found")
         }
 
+        let ExistingImges = []
+
+        if (req.body.Imges.length > 1) {
+            ExistingImges = req.body.Imges
+        }
+        else {
+            ExistingImges = [req.body.Images]
+        }
+
+        const Files = req.files as any[]
+
+        const NewImges = Files ? Files.map((f: any) => f.path) : []
+
+        const FinalImges = [...ExistingImges, ...NewImges]
+
+
+
+        const updateData = {
+            Name: req.body.Name,
+            Brand: req.body.Brand,
+            Gender: req.body.Gender,
+            Category: req.body.Category,
+            Tagline: req.body.Tagline,
+            Price: Number(req.body.Price),
+            SalePrice: Number(req.body.SalePrice),
+            SKU: req.body.SKU,
+            Stock: Number(req.body.Stock),
+            Description: req.body.Description,
+            Colors: req.body.Colors || [],
+            Sizes: req.body.Sizes || [],
+            Images: FinalImges, // 🌟 Combined Images List!
+        };
+
         const UpdatedProduct = await Product.findByIdAndUpdate(id, {
-            $set: req.body
+            $set: updateData
         }, { new: true })
 
         return SendSuccess(res, 200, "Product updated.", { UpdatedProduct })

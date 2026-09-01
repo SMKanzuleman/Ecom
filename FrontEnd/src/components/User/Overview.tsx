@@ -209,8 +209,8 @@ const Overview = () => {
         <div className=" bg-wh px-10 flex justify-between rounded-lg py-5 gap-0.5 relative">
 
           <div className="flex flex-col justify-center items gap-1">
-            <span className="font-accent text-xs tracking-wider  text-text tracking-wide">Total Orders</span>
-            <div className="font-heading text-5xl text-black font-semibold">10</div>
+            <span className="font-accent text-xs tracking-wider  text-text">Total Orders</span>
+            <div className="font-heading text-5xl text-black font-">10</div>
           </div>
           <div className="w-10 h-10 bg-bg rounded-full flex justify-center items-center text-black">
             <GiShoppingBag className="text-lg" />
@@ -223,7 +223,7 @@ const Overview = () => {
 
           <div className="flex flex-col justify-center items gap-1">
             <span className="font-accent text-xs tracking-wider  text-text">In Progress</span>
-            <div className="font-heading text-5xl text-black font-semibold">10</div>
+            <div className="font-heading text-5xl text-black">10</div>
           </div>
           <div className="w-10 h-10 bg-bg rounded-full flex justify-center items-center text-black">
             <GiShoppingBag className="text-lg" />
@@ -236,7 +236,7 @@ const Overview = () => {
 
           <div className="flex flex-col justify-center items gap-1">
             <span className="font-accent text-xs tracking-wider  text-text">Total Spent</span>
-            <div className="font-heading text-5xl text-black font-semibold">10,000</div>
+            <div className="font-heading text-5xl text-black">10,000</div>
           </div>
           <div className="w-10 h-10 bg-bg rounded-full flex justify-center items-center text-black">
             <HiMiniCurrencyDollar className="text-3xl" />
@@ -281,7 +281,7 @@ const Overview = () => {
               <>
                 {
                   recentOrder.OrderItems.slice(0, 1).map((item, index) => (
-                    <div key={index} className="lg:w-50 w-40 flex flex-col bg-bg p-1 gap-0 rounded-lg animate-fade-up">
+                    <div key={index} className="lg:w-50 w-40 flex flex-col  bg-bg p-1 gap-0 rounded-lg animate-fade-up">
                       <img src={item.Images[0]} alt="" className="aspect-square object-cover rounded-lg" />
                       <div className="text-lg text-black  truncate  ">{item.Name}</div>
                       <div className="text-md font-b">Quantity:{item.Quantity}</div>

@@ -14,7 +14,7 @@ ProductRouter.get("/", GetAllProduct)
 
 ProductRouter.get("/:id",GetSingleProduct)
 
-ProductRouter.put("/:id",Authenticate,authorizeRoles("Admin"), EditProduct)
+ProductRouter.put("/:id",Authenticate,authorizeRoles("Admin"),upload.array("Imges",5), EditProduct)
 
 ProductRouter.delete("/:id", Authenticate,authorizeRoles("Admin"),DeleteSingleProduct)
 

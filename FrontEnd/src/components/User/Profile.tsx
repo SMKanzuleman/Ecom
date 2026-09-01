@@ -37,7 +37,7 @@ const Profile = ({ setMenu }: any) => {
       {/* Content Area */}
       <div className="grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-10 py-5">
 
-        <div className="flex flex-col bg-wh rounded-lg p-10 h-fit">
+        <div className="flex flex-col bg-wh rounded-lg p-10">
 
           <div className="lg:text-3xl text-2xl font-accent font-semibold text-black pb-5 flex justify-between pr-10 items-center">
             <span>Personal Details</span>
