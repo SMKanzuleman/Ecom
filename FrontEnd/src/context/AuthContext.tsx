@@ -6,7 +6,7 @@ type ContextType = {
     Token: string | null
     Name: string | null
     Role: string
-    Loading:boolean
+    Loading: boolean
     setRole: (r: string) => void
     setToken: (t: string | null) => void
     setName: (n: string | null) => void
@@ -34,7 +34,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                 API.defaults.headers.common["Authorization"] = `Bearer ${res.data.token}`
             } catch (error) {
                 setToken(null)
-            }finally{
+            } finally {
                 setLoading(false)
             }
 
@@ -46,6 +46,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const handleRefresh = (event: any) => {
             const NewToken = event.detail;
             setToken(NewToken)
+            const r = JSON.parse(atob(NewToken.split('.')[1]));
+            setRole(r.Role)
+        
         }
         window.addEventListener("Token_Refreshed", handleRefresh);
 
@@ -54,8 +57,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }, [])
 
     return (
-        <AuthContext.Provider value={{ Token, setToken, Name, setName, Role, setRole,Loading }}>
-            { children}
+        <AuthContext.Provider value={{ Token, setToken, Name, setName, Role, setRole, Loading }}>
+            {children}
         </AuthContext.Provider>
 
     )

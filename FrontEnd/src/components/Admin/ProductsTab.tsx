@@ -3,6 +3,7 @@ import { FaCheck } from "react-icons/fa";
 import { MdDelete } from "react-icons/md";
 import { FaPlus } from "react-icons/fa6";
 import { useEffect, useState } from "react";
+import { MdClear } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import AdminPagenation from "./AdminPagenation";
 import API from "../../Utils/API";
@@ -79,11 +80,11 @@ const ProductsTab = ({ setMenu,setSelectedProductId }: ProductTypeProp) => {
             <div className="flex flex-col lg:grid lg:grid-cols-[1fr_3fr] gap-5 py-5">
 
                 {/* Left */}
-                <div className="bg-wh shadow-xl rounded-lg px-5  lg:flex hidden   flex-col py-5">
+                <div className="bg-wh shadow-xl rounded-lg px-5  lg:flex hidden h-fit flex-col py-5">
                     {/* Filter + Icon */}
                     <div className="flex justify-between items-center border-b-2 border-gray-700/10 pb-5">
                         <div className=" font-accent text-2xl text-black font-bold">Filters</div>
-                        <div onClick={() => { setSCategory(null) }}><LiaFilterSolid className="text-3xl" /></div>
+                        <div onClick={() => { setSCategory(null) }}>{SCategory===null? <LiaFilterSolid className="text-3xl" /> : <MdClear className="text-3xl text-red-600" />}</div>
                     </div>
                     {/* Categories */}
                     <div className="w-full py-5 flex flex-col gap-2">

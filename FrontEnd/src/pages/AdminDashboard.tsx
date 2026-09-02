@@ -158,13 +158,13 @@ export const AdminDashboard = () => {
             <div className="w-full pb-20 lg:pb-5 py-5 lg:w-[83%] overflow-y-auto bg-bg no-scrollbar px-10">
                 {Menu === "Dashboard" && (<Dashboard />)}
                 {Menu === "Products" && (<ProductsTab setMenu={setMenu}  setSelectedProductId={setSelectedProductId} />)}
-                {Menu === "Orders" && (<OrdersTab />)}
+                {Menu === "Orders" && (<OrdersTab Orders={Orders} />)}
                 {Menu === "Customers" && (<CustomersTab />)}
                 {Menu === "Setting" && (<Setting />)}
                 {Menu === "AddNewProduct" && (
                     <AddNewProductTab setMenu={setMenu} />
                 )}
-                {Menu=="EditProduct" && (<EditProduct EditId={SelectedProductId} />) }
+                {Menu=="EditProduct" && (<EditProduct EditId={SelectedProductId} setMenu={setMenu} />) }
 
             </div>
 

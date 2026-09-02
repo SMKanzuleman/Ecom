@@ -52,6 +52,7 @@ const RegisterUser = async (req: Request, res: Response) => {
 
 const LoginUser = async (req: Request, res: Response) => {
   try {
+    
     const { Email, Password } = req.body;
 
     if (!Email || !Password) {

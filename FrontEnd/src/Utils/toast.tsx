@@ -6,15 +6,27 @@ export const showSuccessToast = (message: string) => {
         style: {
             background: "#0a0a0a",
             color: "#fff",
-            border: "2px solid rgba(255,255,255,0.12)",
+            border: "1px solid rgba(255,255,255,0.15)",
             borderRadius: "50px",
-            minHeight: "50px",
-            fontSize: "14px",
-            fontWeight: "500",
+            minHeight: "42px",
+            fontSize: "13px",
+            fontWeight: "600",
             fontFamily: "var(--font-accent)",
-            boxShadow: "0 6px 20px rgba(0,0,0,0.25)",
+            boxShadow: "0 6px 20px rgba(0,0,0,0.3)",
+            
+            width: "fit-content",
+            margin: "0 auto",
+            paddingLeft: "16px",
+            paddingRight: "20px",
+            
+            // 🌟 100% Exact Vertical Centering Rules
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            lineHeight: "1", // 👈 Strips font line-height misalignment!
         },
         hideProgressBar: true,
+        closeButton: false,
         autoClose: 1500,
     });
 };
@@ -29,8 +41,20 @@ export const showErrorToast = (message: string) => {
             minHeight: "50px",
             fontSize: "14px",
             fontWeight: "500",
-            fontFamily: "var(--font-accent)",
+            fontFamily: "var(--font-heading)",
             boxShadow: "0 6px 20px rgba(0,0,0,0.25)",
+
+              
+            width: "fit-content",
+            margin: "0 auto",
+            paddingLeft: "16px",
+            paddingRight: "20px",
+            
+            // 🌟 100% Exact Vertical Centering Rules
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            lineHeight: "1", // 👈 Strips font line-height misalignment!
         },
         hideProgressBar: true,
         autoClose: 1500,
@@ -48,6 +72,17 @@ export const showWaringToast = (message: string) => {
             fontWeight: "500",
             fontFamily: "var(--font-accent)",
             boxShadow: "0 6px 20px rgba(0,0,0,0.25)",
+              
+            width: "fit-content",
+            margin: "0 auto",
+            paddingLeft: "16px",
+            paddingRight: "20px",
+            
+            // 🌟 100% Exact Vertical Centering Rules
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            lineHeight: "1", // 👈 Strips font line-height misalignment!
         },
         hideProgressBar: true,
         autoClose: 2000,

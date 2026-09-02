@@ -8,7 +8,7 @@ import API from "../../Utils/API";
 
 
 
-const EditProduct = ({ EditId }: any) => {
+const EditProduct = ({ EditId,setMenu }: any) => {
     const Defaultsizes = ["XS", "S", "MD", "LG", "XL"]
     const [Imges, setImges] = useState<any>([])
     const [Sizes, setSizes] = useState<any>([])
@@ -170,6 +170,11 @@ const EditProduct = ({ EditId }: any) => {
             const res = await API.put(`/products/${EditId}`,formData)
             console.log(res.data)
             showSuccessToast("saved")
+            setMenu("Products")
+            setTimeout(()=>{
+
+            },2000)
+            
             
         } catch (error) {
             showSuccessToast("Error")

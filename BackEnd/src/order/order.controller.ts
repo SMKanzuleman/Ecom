@@ -103,6 +103,7 @@ export const UpdateOrderStatus = async (req: AuthRequest, res: Response) => {
     try {
         let { id: OrderId } = req.params
         let { NewStatus } = req.body
+        
         const FoundedOrder = await Order.findById(OrderId)
 
         if (!FoundedOrder) {

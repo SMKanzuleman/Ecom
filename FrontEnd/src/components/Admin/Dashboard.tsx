@@ -10,6 +10,7 @@ import { FaTruck } from "react-icons/fa";
 import { FaUsers } from "react-icons/fa";
 import { FaDownload } from "react-icons/fa6";
 import { FaPercent } from "react-icons/fa";
+import API from "../../Utils/API";
 
 
 
@@ -19,9 +20,10 @@ const Dashboard = () => {
 
     const FetchOrders = async () => {
         try {
-            const res = await axios.get("/order/",)
+            const res = await API.get("/order",)
+    
             if (res.data.Order) {
-                console.log("Setting orders")
+                console.log(res.data.Order)
                 setOrders(res.data.Order)
             }
         } catch (err) {
@@ -206,7 +208,7 @@ const Dashboard = () => {
                             <div className="">{order.UserId.FName}</div>
                             <div className="hidden lg:block">{order.PaymentStatus}</div>
                             <div className="">{order.OrderStatus}</div>
-                            <div className="">{order.OrderPrice}</div>
+                            <div className="">Rs.{Math.floor(order.OrderPrice)}</div>
                         </div>
                     )
                 })}

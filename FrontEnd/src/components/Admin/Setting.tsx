@@ -1,12 +1,7 @@
-
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../context/AuthContext';
-
 import { showErrorToast, showSuccessToast } from '../../Utils/toast';
 import API from '../../Utils/API';
-
-
-
 
 
 const Setting = () => {
@@ -19,16 +14,12 @@ const Setting = () => {
 
     const FetchCategories = async () => {
         try {
-
-            const res = await API.get("/dashboard/Categories",)
+            const res = await API.get("/products/FilterData",)
             if (res.data) {
-                const allValues = Object.values(res.data);
-                const cleanCategoriesArray = allValues.filter(
-                    (val) => typeof val === "string" && val !== res.data.message
-                );
-
-                setCategories(cleanCategoriesArray);
-
+                setCategories(res.data.Categories)
+                console.log(res.data.Categories);
+                
+                
             }
 
         } catch (error) {
@@ -36,10 +27,10 @@ const Setting = () => {
         }
     }
 
-     const AddStyle = async () => {
+    const AddStyle = async () => {
         try {
 
-            const res = await API.post("/dashboard/Styles",{StyleName:SName,StyleCategories:SCategories},)
+            const res = await API.post("/dashboard/Styles", { StyleName: SName, StyleCategories: SCategories },)
             if (res.data) {
                 showSuccessToast(`${SName} added!`)
             }
@@ -79,14 +70,14 @@ const Setting = () => {
                         onChange={(e) => setSName(e.target.value)}
                     />
                     <div className='flex flex-wrap gap-3'>
-                        {Categories.map((cat:any) => (
+                        {Categories.map((cat: any) => (
                             <div className={` px-3 py-0 rounded-full cursor-pointer ${SCategories.includes(cat) ? 'bg-black text-wh' : 'bg-bg'}`} onClick={(() => setSCategories([...SCategories, cat]))}>
                                 {cat}
                             </div>
                         ))}
                     </div>
 
-                    <button className='btn-primary w-[30%]' onClick={()=>{
+                    <button className='btn-primary w-[30%]' onClick={() => {
                         AddStyle()
                     }} >Save</button>
                 </div>
