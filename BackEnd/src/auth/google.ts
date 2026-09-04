@@ -11,7 +11,9 @@ export const GoogleRedirect = async (req: Request, res: Response) => {
     try {
         const AuthUrl = GoogleClient.generateAuthUrl({
             access_type: "offline",
-            scope: ["email", "profile"]
+            scope: ["email", "profile"],
+            prompt: "select_account" 
+
         })
         if (!AuthUrl) {
             return SendError(res, 400, "There are some error while genrating auth url")
@@ -40,30 +42,37 @@ export const GoogleCallback = async (req: Request, res: Response) => {
         }
         const { email, name } = payload;
 
-        const NewUser = new User({
-            Email: email,
-            Provider: "google",
-            Name: name,
-            Role: "User"
-        })
+        let user = await User.findOne({ Email: email })
 
-        await NewUser.save()
+        if (!user) {
 
-        const RefreshToken = GenerateToken(NewUser._id.toString(),AuthConfig.RefreshSecretKey,AuthConfig.RefreshExpiry)
+             user = new User({
+                Email: email,
+                Provider: "google",
+                FName: name,
+                Role: "User"
+            })
+            await user.save()
 
-        res.cookie("token",RefreshToken,{
+        }
+        
+        const RefreshToken = GenerateToken(user._id.toString(), user.Role, AuthConfig.RefreshSecretKey, AuthConfig.RefreshExpiry)
+
+        res.cookie("token", RefreshToken, {
             httpOnly: true,
             secure: AuthConfig.NODE_ENV === "prodcution",
             sameSite: "lax",
-            maxAge: 30*24*60*60*1000
+            maxAge: 30 * 24 * 60 * 60 * 1000
 
         })
 
-        const AccessToken = GenerateToken(NewUser._id.toString(),AuthConfig.AccessSecretKey,AuthConfig.AccessExpiry)
-        
-        return SendSuccess(res,200,"Signed in successfuly", {token: AccessToken})
+        const AccessToken = GenerateToken(user._id.toString(), user.Role, AuthConfig.AccessSecretKey, AuthConfig.AccessExpiry)
+
+        return res.redirect("http://localhost:2024/");
+
 
     } catch (error) {
+        console.error(error)
         return SendError(res, 500, "There is some error.")
 
     }

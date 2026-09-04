@@ -15,7 +15,6 @@ type ProductTypeProp = {
 }
 
 
-
 const ProductsTab = ({ setMenu, setSelectedProductId }: ProductTypeProp) => {
 
     const [Currentpage, setCurrentpage] = useState(0);
