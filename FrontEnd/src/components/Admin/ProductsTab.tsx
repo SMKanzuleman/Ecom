@@ -7,15 +7,16 @@ import { MdClear } from "react-icons/md";
 import { MdEdit } from "react-icons/md";
 import AdminPagenation from "./AdminPagenation";
 import API from "../../Utils/API";
+import ExportCSV from "../../Utils/ExportCSV";
 
 type ProductTypeProp = {
     setMenu: (m: string) => void
-    setSelectedProductId: (i:any)=>void
+    setSelectedProductId: (i: any) => void
 }
 
 
 
-const ProductsTab = ({ setMenu,setSelectedProductId }: ProductTypeProp) => {
+const ProductsTab = ({ setMenu, setSelectedProductId }: ProductTypeProp) => {
 
     const [Currentpage, setCurrentpage] = useState(0);
     const PostperPage = 10;
@@ -52,6 +53,22 @@ const ProductsTab = ({ setMenu,setSelectedProductId }: ProductTypeProp) => {
         }
     }
 
+    const HandleExportProducts = () => {
+
+        const ExportData = Products.map((o: any) => ({
+            "Product_Name": `${o.Name}`,
+            "Category": `${o.Category}`,
+            "Price": `${o.Price}`,
+            "Stock": `${o.Stock}`,
+            "Sold": `${o.Sold}`,
+        }))
+
+
+        ExportCSV(ExportData, "Products_list")
+
+
+    }
+
     useEffect(() => {
         FetchProducts()
         FetchFiltersData()
@@ -71,8 +88,14 @@ const ProductsTab = ({ setMenu,setSelectedProductId }: ProductTypeProp) => {
                 <div className="font-accent text-3xl font-bold text-black">Products</div>
                 <div className="w-full flex justify-between">
                     <div><button className="btn-primary lg:hidden" > <LiaFilterSolid /> Filters</button></div>
-                    <div><button onClick={() => setMenu("AddNewProduct")} className="btn-primary" > <FaPlus /> Add Product</button></div>
+                    <div><button onClick={() => {
+                        setMenu("AddNewProduct")
+                        
+                    }} className="btn-primary" > <FaPlus /> Add Product</button></div>
                 </div>
+                <div><button onClick={()=>
+                    HandleExportProducts()
+                } className="btn-primary">Export</button></div>
             </div>
 
             {/* Main Box */}
@@ -84,7 +107,7 @@ const ProductsTab = ({ setMenu,setSelectedProductId }: ProductTypeProp) => {
                     {/* Filter + Icon */}
                     <div className="flex justify-between items-center border-b-2 border-gray-700/10 pb-5">
                         <div className=" font-accent text-2xl text-black font-bold">Filters</div>
-                        <div onClick={() => { setSCategory(null) }}>{SCategory===null? <LiaFilterSolid className="text-3xl" /> : <MdClear className="text-3xl text-red-600" />}</div>
+                        <div onClick={() => { setSCategory(null) }}>{SCategory === null ? <LiaFilterSolid className="text-3xl" /> : <MdClear className="text-3xl text-red-600" />}</div>
                     </div>
                     {/* Categories */}
                     <div className="w-full py-5 flex flex-col gap-2">
@@ -121,12 +144,13 @@ const ProductsTab = ({ setMenu,setSelectedProductId }: ProductTypeProp) => {
                     {/* Showing 1-10 of 124 items */}
 
                     {/* Header */}
-                    <div className="grid lg:grid-cols-[0.5fr_3fr_1fr_1fr_1fr_1fr] grid-cols-[0.5fr_2fr_1fr_1fr] gap-x-5 py-4 px-3  bg-bg rounded-t-lg border-2 border-gray-700/10">
+                    <div className="grid lg:grid-cols-[0.5fr_3fr_1fr_1fr_1fr_1fr_1fr] grid-cols-[0.5fr_2fr_1fr_1fr] gap-x-5 py-4 px-3  bg-bg rounded-t-lg border-2 border-gray-700/10">
                         <div className={`w-5 h-5 rounded-full flex items-center justify-center border-2 border-gray-700/30`}> </div>
                         <div>Product</div>
                         <div>Category</div>
                         <div className="lg:block hidden">Price</div>
                         <div className="lg:block hidden">Stock</div>
+                        <div className="lg:block hidden">Sold</div>
                         <div>Actions</div>
                     </div>
                     {/* Body */}
@@ -134,7 +158,7 @@ const ProductsTab = ({ setMenu,setSelectedProductId }: ProductTypeProp) => {
                         {FilteredProducts.slice(FirstIndex, LastIndex).map((product: any, index: any) => {
                             return (
                                 <div className="flex flex-col">
-                                    <div key={index} className="grid grid-cols-[0.5fr_2fr_1fr_1fr] lg:grid-cols-[0.5fr_3fr__1fr_1fr_1fr_1fr] gap-x-5 items-center py-2 px-3 border-b-2 border-gray-700/10 text-black">
+                                    <div key={index} className="grid grid-cols-[0.5fr_2fr_1fr_1fr] lg:grid-cols-[0.5fr_3fr__1fr_1fr_1fr_1fr_1fr] gap-x-5 items-center py-2 px-3 border-b-2 border-gray-700/10 text-black">
                                         <div className={` cursor-pointer w-5 h-5 rounded-full flex items-center justify-center border-2 border-gray-700/30`}> </div>
                                         <div className="flex items-center gap-5">
                                             <div className="lg:w-10 aspect-square lg:h-10 w-12 h-12 bg-bg rounded-lg p-0 flex items-center justify-center">
@@ -147,6 +171,7 @@ const ProductsTab = ({ setMenu,setSelectedProductId }: ProductTypeProp) => {
                                         <div>{product.Category}</div>
                                         <div className="lg:block hidden">{product.Price}</div>
                                         <div className="lg:block hidden">{product.Stock}</div>
+                                        <div className="lg:block hidden">{product.Sold}</div>
                                         <div className="flex gap-2 items-center ">
                                             <button onClick={() => {
                                                 setSelectedProductId(product._id)

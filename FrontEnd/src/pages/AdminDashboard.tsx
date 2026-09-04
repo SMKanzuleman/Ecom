@@ -13,6 +13,7 @@ import AddNewProductTab from "../components/Admin/AddNewProductTab";
 import Setting from "../components/Admin/Setting";
 import API from "../Utils/API";
 import EditProduct from "../components/Admin/EditProduct";
+import { data } from "react-router-dom";
 
 export const AdminDashboard = () => {
 
@@ -24,13 +25,14 @@ export const AdminDashboard = () => {
 
     const [Filter, setFilter] = useState(false)
     const [Menu, setMenu] = useState("Dashboard")
+    const [Stats, setStats] = useState<any>(null);
 
 
     const [Selected, setSelected] = useState("T-shirts")
     const [SelectedStatus, setSelectedStatus] = useState("Draft")
     const [SelectedUser, setSelectedUser] = useState<any>(null)
 
-    const { Token } = useAuth()
+
 
 
 
@@ -69,14 +71,26 @@ export const AdminDashboard = () => {
             console.error(err)
         }
     }
+    const FetchStats = async () => {
+        try {
+            const res = await API.get("/dashboard/Stats")
+            if (res.data) {
+                console.log("Stats")
+                setStats(res.data)
+                
+            }
+        } catch (err) {
+            console.error(err)
+            console.error(err)
+        }
+    }
 
     useEffect(() => {
         FetchProducts()
         FetchUsers();
         FetchOrders();
+        FetchStats();
     }, [])
-
-
 
 
     return (
@@ -156,15 +170,15 @@ export const AdminDashboard = () => {
             <Sidebar Menu={Menu} setMenu={setMenu} />
 
             <div className="w-full pb-20 lg:pb-5 py-5 lg:w-[83%] overflow-y-auto bg-bg no-scrollbar px-10">
-                {Menu === "Dashboard" && (<Dashboard />)}
-                {Menu === "Products" && (<ProductsTab setMenu={setMenu}  setSelectedProductId={setSelectedProductId} />)}
-                {Menu === "Orders" && (<OrdersTab Orders={Orders} />)}
-                {Menu === "Customers" && (<CustomersTab />)}
+                {Menu === "Dashboard" && (<Dashboard Stats={Stats} Products={Products} />)}
+                {Menu === "Products" && (<ProductsTab setMenu={setMenu} setSelectedProductId={setSelectedProductId} />)}
+                {Menu === "Orders" && (<OrdersTab />)}
+                {Menu === "Customers" && (<CustomersTab Stats={Stats} Orders={Orders} />)}
                 {Menu === "Setting" && (<Setting />)}
                 {Menu === "AddNewProduct" && (
                     <AddNewProductTab setMenu={setMenu} />
                 )}
-                {Menu=="EditProduct" && (<EditProduct EditId={SelectedProductId} setMenu={setMenu} />) }
+                {Menu == "EditProduct" && (<EditProduct EditId={SelectedProductId} setMenu={setMenu} />)}
 
             </div>
 

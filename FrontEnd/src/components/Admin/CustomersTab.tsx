@@ -7,12 +7,11 @@ import { MdEdit } from "react-icons/md";
 import { MdDelete } from "react-icons/md";
 import { FaEye } from "react-icons/fa";
 import { useAuth } from '../../context/AuthContext';
-
-import axios from 'axios';
 import AdminPagenation from './AdminPagenation';
 import API from "../../Utils/API";
+import ExportCSV from "../../Utils/ExportCSV";
 
-const CustomersTab = () => {
+const CustomersTab = ({ Stats, Orders }: any) => {
 
     const [CurrentPage, setCurrentPage] = useState(1)
     const [PostPerPage, setPostPerPage] = useState(8)
@@ -24,10 +23,9 @@ const CustomersTab = () => {
 
     const FetchUsers = async () => {
         try {
-            const res = await API.get("/dashboard/AllUsers", )
+            const res = await API.get("/dashboard/AllUsers",)
             if (res.data.Users) {
                 setUsers(res.data.Users)
-
             }
         } catch (err) {
             console.error(err)
@@ -37,6 +35,26 @@ const CustomersTab = () => {
     useEffect(() => {
         FetchUsers()
     }, [])
+
+    const GetCustomerSpending = (userId: string) => {
+        return Orders.filter((o: any) => userId === o.UserId._id && o.OrderStatus === "delivered").reduce((sum, o) => sum + o.OrderPrice, 0)
+    }
+
+    const HandleExportCustumers = () => {
+
+        const ExportData = Users.map((o: any) => ({
+            "Customer_Name": `${o.FName}`,
+            "Email": `${o.Email}`,
+            "Password": `${o.Password}`,
+            "Provider": `${o.Provider}`,
+            "Joined": `${new Date(o.createdAt).toLocaleDateString()}`
+        }))
+
+    
+        ExportCSV(ExportData, "Customer_list")
+        
+
+    }
 
     return (
         <div className="w-full animate-fade-up flex flex-col gap-5">
@@ -48,39 +66,39 @@ const CustomersTab = () => {
                     <span className="font-bold lg:text-3xl text-xl">Customer </span>
                     <span className="text-[14px] tracking-wide text-text lg:block hidden">Manage and view your registered user base.</span>
                 </div>
-                <div className="lg:w-[20%] w-[50%] justify-items-end"> <button className="btn-primary lg:text-sm text-[12px]"><FaDownload />Export</button></div>
+                <div className="lg:w-[20%] w-[50%] justify-items-end"> <button onClick={()=>HandleExportCustumers()} className="btn-primary lg:text-sm text-[12px]"><FaDownload />Export</button></div>
             </div>
             {/*KPI Row*/}
             <div className="w-full grid lg:grid-cols-3 grid-cols-2  gap-5">
                 {/*KPI */}
-                <div className=" bg-wh p-5 flex flex-col rounded-lg gap-0.5 relative">
+                <div className=" bg-wh p-5 flex flex-col rounded-lg gap-0.5 relative hover:scale-101 duration-200">
                     <div className="w-full flex justify-between items-center">
                         <div className="w-10 h-10 bg-bg rounded-full flex justify-center items-center text-black">
                             <FaUsers className="w-[70%] h-[70%]" />
                         </div>
 
                     </div>
-                    <div className="w-full font-heading text-black font-semibold text-3xl">900</div>
+                    <div className="w-full font-heading text-black font-semibold text-3xl">{Stats?.AllCustomers}</div>
                     <div className="w-full text-sm tracking-wider -mt-1">Total Customers</div>
                 </div>
-                <div className=" bg-wh p-5 flex flex-col rounded-lg gap-0.5 relative">
+                <div className=" bg-wh p-5 flex flex-col rounded-lg gap-0.5 relative hover:scale-101 duration-200">
                     <div className="w-full flex justify-between items-center">
                         <div className="w-10 h-10 bg-bg rounded-full flex justify-center items-center text-black">
                             <IoCartSharp className="w-[70%] h-[70%]" />
                         </div>
 
                     </div>
-                    <div className="w-full font-heading text-black font-semibold text-3xl">200</div>
-                    <div className="w-full text-sm tracking-wider -mt-1">Active This Month</div>
+                    <div className="w-full font-heading text-black font-semibold text-3xl">Rs.{Math.round(Stats?.TotalRevenue)}</div>
+                    <div className="w-full text-sm tracking-wider -mt-1">Total Revenue</div>
                 </div>
-                <div className=" bg-wh p-5 flex flex-col rounded-lg gap-0.5 relative">
+                <div className=" bg-wh p-5 flex flex-col rounded-lg gap-0.5 relative hover:scale-101 duration-200">
                     <div className="w-full flex justify-between items-center">
                         <div className="w-10 h-10 bg-bg rounded-full flex justify-center items-center text-black">
                             <RiCashLine className="w-[70%] h-[70%]" />
                         </div>
 
                     </div>
-                    <div className="w-full font-heading text-black font-semibold text-3xl">PKR 5000</div>
+                    <div className="w-full font-heading text-black font-semibold text-3xl">Rs.{Stats?.AvgLifetime} </div>
                     <div className="w-full text-sm tracking-wider -mt-1">AVG Lifetime value</div>
                 </div>
 
@@ -96,8 +114,9 @@ const CustomersTab = () => {
                     {/* <div className="lg:block hidden">Orders</div> */}
                     <div className="lg:block hidden">Provider</div>
                     <div className="lg:block hidden">Total Spent (PKR)</div>
-                    <div className="lg:px-5">Actions</div>
+                    <div className="lg:px-5">Joined</div>
                 </div>
+
                 {/* Body */}
                 <div className="flex flex-col">
                     {Users.slice(FirstIndex, LastIndex).map((user: any, index: any) => {
@@ -114,12 +133,8 @@ const CustomersTab = () => {
                                 <div className="lg:block hidden">{user.Password}</div>
                                 {/* <div>10</div> */}
                                 <div className="lg:block hidden">{user.Provider}</div>
-                                <div className="lg:block hidden"> 1,000</div>
-                                <div className="flex flex-row gap-2">
-                                    <button className="bg-bg cursor-pointer w-7 h-7 flex justify-center items-center text-black rounded-sm hover:scale-105 duration-200 lg:hidden" onClick={() => setSelectedUser(user)}><FaEye /></button>
-                                    <button className="bg-bg cursor-pointer w-7 h-7 flex justify-center items-center text-black rounded-sm hover:scale-105 duration-200"><MdEdit /></button>
-                                    <button className="bg-bg cursor-pointer w-7 h-7 flex justify-center items-center text-black rounded-sm hover:scale-105 duration-200"><MdDelete /></button>
-                                </div>
+                                <div className="lg:block hidden"> Rs.{GetCustomerSpending(user._id).toLocaleString()}</div>
+                                <div className="lg:block hidden">{new Date(user.createdAt).toLocaleDateString("en-GB")}</div>
                             </div>
 
                         )

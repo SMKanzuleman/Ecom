@@ -1,8 +1,6 @@
 import mongoose from "mongoose";
 import { ProductType } from '../config/product.config';
 
-
-
 const ProductScheme = new mongoose.Schema<ProductType>({
     Name: {
         type: String,

@@ -70,6 +70,7 @@ export const GetAllProduct = async (req: Request, res: Response) => {
             Query.Colors = color
         }
         if (style) {
+            console.log("This is your style object:",style)
             const catsArray = (style as string).split(",");
             Query.Category = { $in: catsArray };
         }
@@ -88,8 +89,6 @@ export const GetAllProduct = async (req: Request, res: Response) => {
 
     }
 }
-
-
 
 //Update
 

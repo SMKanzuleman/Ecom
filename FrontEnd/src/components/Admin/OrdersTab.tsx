@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
 import { FaDownload } from "react-icons/fa6";
-import { MdModeEdit } from "react-icons/md";
-import axios from "axios";
 import AdminPagenation from "./AdminPagenation";
 import { useAuth } from "../../context/AuthContext";
 import API from "../../Utils/API";
 import { showSuccessToast } from "../../Utils/toast";
 import { FaSave } from "react-icons/fa";
+import ExportCSV from "../../Utils/ExportCSV";
 
 
 
@@ -52,6 +51,18 @@ export const OrdersTab = () => {
 
     useEffect(() => { FetchOrders() }, [])
 
+    const HandleExportOrders = () => {
+
+        const ExportData = Orders.map((o: any) => ({
+            "Customer": `${o.UserId.FName}`,
+            "PaymentStatus": `${o.PaymentStatus}`,
+            "OrderStatus": `${o.OrderStatus}`,
+            "OrderPrice": `${o.OrderPrice}`
+        }))
+        ExportCSV(ExportData, "Orders_list")
+
+    }
+
 
     return (
         <div className="w-full animate-fade-up flex flex-col gap-5">
@@ -64,7 +75,7 @@ export const OrdersTab = () => {
                     <span className="font-bold lg:text-3xl text-xl">Orders </span>
                     <span className="text-[14px] tracking-wide text-text lg:block hidden">Manage and track your customer Orders</span>
                 </div>
-                <div className="lg:w-[20%] w-[50%] justify-items-end"> <button className="btn-primary lg:text-sm text-[12px]"><FaDownload />Export</button></div>
+                <div className="lg:w-[20%] w-[50%] justify-items-end"> <button onClick={() => HandleExportOrders()} className="btn-primary lg:text-sm text-[12px]"><FaDownload />Export</button></div>
             </div>
 
             {/* Menu Selection */}

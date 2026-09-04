@@ -82,10 +82,7 @@ const Setting = () => {
                     }} >Save</button>
                 </div>
 
-                {/* Right */}
-
-                <div className='bg-wh'>hi</div>
-
+              
 
 
             </div>

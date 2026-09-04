@@ -4,6 +4,7 @@ import { SendError, SendSuccess } from "../utils/responce";
 import { Cart } from "../cart/cart.model";
 import { Order } from "./order.model";
 import { User } from "../auth/user.model";
+import { Product } from "../products/product.model";
 
 
 
@@ -22,15 +23,25 @@ export const MakeOrder = async (req: AuthRequest, res: Response) => {
 
         const FoundedItems = foundedCart.Items.map((item: any) => {
             return {
-                ProductId: item.ProductId,
+                ProductId: item.ProductId._id,
                 Name: item.ProductId.Name,
                 Quantity: item.Quantity,
                 Color: item.Colors,
                 Size: item.Sizes,
 
-            }
 
+            }
         })
+
+        for (const i of FoundedItems) {
+            await Product.findByIdAndUpdate(i.ProductId,{
+                $inc:{
+                    Sold: i.Quantity,
+                    Stock: -i.Quantity
+                }
+            })
+
+        }
 
         const PStatus = Payment.type === "bank" ? "paid" : "pending"
 
@@ -103,7 +114,7 @@ export const UpdateOrderStatus = async (req: AuthRequest, res: Response) => {
     try {
         let { id: OrderId } = req.params
         let { NewStatus } = req.body
-        
+
         const FoundedOrder = await Order.findById(OrderId)
 
         if (!FoundedOrder) {

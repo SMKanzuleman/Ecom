@@ -34,6 +34,8 @@ export const App = () => {
         <Route path="/auth" element={<Auth />} />
         <Route path="/shop" element={<Shop />} />
         <Route path="product/:id" element={<ProductDetail />} />
+        <Route path="/:type/:name" element={<Shop />} />
+
         <Route path="cart" element={<Cart />} />
 
         {/* Protected rout */}

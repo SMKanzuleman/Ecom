@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
 import heroimg from '../assets/Stickman_shop.png'
-import axios from 'axios'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { FaStar, FaStarHalfAlt, FaRegStar, FaChevronUp } from "react-icons/fa";
 import logo from '../assets/logo.svg'
 import Pagination from '../components/Pagination';
@@ -12,6 +11,9 @@ import { FaChevronDown } from "react-icons/fa6";
 import API from '../Utils/API';
 
 const Shop = () => {
+
+  const { name, type } = useParams()
+  const navigate=useNavigate()
 
   const MIN = 0;
   const MAX = 10000;
@@ -25,17 +27,17 @@ const Shop = () => {
 
   const [Categories, setCategories] = useState<any>([]);
   const [Colors, setColors] = useState<any>([]);
-  const [Styles, setStyles] = useState<any>([]);
+  const [Styles, setStyles] = useState<{Name:string,Categories:string[]}[]>([]);
 
   const [SelectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [SelectedColor, setSelectedColors] = useState<string | null>(null);
-  const [SelectedStyle, setSelectedStyle] = useState<string | null>(null);
+  const [SelectedStyle, setSelectedStyle] = useState<{Name:string,Categories:string[]}>();
 
   const FilteredProducts = Products.filter((p: any) => {
 
     const MatchCategory = SelectedCategory ? p.Category === SelectedCategory : true;
     const MatchColor = SelectedColor ? p.Colors.includes(SelectedColor) : true;
-    const MatchStyle = SelectedStyle ? SelectedStyle.includes(p.Category) : true;
+    const MatchStyle = SelectedStyle ? SelectedStyle.Categories.includes(p.Category) : true;
     const MatchPrice = p.Price >= MinPrice && p.Price <= MaxPrice
 
     return (MatchCategory && MatchColor && MatchPrice && MatchStyle)
@@ -63,14 +65,24 @@ const Shop = () => {
         params: {
           category: SelectedCategory,
           color: SelectedColor,
-          style: SelectedStyle ? SelectedStyle?.Categories?.join(",") : undefined,
+          style: SelectedStyle ? SelectedStyle.Categories.join(",") : undefined,
           MinPrice,
           MaxPrice
         }
       })
+
       if (res.data.AllProducts) {
-        setProducts(res.data.AllProducts)
+        let allProds = res.data.AllProducts || []
+
+        if (type === "category" && name) {
+          allProds = allProds.filter((p: any) => p.Category?.toLowerCase() === name.toLowerCase());
+        }
+        if (type === "style" && name) {
+          allProds = allProds.filter((p: any) => p.Style?.toLowerCase() === name.toLowerCase());
+        }
+        setProducts(allProds)
       }
+
     } catch (err) {
       console.error(err)
     }
@@ -99,6 +111,10 @@ const Shop = () => {
     setMaxPrice(MAX)
     setCurrentPage(1)
 
+    if (name || type) {
+      navigate("/shop");
+    }
+
   }
   const hasActiveFilters =
     SelectedCategory !== null ||
@@ -113,7 +129,7 @@ const Shop = () => {
   useEffect(() => {
     FetchProducts()
     FetchFilterData()
-  }, [SelectedCategory, SelectedColor, SelectedStyle, MinPrice, MaxPrice])
+  }, [SelectedCategory, SelectedColor, SelectedStyle, MinPrice, MaxPrice,name,type])
 
 
 
@@ -122,7 +138,7 @@ const Shop = () => {
       {/*Header*/}
       <div className='w-full bg-black px-20 h-[200px] flex justify-between items-center relative'>
         <div className='flex justify-center items-center w-full'>
-          <h1 className='font-accent text-4xl font-semibold text-wh'>Shop</h1>
+          <h1 className='font-accent text-4xl font-semibold text-wh'>{name ? name : "Shop"}</h1>
         </div>
         <div className='absolute lg:right-28 right-3 lg:top-7 top-24'>
           <img src={heroimg} alt="" className='lg:w-52 w-32' />
@@ -137,17 +153,17 @@ const Shop = () => {
 
           <div className='w-full flex justify-between items-center py-5 border-b-2 border-gray-400/30'>
             <div className='text-black text-xl font-semibold'>Filters</div>
-            { hasActiveFilters && <button className='btn-primary py-2 rounded-full bg-red-600' onClick={() => ClearAllFilters()}>clear</button>}
+            {hasActiveFilters || name && <button className='btn-primary py-2 rounded-full bg-red-600' onClick={() => ClearAllFilters()}>clear</button>}
           </div>
 
           {/* categories */}
           <div className='w-full flex flex-col  py-5 gap-5 border-b-2 border-gray-400/30'>
 
-            {Categories.slice(10,15).map((cat, index) => (
-              <div key={index} className='w-full flex justify-between  cursor-pointer' onClick={() => setSelectedCategory(cat)}>
+            {Categories.slice(10, 15).map((cat, index) => (
+              <Link to={`/category/${cat}`} target="_blank" rel="noopener noreferrer" key={index} className='w-full flex justify-between  cursor-pointer' onClick={() => setSelectedCategory(cat)}>
                 <div className='text-text hover:text-black'>{cat}</div>
                 <div className=' hover:text-black'><VscChevronRightCompact /></div>
-              </div>
+              </Link>
 
             ))}
 
@@ -234,7 +250,7 @@ const Shop = () => {
           {/* Colors */}
           {ColorToggle && (
             <div className='w-full animate-fade-up flex flex-wrap gap-2 justify-start items-center px-2'>
-              {Colors.slice(0,10).map((c: any) => (
+              {Colors.slice(0, 10).map((c: any) => (
                 <div onClick={() => setSelectedColors(c)} style={{ background: c }} className={`cursor-pointer w-10 h-10 rounded-full `}></div>
 
               ))}
@@ -252,10 +268,10 @@ const Shop = () => {
             <div className='w-full flex flex-col pb-5 gap-4 border-b-2 border-gray-400/30 animate-fade-up'>
 
               {Styles.map((s, index) => (
-                <div onClick={() => setSelectedStyle(s)} key={index} className='w-full flex justify-between  cursor-pointer'>
+                <Link to={`/styles/${s.Name}`} onClick={() => setSelectedStyle(s)} key={index} className='w-full flex justify-between  cursor-pointer'>
                   <div className='text-text hover:text-black'>{s.Name}</div>
                   <div className=' hover:text-black'><VscChevronRightCompact /></div>
-                </div>
+                </Link>
 
               ))}
             </div>
