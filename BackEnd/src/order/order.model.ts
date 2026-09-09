@@ -37,7 +37,6 @@ const OrderScheme = new mongoose.Schema<OrderType>({
             type: Number,
             required: true
         }
-
     },
     PaymentDetails: {
         Method: {
@@ -58,7 +57,6 @@ const OrderScheme = new mongoose.Schema<OrderType>({
             required: false,
         }
     },
-
     Address: {
         State: {
             type: String,
@@ -104,7 +102,6 @@ const OrderScheme = new mongoose.Schema<OrderType>({
                 type: String,
                 required: false
             }
-
         }
     ]
 

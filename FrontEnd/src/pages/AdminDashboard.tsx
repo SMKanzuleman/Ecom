@@ -173,7 +173,7 @@ export const AdminDashboard = () => {
                 {Menu === "Dashboard" && (<Dashboard Stats={Stats} Products={Products} />)}
                 {Menu === "Products" && (<ProductsTab setMenu={setMenu} setSelectedProductId={setSelectedProductId} />)}
                 {Menu === "Orders" && (<OrdersTab />)}
-                {Menu === "Customers" && (<CustomersTab Stats={Stats} Orders={Orders} />)}
+                {Menu === "Customers" && (<CustomersTab Stats={Stats} Users={Users} Orders={Orders} />)}
                 {Menu === "Setting" && (<Setting />)}
                 {Menu === "AddNewProduct" && (
                     <AddNewProductTab setMenu={setMenu} />

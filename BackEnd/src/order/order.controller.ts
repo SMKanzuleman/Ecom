@@ -84,11 +84,11 @@ export const MakeOrder = async (req: AuthRequest, res: Response) => {
 export const GetUserOrders = async (req: AuthRequest, res: Response) => {
     try {
         let { id: userId } = req.User
-        const OrderUser = await Order.find({ UserId: userId })
+        const OrderUser = await Order.find({ UserId: userId }).sort({ createdAt: -1 }).populate("OrderItems.ProductId"); 
         if (!OrderUser) {
             return SendError(res, 400, "No Orders Found")
         }
-        return SendSuccess(res, 200, "All Orders", { Order: OrderUser })
+        return SendSuccess(res, 200, "All Orders", {OrderUser})
 
     } catch (error) {
         return SendError(res, 500, "Internal Server error")

@@ -50,8 +50,8 @@ const ProductScheme = new mongoose.Schema<ProductType>({
 
 
     Images: {
-        type:[String],
-        required:true
+        type: [String],
+        required: true
 
     },
     Sizes: {
@@ -63,10 +63,18 @@ const ProductScheme = new mongoose.Schema<ProductType>({
         required: false
     },
     Sold: {
-    type: Number,
-    default: 0,
-    required: false
-}
+        type: Number,
+        default: 0,
+        required: false
+    },
+    TotalReviews: {
+        type: Number,
+        default: 0
+    },
+    AvgRating: {
+        type: Number,
+        default: 0
+    }
 
 
 }, { timestamps: true })

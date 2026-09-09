@@ -1,162 +1,58 @@
 import { useState } from 'react'
 
-const RecentOrders = () => {
+const RecentOrders = ({ MyOrders }) => {
 
-  const [Orders, setOrders] = useState("All");
+  const [SelectOrders, setSelectOrders] = useState("All");
 
-  const OrderList = [
-    {
-      _id: "ORD-896456",
-      createdAt: "2026-08-28T12:00:00.000Z",
-      OrderStatus: "Shipped", // "Processing" | "Shipped" | "Delivered" | "Cancelled"
-      PaymentStatus: "paid",
-      PaymentMethod: "COD",
-      OrderPrice: 2501,
-      Address: {
-        Location: "Lahore, KSK",
-        City: "Lahore",
-        State: "Punjab"
-      },
-      OrderItems: [
-        {
-          _id: "item1",
-          Name: "Essential Black Tee",
-          Quantity: 2,
-          PriceAtPurchase: 500,
-          Images: ["https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500"]
-        },
-        {
-          _id: "item2",
-          Name: "Raw Denim Jeans",
-          Quantity: 1,
-          PriceAtPurchase: 1000,
-          Images: ["https://images.unsplash.com/photo-1542272604-780c96856592?w=500"]
-        },
-        {
-          _id: "item3",
-          Name: "Leather Sneakers",
-          Quantity: 1,
-          PriceAtPurchase: 700,
-          Images: ["https://images.unsplash.com/photo-1549298916-b41d501d3772?w=500"]
-        },
-        {
-          _id: "item4",
-          Name: "Oversized Cotton Hoodie",
-          Quantity: 2,
-          PriceAtPurchase: 301,
-          Images: ["https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=500"]
-        },
-        {
-          _id: "item5",
-          Name: "Silver Minimalist Chain",
-          Quantity: 1,
-          PriceAtPurchase: 200,
-          Images: ["https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=500"]
-        }
-      ]
-    },
-    {
-      _id: "ORD-896457",
-      createdAt: "2026-08-22T09:30:00.000Z",
-      OrderStatus: "Processing",
-      PaymentStatus: "pending",
-      PaymentMethod: "COD",
-      OrderPrice: 12500,
-      Address: {
-        Location: "Model Town, House 42",
-        City: "Lahore",
-        State: "Punjab"
-      },
-      OrderItems: [
-        {
-          _id: "item6",
-          Name: "Classic Bomber Jacket",
-          Quantity: 1,
-          PriceAtPurchase: 12500,
-          Images: ["https://images.unsplash.com/photo-1551028719-00167b16eac5?w=500"]
-        }
-      ]
-    },
-    {
-      _id: "ORD-896458",
-      createdAt: "2026-08-15T16:45:00.000Z",
-      OrderStatus: "Delivered",
-      PaymentStatus: "paid",
-      PaymentMethod: "VISA Card",
-      OrderPrice: 18400,
-      Address: {
-        Location: "DHA Phase 5, Street 12",
-        City: "Lahore",
-        State: "Punjab"
-      },
-      OrderItems: [
-        {
-          _id: "item7",
-          Name: "Minimalist Chronograph Watch",
-          Quantity: 1,
-          PriceAtPurchase: 12000,
-          Images: ["https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=500"]
-        },
-        {
-          _id: "item8",
-          Name: "Vintage Canvas Backpack",
-          Quantity: 1,
-          PriceAtPurchase: 6400,
-          Images: ["https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500"]
-        }
-      ]
-    },
-    {
-      _id: "ORD-896459",
-      createdAt: "2026-08-01T14:15:00.000Z",
-      OrderStatus: "Cancelled",
-      PaymentStatus: "refunded",
-      PaymentMethod: "COD",
-      OrderPrice: 3200,
-      Address: {
-        Location: "Gulberg III, Block B",
-        City: "Lahore",
-        State: "Punjab"
-      },
-      OrderItems: [
-        {
-          _id: "item9",
-          Name: "Retro Wayfarer Sunglasses",
-          Quantity: 1,
-          PriceAtPurchase: 3200,
-          Images: ["https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=500"]
-        }
-      ]
-    }
-  ];
-  const FilteredOrders = Orders === "All" ? OrderList : OrderList.filter((item) => item.OrderStatus === Orders);
 
+  const FilteredOrders = SelectOrders === "All" ? MyOrders : MyOrders.filter((item) => item.OrderStatus === SelectOrders);
 
   const [ExpendId, setExpendId] = useState<string | null>(null);
+
+  const PLACEHOLDER_IMG = "https://placehold.co/400x400/f4f4f5/71717a/png?text=📦+No+Image+Found&font=inter";
+
+  const getStatusBadge = (status: string) => {
+    switch (status?.toLowerCase()) {
+      case "delivered":
+        return "bg-green-600 text-white";
+      case "processing":
+        return "bg-amber-500 text-white ";
+      case "shipped":
+        return "bg-blue-600 text-white";
+      case "cancelled":
+        return "bg-red-600 text-white ";
+      default:
+        return "bg-black text-white  ";
+    }
+  };
+
+
 
   return (
     <div className='w-full flex flex-col gap-5'>
 
       {/* Header */}
-      
+
       <div className="w-full flex lg:flex-row flex-col lg:justify-between py-5  items-center gap-5 overflow-hidden">
 
-        <div className="lg:w-[80%] w-full font-accent text-black flex flex-col gap-1.5">
+        <div className="font-accent text-black flex flex-col gap-1.5">
           <span className="font-bold text-4xl lg:text-4xl">My Orders</span>
           <span className="text-[14px] tracking text-text lg:block hidden font-heading">Here's a quick overview of your orders.</span>
         </div>
-        <div className='bg-wh rounded-full flex  justify-between lg:gap-3 lg:text-[14px]  text-xs h-fit p-1 w-full overflow-hidden'>
-          <button onClick={() => setOrders("All")} className={`btn-primary py-3  ${Orders === "All" ? "bg-black  text-wh" : " bg-wh text-text"}`}>All</button>
-          <button onClick={() => setOrders("Processing")} className={`btn-primary py-1 ${Orders === "Processing" ? "bg-black  text-wh" : " bg-wh text-text"}`}>Processing</button>
-          <button onClick={() => setOrders("Shipped")} className={`btn-primary py-1 ${Orders === "Shipped" ? "bg-black  text-wh" : " bg-wh text-text"}`}>Shipped</button>
-          <button onClick={() => setOrders("Delivered")} className={`btn-primary py-1 ${Orders === "Delivered" ? "bg-black  text-wh" : " bg-wh text-text"}`}>Delivered</button>
+
+        <div className='bg-wh rounded-full flex  justify-between lg:gap-3 lg:text-[14px]  text-xs h-fit p-1 w-fit overflow-hidden'>
+          <button onClick={() => setSelectOrders("All")} className={`btn-primary py-2  ${SelectOrders === "All" ? "bg-black  text-wh" : " bg-wh text-text"}`}>All</button>
+          <button onClick={() => setSelectOrders("processing")} className={`btn-primary py-1 ${SelectOrders === "processing" ? "bg-amber-500  text-wh" : " bg-wh text-text"}`}>Processing</button>
+          <button onClick={() => setSelectOrders("shipped")} className={`btn-primary py-1 ${SelectOrders === "shipped" ? "bg-blue-600  text-wh" : " bg-wh text-text"}`}>Shipped</button>
+          <button onClick={() => setSelectOrders("delivered")} className={`btn-primary py-1 ${SelectOrders === "delivered" ? "bg-green-600 text-wh" : " bg-wh text-text"}`}>Delivered</button>
+          <button onClick={() => setSelectOrders("cancelled")} className={`btn-primary py-1 ${SelectOrders === "cancelled" ? "bg-red-600  text-wh" : " bg-wh text-text"}`}>Cancelled</button>
         </div>
 
       </div>
 
       {/* Orders */}
 
-      <div className='grid lg:grid-cols-2 gap-2'>
+      <div className='grid lg:grid-cols-3 gap-5 items-start'>
 
         {FilteredOrders.map((o, index) => {
 
@@ -164,52 +60,66 @@ const RecentOrders = () => {
 
           return (
 
-            <div className="w-full  bg-wh rounded-lg shadow-xs border-2 border-gray-700/5 p-5 ">
+            <div className="w-full flex flex-col  justify-between  bg-wh rounded-lg shadow-xs border-2 border-gray-700/5 p-5 ">
 
               {/* Header */}
 
               <div className="w-full flex justify-between items-center">
 
                 <div className="flex flex-col justify-center items-start">
-                  <div className="text-xl font-semibold text-black font-accent" >Order :{o._id}</div>
-                  <div className=" text-[14px]" >Placed ${o.createdAt}</div>
+                  <div className="text-xl font-semibold text-black font-accent" >OrderId: {o._id.slice(0, 9)}</div>
+                  <div className=" text-[14px]" >Placed {o.createdAt ? new Date(o.createdAt).toLocaleDateString("en-US",
+                    {
+                      day: "numeric",
+                      month: "short",
+                      year: "numeric",
+                    })
+                    :
+                    "Recently"
+                  }
+                  </div>
                 </div>
-                <div className="px-5 bg-black text-wh rounded-full">{o.OrderStatus}</div>
+                <div className={`px-5 rounded-full ${getStatusBadge(o.OrderStatus)}`}>{o.OrderStatus}</div>
               </div>
 
               {/* Content */}
 
-              <div className="grid grid-cols-2 lg:grid-cols-2 flex-wrap gap-5  py-5 ">
+              <div className={`flex flex-col  ${Expend ? "justify-start gap-5" : "justify-between gap-30"} h-full  pt-5 `}>
 
                 {!Expend ?
                   <>
                     {
                       o.OrderItems.slice(0, 1).map((item, index) => (
-                        <div key={index} className=" flex flex-col bg-bg p-1 gap-0 rounded-lg animate-fade-up">
-                          <img src={item.Images[0]} alt="" className="aspect-square object-cover rounded-lg" />
-                          <div className="text-lg text-black  truncate  ">{item.Name}</div>
-                          <div className="text-md font-b">Quantity:{item.Quantity}</div>
+                        <div key={index} className=" flex items-center justify-between bg-wh p-1 gap-2 rounded-lg animate-fade-up">
+                          <div className='flex gap-5 items-center'>
+                            <img src={item.ProductId?.Images[0] || PLACEHOLDER_IMG} alt="" className="w-20 h-20 object-cover rounded-lg" />
+                            <div className='flex flex-col gap-0'>
+                              <div className="text-lg font-semibold text-black  truncate  ">{item.Name}</div>
+                              <div className="text-md font-b">Quantity:{item.Quantity}</div>
+                            </div>
+                          </div>
+                          {o.OrderItems.length !== 1 && (
+                            <div onClick={(e) => {
+                              e.stopPropagation()
+                              setExpendId(o._id)
+                            }} className="w-fit px-5 cursor-pointer border-2 border-black  rounded-full text-black flex items-center justify-center">
+                              {o.OrderItems.length - 1}+
+
+                            </div>
+                          )}
                         </div>
 
                       ))}
 
-                    <div className="bg-bg rounded-lg col-span-1 flex flex-col gap-2  p-5 justify-between h-full">
-                      <div className="flex flex-col">
 
+                    <div className="flex flex-col justify-end">
+                      <div className="bg-bg rounded-lg  h-fit flex flex-col gap  p-5">
                         <div className="font-accent text-xl font-semibold text-black">Summary</div>
-                        <div className='text-md'>Items: <span>18</span></div>
-                        <div className='text-md'>Price: <span>Rs.2,501</span></div>
-
+                        <div className='text-md'>Items: <span>{o.OrderItems.length}</span></div>
+                        <div className='text-md'>Price: <span>Rs.{Math.round(o.OrderPrice)}</span></div>
                       </div>
 
 
-                      <div onClick={(e) => {
-                        e.stopPropagation()
-                        setExpendId(o._id)
-                      }} className="w-full cursor-pointer border-2 border-black  rounded-full text-black flex items-center justify-center">
-                        {o.OrderItems.length - 2}+ items
-
-                      </div>
 
                     </div>
 
@@ -218,14 +128,20 @@ const RecentOrders = () => {
                   <>
                     {
                       o.OrderItems.map((item, index) => (
-                        <div key={index} className="lg:w-50 w-40 flex flex-col bg-bg p-1 rounded-lg animate-fade-up">
-                          <img src={item.Images[0]} alt="" className="aspect-square object-cover rounded-lg" />
-                          <div className="text-lg text-black font-bold truncate ">{item.Name}</div>
-                          <div className="text-md ">Q:{item.Quantity}</div>
+                        <div key={index} className=" flex items-center justify bg-wh p-1 gap-2 rounded-lg animate-fade-up">
+                          <div className='flex gap-5 items-center'>
+                            <img src={item.ProductId?.Images[0] || PLACEHOLDER_IMG} alt="" className="w-20 h-20 object-cover rounded-lg" />
+                            <div className='flex flex-col gap-0'>
+                              <div className="text-lg font-semibold text-black  truncate  ">{item.Name}</div>
+                              <div className="text-md font-b">Quantity:{item.Quantity}</div>
+                            </div>
+                          </div>
+
                         </div>
-                      ))
-                    }
-                    <div onClick={() => setExpendId(null)} className="w-40 cursor-pointer  rounded-lg flex items-center justify-center">
+
+                      ))}
+
+                    <div onClick={() => setExpendId(null)} className="w-full cursor-pointer  rounded-lg flex items-center justify-center">
                       <div className="border-2 border-black rounded-full px-5 text-black font-semibold">Show Less</div>
 
                     </div>

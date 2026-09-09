@@ -9,10 +9,12 @@ import { CartRouter } from "./cart/cart.router";
 import { OrderRouter } from "./order/order.router";
 import cors from "cors"
 import { AdminRouter } from "./admin/admin.router";
+import { ReviewRouter } from "./reviews/review.router";
+import { UserRouter } from "./User/User.router";
 
 
 
-const app=express()
+const app = express()
 app.use(express.json())
 app.use(morgan("dev"))
 app.use(cookieParser())
@@ -20,20 +22,22 @@ app.use(cors({
     origin: "http://localhost:2024",
     credentials: true
 }))
-app.use("/auth/",AuthRouter)
+app.use("/auth/", AuthRouter)
 app.use("/products", ProductRouter)
 app.use("/cart", CartRouter)
 app.use("/order", OrderRouter)
-app.use("/dashboard",AdminRouter)
+app.use("/dashboard", AdminRouter)
+app.use("/reviews", ReviewRouter)
+app.use("/user", UserRouter)
 
 
 
-app.get("/" , (req,res)=>{
+app.get("/", (req, res) => {
     return res.send(`<a href="/auth/google">Account with Google <a/>`)
 })
 
 
-app.listen(Config.Port,()=>{
+app.listen(Config.Port, () => {
     ConnectDB(Config.MongoUrl)
     console.log(`App is live at http://localhost:${Config.Port}`);
 })

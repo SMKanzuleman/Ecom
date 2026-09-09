@@ -14,5 +14,6 @@ export type ProductType = {
     Gender?:string
     Images:string[]
     Sold?:Number
-
+    AvgRating:Number
+    TotalReviews:Number
 }

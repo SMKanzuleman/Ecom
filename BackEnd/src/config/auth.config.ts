@@ -11,6 +11,7 @@ type AuthConfig = {
     OAuthClientId: string,
     OAuthClientSecret: string
     OAuthCallbackUrl:string
+    ResendApiKey:string
 }
 
 export interface AuthRequest extends Request {
@@ -25,6 +26,7 @@ export const AuthConfig: AuthConfig = {
     RefreshExpiry: process.env.REFRESH_TOKEN_EXPIRY || "7d",
     OAuthClientId:process.env.OAUTH_CLIENT_ID || "",
     OAuthClientSecret: process.env.OAUTH_CLIENT_SECRET || "",
-    OAuthCallbackUrl: process.env.OAUTH_CALLBACK_URL || " "
+    OAuthCallbackUrl: process.env.OAUTH_CALLBACK_URL || " ",
+    ResendApiKey:process.env.RESEND_API_KEY || " "
     
 }

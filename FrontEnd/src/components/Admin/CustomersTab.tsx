@@ -11,30 +11,16 @@ import AdminPagenation from './AdminPagenation';
 import API from "../../Utils/API";
 import ExportCSV from "../../Utils/ExportCSV";
 
-const CustomersTab = ({ Stats, Orders }: any) => {
+const CustomersTab = ({ Stats, Users, Orders }: any) => {
 
     const [CurrentPage, setCurrentPage] = useState(1)
     const [PostPerPage, setPostPerPage] = useState(8)
-    const [Users, setUsers] = useState<any>([])
+
     const [SelectedUser, setSelectedUser] = useState<any>(null)
-    const FirstIndex = CurrentPage * PostPerPage;
-    const LastIndex = FirstIndex + PostPerPage;
-    const { Token } = useAuth()
 
-    const FetchUsers = async () => {
-        try {
-            const res = await API.get("/dashboard/AllUsers",)
-            if (res.data.Users) {
-                setUsers(res.data.Users)
-            }
-        } catch (err) {
-            console.error(err)
-        }
-    }
+    const LastIndex = CurrentPage * PostPerPage;
+    const FirstIndex = LastIndex - PostPerPage;
 
-    useEffect(() => {
-        FetchUsers()
-    }, [])
 
     const GetCustomerSpending = (userId: string) => {
         return Orders.filter((o: any) => userId === o.UserId._id && o.OrderStatus === "delivered").reduce((sum, o) => sum + o.OrderPrice, 0)
@@ -50,9 +36,9 @@ const CustomersTab = ({ Stats, Orders }: any) => {
             "Joined": `${new Date(o.createdAt).toLocaleDateString()}`
         }))
 
-    
+
         ExportCSV(ExportData, "Customer_list")
-        
+
 
     }
 
@@ -66,7 +52,7 @@ const CustomersTab = ({ Stats, Orders }: any) => {
                     <span className="font-bold lg:text-3xl text-xl">Customer </span>
                     <span className="text-[14px] tracking-wide text-text lg:block hidden">Manage and view your registered user base.</span>
                 </div>
-                <div className="lg:w-[20%] w-[50%] justify-items-end"> <button onClick={()=>HandleExportCustumers()} className="btn-primary lg:text-sm text-[12px]"><FaDownload />Export</button></div>
+                <div className="lg:w-[20%] w-[50%] justify-items-end"> <button onClick={() => HandleExportCustumers()} className="btn-primary lg:text-sm text-[12px]"><FaDownload />Export</button></div>
             </div>
             {/*KPI Row*/}
             <div className="w-full grid lg:grid-cols-3 grid-cols-2  gap-5">
@@ -119,36 +105,48 @@ const CustomersTab = ({ Stats, Orders }: any) => {
 
                 {/* Body */}
                 <div className="flex flex-col">
-                    {Users.slice(FirstIndex, LastIndex).map((user: any, index: any) => {
-                        return (
-                            <div key={index} className="grid grid-cols-[1fr_1fr] lg:grid-cols-[1fr_2fr_1fr_1fr_1fr_1fr] gap-x-5 items-center py-2 px-3 border-b-2 border-gray-700/10 text-black">
-                                <div className="px-10 ">{user.FName}</div>
-                                <div className="lg:flex items-center gap-5 sm:text-sm hidden">
-                                    <div className="lg:w-10 aspect-square lg:h-10 w-12 h-12 bg-bg rounded-full p-1 flex items-center justify-center text-2xl">
-                                        {user.Email.slice(0, 1)}
+                    {Users.
+                        sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()).
+                        slice(FirstIndex, LastIndex).map((user: any, index: any) => {
+                            return (
+                                <div key={index} className="grid grid-cols-[1fr_1fr] lg:grid-cols-[1fr_2fr_1fr_1fr_1fr_1fr] gap-x-5 items-center py-2 px-3 border-b-2 border-gray-700/10 text-black">
+                                    <div className="relative group flex items-center">
+
+                                        <span className="truncate max-w-32.5 block cursor-default">
+                                            {user.FName} {user.LName}
+                                        </span>
+
+                                        <div className="absolute left-0 bottom-full mb-1 hidden group-hover:block z-50 bg-black text-white text-xs py-1 px-2.5 rounded-md whitespace-nowrap shadow-lg animate-fade-up">
+                                            {user.FName} {user.LName}
+                                        </div>
                                     </div>
-                                    <div>
-                                        {user.Email}</div>
+                                    <div className="lg:flex items-center gap-5 sm:text-sm hidden">
+                                        <div className="lg:w-10 aspect-square lg:h-10 w-12 h-12 bg-bg rounded-full p-1 flex items-center justify-center text-2xl">
+                                            {user.Email.slice(0, 1)}
+                                        </div>
+                                        <div>
+                                            {user.Email}</div>
+                                    </div>
+                                    <div className="lg:b lock hidden">{user.Password}</div>
+                                    {/* <div>10</div> */ }
+                                    <div className="lg:block hidden">{user.Provider}</div>
+                                    <div className="lg:block hidden"> Rs.{GetCustomerSpending(user._id).toLocaleString()}</div>
+                                    <div className="lg:block hidden">{new Date(user.createdAt).toLocaleDateString("en-GB")}</div>
                                 </div>
-                                <div className="lg:block hidden">{user.Password}</div>
-                                {/* <div>10</div> */}
-                                <div className="lg:block hidden">{user.Provider}</div>
-                                <div className="lg:block hidden"> Rs.{GetCustomerSpending(user._id).toLocaleString()}</div>
-                                <div className="lg:block hidden">{new Date(user.createdAt).toLocaleDateString("en-GB")}</div>
-                            </div>
 
-                        )
-                    })}
+                )
+                        })}
 
-                    <AdminPagenation FirstIndex={FirstIndex} LastIndex={LastIndex} CurrentPage={CurrentPage} setCurrentpage={setCurrentPage} PostPerPage={PostPerPage} Capacity={Users.length} />
-
-                </div>
-
+                <AdminPagenation FirstIndex={FirstIndex} LastIndex={LastIndex} CurrentPage={CurrentPage} setCurrentpage={setCurrentPage} PostPerPage={PostPerPage} Capacity={Users.length} />
 
             </div>
 
+
         </div>
-    )
+            </div >
+
+    
+            )
 }
 
-export default CustomersTab
+        export default CustomersTab              

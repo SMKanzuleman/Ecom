@@ -1,24 +1,24 @@
 import jwt from 'jsonwebtoken';
 import { SendError } from "../utils/responce";
-import { NextFunction,Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { AuthConfig, AuthRequest } from '../config/auth.config';
 
 
-export const Authenticate =async (req:AuthRequest,res:Response,next:NextFunction)=>{
+export const Authenticate = async (req: AuthRequest, res: Response, next: NextFunction) => {
     try {
         console.log("---Authenticate Middleware---")
-        let AuthHeader=req.headers.authorization;
-        if(!AuthHeader || !AuthHeader.startsWith("Bearer")){
-            return SendError(res,404,"Token does not found")
+        let AuthHeader = req.headers.authorization;
+        if (!AuthHeader || !AuthHeader.startsWith("Bearer")) {
+            return SendError(res, 404, "Token does not found")
         }
         const Token = AuthHeader.split(" ")[1]
-        const Decoded = jwt.verify(Token,AuthConfig.AccessSecretKey) as { id: string}
-        req.User =Decoded
+        const Decoded = jwt.verify(Token, AuthConfig.AccessSecretKey) as { id: string }
+        req.User = Decoded
         next()
     } catch (error) {
-        console.log("JWT Error Details:", error); 
-        return SendError(res,403,"JWT Error")
-        
+        console.log("JWT Error Details:", error);
+        return SendError(res, 401, "Authentication required")
+
     }
 
 }

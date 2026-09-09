@@ -84,6 +84,7 @@ const Login = () => {
                         className=" w-full px-4 py-3 rounded-lg border-2 border-gray-950 outline-none focus:border-gray-500/50"
                     />
                 </div>
+                <MdUndo />
 
                 <div className="flex flex-col gap-2 w-full">
                     <label

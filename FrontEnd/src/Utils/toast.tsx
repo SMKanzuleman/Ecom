@@ -11,7 +11,7 @@ export const showSuccessToast = (message: string) => {
             minHeight: "42px",
             fontSize: "13px",
             fontWeight: "600",
-            fontFamily: "var(--font-accent)",
+            fontFamily: "var(--font-body)",
             boxShadow: "0 6px 20px rgba(0,0,0,0.3)",
             
             width: "fit-content",

@@ -6,15 +6,33 @@ import { SiGoogleanalytics } from "react-icons/si";
 import { BiLogOut } from "react-icons/bi";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
+import API from "../../Utils/API";
+import { showWaringToast } from "../../Utils/toast";
 
 type SidebarProps = {
     Menu: string,
     setMenu: (m: string) => void
 }
+
+
+
 const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
 
     const { setToken } = useAuth()
     const Navigate = useNavigate()
+
+    const HnadleLogout = async () => {
+        try {
+            const res = await API.post("/auth/logout")
+            if (res.data) {
+                showWaringToast("Loged out.")
+                setToken("")
+                Navigate("/")
+            }
+        } catch (error) {
+            console.error(error)
+        }
+    }
     return (
         <div className="hidden lg:w-[17%] bg-black lg:flex lg:flex-col py-5 relative">
 
@@ -53,10 +71,7 @@ const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
 
             <div className="w-full absolute bottom-2 px-5">
 
-                <button className="btn-primary bg-bg w-full text-black" onClick={() => {
-                    setToken("")
-                    Navigate("/")
-                }}>
+                <button className="btn-primary bg-bg w-full text-black" onClick={() => HnadleLogout()}>
                     <div><BiLogOut className="font-bold" /></div>
                     <div className="font-body font-bold">Logout</div>
                 </button>
