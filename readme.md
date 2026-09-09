@@ -2,8 +2,8 @@
 
 | Login | Sign up |
 | --- | --- |
-| ![Login page](https://raw.githubusercontent.com/SMKanzuleman/Ecom/main/Docs/Login%20Page.png) | ![Sign up page](https://raw.githubusercontent.com/SMKanzuleman/Ecom/main/Docs/SignUp%20Page.png) |
+| ![Login page](https://github.com/SMKanzuleman/Ecom/blob/main/Docs/Login%20Page.png?raw=true) | ![Sign up page](https://github.com/SMKanzuleman/Ecom/blob/main/Docs/SignUp%20Page.png?raw=true) |
 
 | Homepage | Storefront preview |
 | --- | --- |
-| ![Homepage hero section](https://raw.githubusercontent.com/SMKanzuleman/Ecom/main/Docs/HeroSection.png) | ![Storefront preview](https://raw.githubusercontent.com/SMKanzuleman/Ecom/main/Docs/Thumbnail.png) |
+| ![Homepage hero section](https://github.com/SMKanzuleman/Ecom/blob/main/Docs/HeroSection.png?raw=true) | ![Storefront preview](https://github.com/SMKanzuleman/Ecom/blob/main/Docs/Thumbnail.png?raw=true) |
