@@ -85,7 +85,7 @@ const Setting = ({ Styles, FetchStyles }: any) => {
                 <div className="flex w-full justify-center">
                     {[
                         { key: 'Styles', label: 'Styles' },
-                        { key: 'HomePage', label: 'HomePage Styles' },
+                        { key: 'HomePage', label: 'Home Styles' },
 
                     ].map((tab) => (
                         <button

@@ -187,8 +187,7 @@ export const AdminDashboard = () => {
             )}
 
             <Sidebar Menu={Menu} setMenu={setMenu} />
-
-            <div className="w-full pb-20 lg:pb-5 py-5 lg:w-[83%] overflow-y-auto bg-bg no-scrollbar px-10">
+            <div className="w-full pb-20 lg:pb-5 py-5 lg:flex-1 overflow-y-auto bg-bg no-scrollbar px-10">
                 {Menu === "Dashboard" && (<Dashboard Stats={Stats} Products={Products} />)}
                 {Menu === "Products" && (<ProductsTab setMenu={setMenu} setSelectedProductId={setSelectedProductId} />)}
                 {Menu === "Orders" && (<OrdersTab />)}
