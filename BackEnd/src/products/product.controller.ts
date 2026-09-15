@@ -70,7 +70,7 @@ export const GetAllProduct = async (req: Request, res: Response) => {
             Query.Colors = color
         }
         if (style) {
-            console.log("This is your style object:",style)
+            console.log("This is your style object:", style)
             const catsArray = (style as string).split(",");
             Query.Category = { $in: catsArray };
         }
@@ -200,4 +200,23 @@ export const GetFilterData = async (req: Request, res: Response) => {
     }
 }
 
+export const GetStyles = async (req: Request, res: Response) => {
+    try {
+        const FoundedStyles = await Style.find({})
+        SendSuccess(res, 200, "Styles found", FoundedStyles)
+
+    } catch (error) {
+        SendError(res, 500, "Server Error")
+    }
+}
+export const DeleteStyle = async (req: Request, res: Response) => {
+    try {
+        const { styleId } = req.body
+        const success=await Style.findByIdAndDelete(styleId)
+        SendSuccess(res, 200, "Style deleted")
+    } catch (error) {
+        console.error(error)
+        SendError(res, 500, "Server Error")
+    }
+}
 

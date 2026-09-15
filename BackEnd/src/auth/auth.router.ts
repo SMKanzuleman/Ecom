@@ -1,7 +1,7 @@
 import express, { Router } from 'express';
 import { User } from './user.model';
-import { GetMe, LoginUser, RegisterUser, Refresh, Logout, ForgetPassword, VerifyOTP, ResetPassword } from './auth.controller';
-import {GoogleCallback, GoogleRedirect} from './google';
+import { GetMe, LoginUser, RegisterUser, Refresh, Logout, VerifyOTP, ResetPassword, RequestOTP, ChangePassword } from './auth.controller';
+import { GoogleCallback, GoogleRedirect } from './google';
 import { Authenticate } from '../middlewares/authentication';
 import { authorizeRoles } from '../middlewares/authorization';
 
@@ -18,15 +18,17 @@ AuthRouter.get("/google/callback", GoogleCallback);
 
 AuthRouter.post("/refresh", Refresh)
 
-AuthRouter.get("/me", Authenticate ,GetMe)
+AuthRouter.get("/me", Authenticate, GetMe)
 
-AuthRouter.post("/logout",Logout)
+AuthRouter.post("/logout", Logout)
 
-AuthRouter.post("/forget-password",ForgetPassword)
+AuthRouter.post("/request-OTP", RequestOTP)
 
-AuthRouter.post("/verify-otp",VerifyOTP)
+AuthRouter.post("/verify-otp", VerifyOTP)
 
-AuthRouter.post("/reset-password",Authenticate,authorizeRoles("User"),ResetPassword)
+AuthRouter.post("/reset-password", ResetPassword)
+
+AuthRouter.post("/change-password", Authenticate, authorizeRoles("User"), ChangePassword)
 
 
 export default AuthRouter

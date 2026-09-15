@@ -1,3 +1,4 @@
+import axios from "axios";
 import { toast } from "react-toastify";
 
 
@@ -13,12 +14,12 @@ export const showSuccessToast = (message: string) => {
             fontWeight: "600",
             fontFamily: "var(--font-body)",
             boxShadow: "0 6px 20px rgba(0,0,0,0.3)",
-            
+
             width: "fit-content",
             margin: "0 auto",
             paddingLeft: "16px",
             paddingRight: "20px",
-            
+
             // 🌟 100% Exact Vertical Centering Rules
             display: "flex",
             alignItems: "center",
@@ -44,12 +45,12 @@ export const showErrorToast = (message: string) => {
             fontFamily: "var(--font-heading)",
             boxShadow: "0 6px 20px rgba(0,0,0,0.25)",
 
-              
+
             width: "fit-content",
             margin: "0 auto",
             paddingLeft: "16px",
             paddingRight: "20px",
-            
+
             // 🌟 100% Exact Vertical Centering Rules
             display: "flex",
             alignItems: "center",
@@ -72,12 +73,12 @@ export const showWaringToast = (message: string) => {
             fontWeight: "500",
             fontFamily: "var(--font-accent)",
             boxShadow: "0 6px 20px rgba(0,0,0,0.25)",
-              
+
             width: "fit-content",
             margin: "0 auto",
             paddingLeft: "16px",
             paddingRight: "20px",
-            
+
             // 🌟 100% Exact Vertical Centering Rules
             display: "flex",
             alignItems: "center",
@@ -103,3 +104,4 @@ export const showWaringToast = (message: string) => {
     })}
 
 </div> */}
+

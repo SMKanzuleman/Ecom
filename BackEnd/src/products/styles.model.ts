@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 type StyleType = {
     Name: string;
     Categories: string[];
+    ShowOnHome:Boolean;
+    Thumbnail:string;
     createdAt: Date;
     updatedAt: Date;
 }

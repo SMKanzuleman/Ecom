@@ -6,6 +6,7 @@ import { Response } from "express";
 import crypto from "crypto"
 import { SendEmail } from "../utils/sendmail";
 import { OTP } from "../auth/otp.model";
+import mongoose from "mongoose";
 
 export const GetUserDashStats = async (req: AuthRequest, res: Response) => {
     try {
@@ -21,6 +22,7 @@ export const GetUserDashStats = async (req: AuthRequest, res: Response) => {
         const TotalSpending = await Order.aggregate([
             {
                 $match: {
+                    UserId: new mongoose.Types.ObjectId(userId),
                     OrderStatus: "delivered"
                 }
             },

@@ -11,9 +11,10 @@ import ProductsTab from "../components/Admin/ProductsTab";
 import CustomersTab from "../components/Admin/CustomersTab";
 import AddNewProductTab from "../components/Admin/AddNewProductTab";
 import Setting from "../components/Admin/Setting";
-import API from "../Utils/API";
+import API, { APIERROR } from "../Utils/API";
 import EditProduct from "../components/Admin/EditProduct";
 import { data } from "react-router-dom";
+import { showErrorToast, showSuccessToast } from "../Utils/toast";
 
 export const AdminDashboard = () => {
 
@@ -26,6 +27,7 @@ export const AdminDashboard = () => {
     const [Filter, setFilter] = useState(false)
     const [Menu, setMenu] = useState("Dashboard")
     const [Stats, setStats] = useState<any>(null);
+    const [Styles, setStyles] = useState<any[]>([]);
 
 
     const [Selected, setSelected] = useState("T-shirts")
@@ -77,11 +79,27 @@ export const AdminDashboard = () => {
             if (res.data) {
                 console.log("Stats")
                 setStats(res.data)
-                
+
             }
         } catch (err) {
             console.error(err)
             console.error(err)
+        }
+    }
+
+    const FetchStyles = async () => {
+        try {
+
+            const res = await API.get("/products/Styles")
+            const { success, message, ...FoundedStyles } = res.data;
+            if (success) {
+                showSuccessToast(`styles there!`)
+                setStyles(Object.values(FoundedStyles)as any [])
+                console.log(res.data)
+            }
+
+        } catch (error) {
+            APIERROR(error,"Error in ferhing styles")
         }
     }
 
@@ -90,6 +108,7 @@ export const AdminDashboard = () => {
         FetchUsers();
         FetchOrders();
         FetchStats();
+        FetchStyles();
     }, [])
 
 
@@ -174,7 +193,7 @@ export const AdminDashboard = () => {
                 {Menu === "Products" && (<ProductsTab setMenu={setMenu} setSelectedProductId={setSelectedProductId} />)}
                 {Menu === "Orders" && (<OrdersTab />)}
                 {Menu === "Customers" && (<CustomersTab Stats={Stats} Users={Users} Orders={Orders} />)}
-                {Menu === "Setting" && (<Setting />)}
+                {Menu === "Setting" && (<Setting Styles={Styles} FetchStyles={FetchStyles} />)}
                 {Menu === "AddNewProduct" && (
                     <AddNewProductTab setMenu={setMenu} />
                 )}

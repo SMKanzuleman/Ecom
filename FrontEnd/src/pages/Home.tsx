@@ -6,6 +6,7 @@ import HeroSection from '../components/HeroSection';
 import ProductsSection from '../components/ProductsSection';
 import { useAuth } from "../context/AuthContext";
 import API from "../Utils/API";
+import BrowsingSTyles from "../components/BrowsingSTyles";
 
 const Home = () => {
     const [Products, setProducts] = useState<any>([])
@@ -36,6 +37,7 @@ const Home = () => {
             <ProductsSection title={"Top Selling"} tag={"top_selling"} products={Products} />
             <ProductsSection title={"New Arrivals"} tag={"new_arrival"} products={Products} />
             <div className="py-5 bg-wh"></div>
+            <BrowsingSTyles />
             <Newsletter />
             
         </div>

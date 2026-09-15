@@ -170,7 +170,7 @@ const Logout = async (req: Request, res: Response) => {
   }
 };
 
-const ForgetPassword = async (req: AuthRequest, res: Response) => {
+const RequestOTP = async (req: AuthRequest, res: Response) => {
   try {
 
     const { Email } = req.body
@@ -204,6 +204,8 @@ const ForgetPassword = async (req: AuthRequest, res: Response) => {
     SendError(res, 500, "Internal Server Error")
   }
 }
+
+
 const VerifyOTP = async (req: AuthRequest, res: Response) => {
   try {
 
@@ -224,13 +226,12 @@ const VerifyOTP = async (req: AuthRequest, res: Response) => {
 
 const ResetPassword = async (req: AuthRequest, res: Response) => {
   try {
-    const userId = req.User.id
-    const { NewPassword } = req.body
-    const Success = await User.findByIdAndUpdate(userId, {
+    const { NewPassword, Email } = req.body
+    const Success = await User.findOneAndUpdate({ Email: Email }, {
       $set: {
         Password: NewPassword
       }
-    })
+    }, { new: true })
     if (!Success) {
       SendError(res, 404, "Sorry Incorrect OTP")
     }
@@ -241,8 +242,35 @@ const ResetPassword = async (req: AuthRequest, res: Response) => {
   }
 }
 
+const ChangePassword = async (req: AuthRequest, res: Response) => {
+  try {
+    let userId = req.User.id
+
+    const { NewPassword, CurrentPassword } = req.body
+
+    const FoundedUser = await User.findById(userId)
+
+    //check
+    if (!FoundedUser) {
+      return SendError(res, 404, "Incorrect Password")
+    }
+    if (FoundedUser.Password === CurrentPassword) {
+      FoundedUser.Password = NewPassword
+      SendSuccess(res, 201, "Password changed.")
+    }
+    else {
+      SendError(res, 400, "Incorrect current password")
+
+    }
+
+  } catch (error) {
+
+    console.error(error)
+
+    SendError(res, 500, "Internal Server Error")
+
+  }
+}
 
 
-
-
-export { RegisterUser, LoginUser, GetMe, Refresh, Logout, VerifyOTP, ForgetPassword, ResetPassword };
+export { RegisterUser, LoginUser, GetMe, Refresh, Logout, VerifyOTP, RequestOTP, ResetPassword, ChangePassword };

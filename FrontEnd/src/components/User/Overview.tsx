@@ -4,7 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
 
 
-const Overview = ({ TotalOrders, TotalInProgress, TotalUserSpending, CancelledOrders, recentOrder }) => {
+const Overview = ({ TotalOrders, TotalInProgress, TotalUserSpending, CancelledOrders, recentOrder }:any) => {
 
   const { Name } = useAuth()
 

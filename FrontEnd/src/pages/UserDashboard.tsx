@@ -3,14 +3,16 @@ import Sidebar from "../components/User/Sidebar";
 import Overview from "../components/User/Overview";
 import RecentOrders from "../components/User/RecentOrders";
 import Profile from "../components/User/Profile";
-import ForgetPassword from "../components/User/ForgetPassword";
 import BottomNav from "../components/User/BottomNav";
 import API from "../Utils/API";
 import { showSuccessToast } from "../Utils/toast";
-import { ResetPassword } from "../components/User/ResetPassword";
+import { ChangePassword } from "../components/User/ChangePassword";
+import { useAuth } from "../context/AuthContext";
+
 
 
 export const UserDashboard = () => {
+    const { Token } = useAuth()
 
     const [Menu, setMenu] = useState("Overview")
 
@@ -72,10 +74,12 @@ export const UserDashboard = () => {
         }
     }
     useEffect(() => {
-        FetchStats()
-        FetchOrders()
-        FetchUserInfo()
-    }, [])
+        if (Token) {
+            FetchStats()
+            FetchOrders()
+            FetchUserInfo()
+        }
+    }, [Token])
 
     return (
         <div className="w-full flex h-screen overflow-hidden">
@@ -86,7 +90,7 @@ export const UserDashboard = () => {
                 {Menu === "Overview" && (<Overview recentOrder={Orders?.[0] || null} TotalOrders={TotalOrders} TotalInProgress={Inprogress} TotalUserSpending={UserSpending} CancelledOrders={CancelledOrders} />)}
                 {Menu === "RecentOrders" && (<RecentOrders MyOrders={Orders} />)}
                 {Menu === "Profile" && (<Profile setMenu={setMenu} UserName={UserName} UserEmail={UserEmail} DefaultAddress={DefaultAddress} setDefaultAddress={setDefaultAddress} />)}
-                {Menu === "Password" && (<ResetPassword setMenu={setMenu} />)}
+                {Menu === "Password" && (<ChangePassword setMenu={setMenu} />)}
             </div>
 
             <BottomNav Menu={Menu} setMenu={setMenu} />

@@ -1,6 +1,7 @@
 import { useState } from 'react'
+import { GiShoppingBag } from "react-icons/gi";
 
-const RecentOrders = ({ MyOrders }) => {
+const RecentOrders = ({ MyOrders }: any) => {
 
   const [SelectOrders, setSelectOrders] = useState("All");
 
@@ -52,112 +53,123 @@ const RecentOrders = ({ MyOrders }) => {
 
       {/* Orders */}
 
-      <div className='grid lg:grid-cols-3 gap-5 items-start'>
 
-        {FilteredOrders.map((o, index) => {
+      {FilteredOrders.length === 0 ? (
+        <div className="w-full bg-wh rounded-lg p-10 flex flex-col items-center justify-center text-center text-gray-500 border border-dashed border-gray-200">
+                 <GiShoppingBag className="text-4xl text-gray-300 mb-2" />
+                 <p className="font-semibold text-base text-gray-700">No orders placed yet</p>
+                 <p className="text-sm text-gray-400">Once you place an order, it will appear right here.</p>
+               </div>
+      ) : (
+        <>
+          <div className='grid lg:grid-cols-3 gap-5 items-start'>
+            {FilteredOrders.map((o: any, index: any) => {
 
-          const Expend = ExpendId === o._id
+              const Expend = ExpendId === o._id
 
-          return (
+              return (
 
-            <div className="w-full flex flex-col  justify-between  bg-wh rounded-lg shadow-xs border-2 border-gray-700/5 p-5 ">
+                <div className="w-full flex flex-col  justify-between  bg-wh rounded-lg shadow-xs border-2 border-gray-700/5 p-5 ">
 
-              {/* Header */}
+                  {/* Header */}
 
-              <div className="w-full flex justify-between items-center">
+                  <div className="w-full flex justify-between items-center">
 
-                <div className="flex flex-col justify-center items-start">
-                  <div className="text-xl font-semibold text-black font-accent" >OrderId: {o._id.slice(0, 9)}</div>
-                  <div className=" text-[14px]" >Placed {o.createdAt ? new Date(o.createdAt).toLocaleDateString("en-US",
-                    {
-                      day: "numeric",
-                      month: "short",
-                      year: "numeric",
-                    })
-                    :
-                    "Recently"
-                  }
-                  </div>
-                </div>
-                <div className={`px-5 rounded-full ${getStatusBadge(o.OrderStatus)}`}>{o.OrderStatus}</div>
-              </div>
-
-              {/* Content */}
-
-              <div className={`flex flex-col  ${Expend ? "justify-start gap-5" : "justify-between gap-30"} h-full  pt-5 `}>
-
-                {!Expend ?
-                  <>
-                    {
-                      o.OrderItems.slice(0, 1).map((item, index) => (
-                        <div key={index} className=" flex items-center justify-between bg-wh p-1 gap-2 rounded-lg animate-fade-up">
-                          <div className='flex gap-5 items-center'>
-                            <img src={item.ProductId?.Images[0] || PLACEHOLDER_IMG} alt="" className="w-20 h-20 object-cover rounded-lg" />
-                            <div className='flex flex-col gap-0'>
-                              <div className="text-lg font-semibold text-black  truncate  ">{item.Name}</div>
-                              <div className="text-md font-b">Quantity:{item.Quantity}</div>
-                            </div>
-                          </div>
-                          {o.OrderItems.length !== 1 && (
-                            <div onClick={(e) => {
-                              e.stopPropagation()
-                              setExpendId(o._id)
-                            }} className="w-fit px-5 cursor-pointer border-2 border-black  rounded-full text-black flex items-center justify-center">
-                              {o.OrderItems.length - 1}+
-
-                            </div>
-                          )}
-                        </div>
-
-                      ))}
-
-
-                    <div className="flex flex-col justify-end">
-                      <div className="bg-bg rounded-lg  h-fit flex flex-col gap  p-5">
-                        <div className="font-accent text-xl font-semibold text-black">Summary</div>
-                        <div className='text-md'>Items: <span>{o.OrderItems.length}</span></div>
-                        <div className='text-md'>Price: <span>Rs.{Math.round(o.OrderPrice)}</span></div>
+                    <div className="flex flex-col justify-center items-start">
+                      <div className="text-xl font-semibold text-black font-accent" >OrderId: {o._id.slice(0, 9)}</div>
+                      <div className=" text-[14px]" >Placed {o.createdAt ? new Date(o.createdAt).toLocaleDateString("en-US",
+                        {
+                          day: "numeric",
+                          month: "short",
+                          year: "numeric",
+                        })
+                        :
+                        "Recently"
+                      }
                       </div>
-
-
-
                     </div>
+                    <div className={`px-5 rounded-full ${getStatusBadge(o.OrderStatus)}`}>{o.OrderStatus}</div>
+                  </div>
 
-                  </>
-                  :
-                  <>
-                    {
-                      o.OrderItems.map((item, index) => (
-                        <div key={index} className=" flex items-center justify bg-wh p-1 gap-2 rounded-lg animate-fade-up">
-                          <div className='flex gap-5 items-center'>
-                            <img src={item.ProductId?.Images[0] || PLACEHOLDER_IMG} alt="" className="w-20 h-20 object-cover rounded-lg" />
-                            <div className='flex flex-col gap-0'>
-                              <div className="text-lg font-semibold text-black  truncate  ">{item.Name}</div>
-                              <div className="text-md font-b">Quantity:{item.Quantity}</div>
+                  {/* Content */}
+
+                  <div className={`flex flex-col  ${Expend ? "justify-start gap-5" : "justify-between gap-30"} h-full  pt-5 `}>
+
+                    {!Expend ?
+                      <>
+                        {
+                          o.OrderItems.slice(0, 1).map((item: any, index: any) => (
+                            <div key={index} className=" flex items-center justify-between bg-wh p-1 gap-2 rounded-lg animate-fade-up">
+                              <div className='flex gap-5 items-center'>
+                                <img src={item.ProductId?.Images[0] || PLACEHOLDER_IMG} alt="" className="w-20 h-20 object-cover rounded-lg" />
+                                <div className='flex flex-col gap-0'>
+                                  <div className="text-lg font-semibold text-black  truncate  ">{item.Name}</div>
+                                  <div className="text-md font-b">Quantity:{item.Quantity}</div>
+                                </div>
+                              </div>
+                              {o.OrderItems.length !== 1 && (
+                                <div onClick={(e) => {
+                                  e.stopPropagation()
+                                  setExpendId(o._id)
+                                }} className="w-fit px-5 cursor-pointer border-2 border-black  rounded-full text-black flex items-center justify-center">
+                                  {o.OrderItems.length - 1}+
+
+                                </div>
+                              )}
                             </div>
+
+                          ))}
+
+
+                        <div className="flex flex-col justify-end">
+                          <div className="bg-bg rounded-lg  h-fit flex flex-col gap  p-5">
+                            <div className="font-accent text-xl font-semibold text-black">Summary</div>
+                            <div className='text-md'>Items: <span>{o.OrderItems.length}</span></div>
+                            <div className='text-md'>Price: <span>Rs.{Math.round(o.OrderPrice)}</span></div>
                           </div>
+
+
 
                         </div>
 
-                      ))}
+                      </>
+                      :
+                      <>
+                        {
+                          o.OrderItems.map((item: any, index: any) => (
+                            <div key={index} className=" flex items-center justify bg-wh p-1 gap-2 rounded-lg animate-fade-up">
+                              <div className='flex gap-5 items-center'>
+                                <img src={item.ProductId?.Images[0] || PLACEHOLDER_IMG} alt="" className="w-20 h-20 object-cover rounded-lg" />
+                                <div className='flex flex-col gap-0'>
+                                  <div className="text-lg font-semibold text-black  truncate  ">{item.Name}</div>
+                                  <div className="text-md font-b">Quantity:{item.Quantity}</div>
+                                </div>
+                              </div>
 
-                    <div onClick={() => setExpendId(null)} className="w-full cursor-pointer  rounded-lg flex items-center justify-center">
-                      <div className="border-2 border-black rounded-full px-5 text-black font-semibold">Show Less</div>
+                            </div>
 
-                    </div>
+                          ))}
 
-                  </>
-                }
+                        <div onClick={() => setExpendId(null)} className="w-full cursor-pointer  rounded-lg flex items-center justify-center">
+                          <div className="border-2 border-black rounded-full px-5 text-black font-semibold">Show Less</div>
 
-              </div>
+                        </div>
 
-            </div>
-          )
-        })}
+                      </>
+                    }
 
-      </div>
+                  </div>
 
-    </div>
+                </div>
+              )
+            })}
+
+          </div>
+        </>
+      )}
+
+
+    </div >
   )
 }
 

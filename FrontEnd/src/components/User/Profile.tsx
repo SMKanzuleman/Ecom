@@ -5,7 +5,7 @@ import { FaEdit } from "react-icons/fa";
 import { useState } from "react";
 import API from "../../Utils/API";
 import { showSuccessToast } from "../../Utils/toast";
-import { BiPhone } from "react-icons/bi";
+
 
 type ShippingAddressType = {
   Location: string, LandMark: string, State: string, City: string, Zip: string, Phone: string
@@ -27,8 +27,8 @@ const Profile = ({ setMenu, UserName, UserEmail, DefaultAddress, setDefaultAddre
     }
   }
 
-
   const [EditAddress, setEditAddress] = useState(false);
+
   const [Saving, setSaving] = useState(false);
 
   const [SavedAddress, setSavedAddress] = useState<ShippingAddressType>({ Location: "Your address", LandMark: "Landmark", State: "State", City: "City", Zip: "567", Phone: "923456789012" });
@@ -71,13 +71,8 @@ const Profile = ({ setMenu, UserName, UserEmail, DefaultAddress, setDefaultAddre
             </div>
             <span className="text-black text-lg font-medium">{UserEmail ? UserEmail : "NotFound"}</span>
             <div className="text-[14px] tracking-wider">Phone:</div>
-            <span className="text-black text-lg font-medium">+{DefaultAddress.Phone? DefaultAddress.Phone : "Not added yet"}</span>
+            <span className="text-black text-lg font-medium">{DefaultAddress.Phone ? DefaultAddress.Phone : "Not added yet"}</span>
           </div>
-
-
-
-
-
 
 
 
@@ -93,10 +88,16 @@ const Profile = ({ setMenu, UserName, UserEmail, DefaultAddress, setDefaultAddre
 
           {!EditAddress ? (
             <>
-              <span className="text-wh rounded-full px-3 my-2 bg-black  w-fit">Default</span>
-              <div className=" text-lg font animate-fade-up">{DefaultAddress.Location}, {DefaultAddress.LandMark},<br /> {DefaultAddress.City},{DefaultAddress.State},{String(SavedAddress.Zip)}
-                <br />{String(DefaultAddress.Phone)}
-              </div>
+              {!DefaultAddress.Location ? (
+                <div className="w-full h-full flex justify-center items-center text-xl font-heading">NOT Added Yet</div>
+              ) : (
+                <>
+                  <span className="text-wh rounded-full px-3 my-2 bg-black  w-fit">Default</span>
+                  <div className=" text-lg font animate-fade-up">{DefaultAddress.Location}, {DefaultAddress.LandMark},<br /> {DefaultAddress.City},{DefaultAddress.State},{String(SavedAddress.Zip)}
+                    <br />{String(DefaultAddress.Phone)}
+                  </div>
+                </>
+              )}
 
             </>
 
@@ -157,7 +158,6 @@ const Profile = ({ setMenu, UserName, UserEmail, DefaultAddress, setDefaultAddre
 
           )}
 
-
           <div className="lg:text-3xl text-2xl font-accent font-semibold text-black pt-5 flex justify-between items-center">
             <span>Password</span>
             <button onClick={() => setMenu("Password")} className="cursor-pointer hover:scale-95"><FaArrowUpRightFromSquare className="text-lg" /></button>
@@ -165,16 +165,12 @@ const Profile = ({ setMenu, UserName, UserEmail, DefaultAddress, setDefaultAddre
 
 
 
-
-
-
-
         </div>
 
 
-      </div>
+      </div >
 
-    </div>
+    </div >
   )
 }
 

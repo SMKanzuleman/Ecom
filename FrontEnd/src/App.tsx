@@ -12,7 +12,7 @@ import { ToastContainer } from 'react-toastify';
 import "react-toastify/dist/ReactToastify.css"
 import { UserDashboard } from './pages/UserDashboard';
 import ProtectedRout from './Middlewares/ProtectedRout';
-import ForgetPassword from './components/User/ForgetPassword';
+import ResetPassword from './components/User/ResetPassword';
 
 
 export const App = () => {
@@ -41,7 +41,7 @@ export const App = () => {
         {/* Protected rout */}
         <Route element={<ProtectedRout />}>
           <Route path="/userdashboard" element={<UserDashboard />} />
-          <Route path="/password" element={<ForgetPassword />} />
+          <Route path="/password" element={<ResetPassword />} />
         </Route>
 
 

@@ -48,13 +48,20 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             setToken(NewToken)
             const r = JSON.parse(atob(NewToken.split('.')[1]));
             setRole(r.Role)
-        
         }
         window.addEventListener("Token_Refreshed", handleRefresh);
 
         return () => window.removeEventListener("Token_Refreshed", handleRefresh);
 
     }, [])
+
+    useEffect(() => {
+        if (Token) {
+            API.defaults.headers.common["Authorization"] = `Bearer ${Token}`;
+        } else {
+            delete API.defaults.headers.common["Authorization"];
+        }
+    }, [Token]);
 
     return (
         <AuthContext.Provider value={{ Token, setToken, Name, setName, Role, setRole, Loading }}>

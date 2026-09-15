@@ -1,4 +1,5 @@
 import axios from "axios";
+import { showErrorToast } from "./toast";
 
 const API = axios.create({
     baseURL: "http://localhost:2026",
@@ -8,14 +9,14 @@ const API = axios.create({
 API.interceptors.response.use(
     //Success
     (response) => response,
-    
+
     //Error
     async (error) => {
         const originalRequest = error.config;
 
-        
-        if (error.response?.status === 403  && !originalRequest._retry) {
-            
+
+        if (error.response?.status === 403 && !originalRequest._retry) {
+
             if (originalRequest.url.includes("/auth/refresh")) {
                 return Promise.reject(error);
             }
@@ -26,10 +27,9 @@ API.interceptors.response.use(
                 // 1️⃣ Automatic Background Refresh!
                 const res = await axios.post("http://localhost:2026/auth/refresh", {}, { withCredentials: true });
                 const newToken = res.data.token;
-                API.defaults.headers.common["Authorization"]=`Bearer ${newToken}`
+                API.defaults.headers.common["Authorization"] = `Bearer ${newToken}`
 
-                window.dispatchEvent(new CustomEvent("Token_Refreshed", {detail:newToken}))
-
+                window.dispatchEvent(new CustomEvent("Token_Refreshed", { detail: newToken }))
 
 
                 // 2️⃣ Failed request ko naye token ke sath dobara chalao!
@@ -44,3 +44,12 @@ API.interceptors.response.use(
 );
 
 export default API;
+
+
+export const APIERROR = (error: any, FALLBACK: string)=>{
+    if (axios.isAxiosError(error)) {
+        showErrorToast(error.response?.data?.message || FALLBACK);
+    } else {
+        showErrorToast(FALLBACK);
+    }
+}
