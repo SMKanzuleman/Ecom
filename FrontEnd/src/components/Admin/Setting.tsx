@@ -39,6 +39,8 @@ const Setting = ({ Styles, FetchStyles }: any) => {
             const res = await API.post("/dashboard/Styles", { StyleName: SName, StyleCategories: SCategories },)
             if (res.data) {
                 showSuccessToast(`${SName} added!`)
+                setSName("")
+                setSCategories([])
                 FetchStyles()
             }
 
@@ -63,11 +65,18 @@ const Setting = ({ Styles, FetchStyles }: any) => {
             setDeletingId(null)
         }
     }
+
     useEffect(() => {
         if (Token) {
             FetchCategories()
         }
     }, [Token])
+
+    const toggleCategory = (cat: string) => {
+        setSCategories((prev: string[]) =>
+            prev.includes(cat) ? prev.filter((item) => item !== cat) : [...prev, cat]
+        );
+    };
 
     return (
         <div className="w-full animate-fade-up flex flex-col gap-5">
@@ -76,7 +85,7 @@ const Setting = ({ Styles, FetchStyles }: any) => {
                 <div className="flex w-full justify-center">
                     {[
                         { key: 'Styles', label: 'Styles' },
-                        { key: 'General', label: 'General' },
+                        { key: 'HomePage', label: 'HomePage Styles' },
 
                     ].map((tab) => (
                         <button
@@ -99,7 +108,7 @@ const Setting = ({ Styles, FetchStyles }: any) => {
                 < >
                     <Title name="Add Custom Style" />
 
-                    <div className=' bg-wh rounded-2xl flex  px-5 py-10 gap-4 items shadow-2xl w-full'>
+                    <div className=' bg-wh rounded-2xl flex  px-5 py-10 gap-4 items shadow w-full animate-fadding'>
 
                         <div className='flex flex-col gap-4 w-[45%]'>
                             <label className='text-black font-semibold'>Name your Style</label>
@@ -138,21 +147,27 @@ const Setting = ({ Styles, FetchStyles }: any) => {
                             <div className='flex flex-wrap gap-3'>
 
                                 {Categories.map((cat: any) => (
-                                    <div className={`flex gap-3 items-center px-5 py-3 rounded-full cursor-pointer ${SCategories.includes(cat) ? 'bg-black text-wh' : 'bg-bg text-black'}`}
-                                        onClick={
-                                            () => {
-                                                if (SCategories.includes(cat)) {
-                                                }
-                                                else {
-                                                    setSCategories([...SCategories, cat])
+                                    <button
+                                        key={cat}
+                                        type="button"
+                                        onClick={() => toggleCategory(cat)}
+                                        className={`group inline-flex items-center px-5 py-2.5 rounded-full font-medium text-sm cursor-pointer select-none transition-all duration-300 ease-out active:scale-95 ${SCategories.includes(cat)
+                                            ? "bg-black text-white shadow-md"
+                                            : "bg-bg text-black"
+                                            }`}
+                                    >
+                                        <span>{cat}</span>
+                                        <span
+                                            className={`inline-flex items-center justify-center overflow-hidden transition-all duration-300 ease-out ${SCategories.includes(cat)
+                                                ? "max-w-6 opacity-100 scale-100 ml-2"
+                                                : "max-w-0 opacity-0 scale-0 ml-0 pointer-events-none"
+                                                }`}
+                                        >
+                                            <FiX className="text-sm transition-transform duration-200 group-hover:rotate-90" />
+                                        </span>
+                                    </button>
 
-                                                }
-                                            }}>
-                                        {cat}
-                                        {SCategories.includes(cat) && <FiX onClick={() => {
-                                            setSCategories(SCategories.filter((i) => i != cat))
-                                        }} aria-hidden="true" />}
-                                    </div>
+
                                 ))}
                             </div>
 
@@ -160,9 +175,9 @@ const Setting = ({ Styles, FetchStyles }: any) => {
 
                     </div>
                     <div className='py-5'>
-                        <Title name="Your Styles" />
+                        <Title name="Styles" />
                     </div>
-                    <div className='bg-wh rounded-2xl border border-gray-200 shadow-sm overflow-hidden'>
+                    <div className='bg-wh rounded-2xl border border-gray-200 shadow-sm shadow-2xl overflow-hidden animate-fade-up'>
                         <div className='grid grid-cols-[0.5fr_2fr_0.5fr] gap-5 bg-black px-20 py-3 border-b border-gray-200 text-[16px] font-semibold text-wh tracking-wide'>
                             <div>Style Name</div>
                             <div>Categories</div>
@@ -188,21 +203,20 @@ const Setting = ({ Styles, FetchStyles }: any) => {
                                             )}
                                         </div>
 
-                                        <div className="flex justify-end gap-2">
-                                            <AiFillEdit className="text-black bg-bg rounded-2xl p-1 py-2  text-3xl  hover:scale-95 duration-200 cursor-pointer" />
-                                            <div className="flex justify-end gap-2 items-center">
-                                                <AiFillEdit className="text-black bg-bg rounded-2xl p-1 py-2 text-3xl hover:scale-95 duration-200 cursor-pointer" />
-                                                {DeletingId === s._id ? (
-                                                    <div className="bg-bg rounded-2xl p-1.5 flex items-center justify-center w-[36px] h-[36px]">
-                                                        <CgSpinner className="animate-spin text-black text-xl" />
-                                                    </div>
-                                                ) : (
-                                                    <AiFillDelete
-                                                        onClick={() => DeleteStyle(s._id)}
-                                                        className="text-black bg-bg rounded-2xl p-1 py-2 text-3xl hover:scale-95 duration-200 cursor-pointer"
-                                                    />
-                                                )}
-                                            </div>
+
+                                        <div className="flex justify-end gap-2 items-center">
+                                            <AiFillEdit className="text-black bg-bg rounded-2xl p-1 py-2 text-3xl hover:scale-95 duration-200 cursor-pointer" />
+                                            {DeletingId === s._id ? (
+                                                <div className="bg-bg rounded-2xl p-1.5 flex items-center justify-center w-[36px] h-[36px]">
+                                                    <CgSpinner className="animate-spin text-black text-xl" />
+                                                </div>
+                                            ) : (
+                                                <AiFillDelete
+                                                    onClick={() => DeleteStyle(s._id)}
+                                                    className="text-black bg-bg rounded-2xl p-1 py-2 text-3xl hover:scale-95 duration-200 cursor-pointer"
+                                                />
+                                            )}
+
                                         </div>
 
 
