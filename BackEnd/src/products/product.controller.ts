@@ -220,3 +220,38 @@ export const DeleteStyle = async (req: Request, res: Response) => {
     }
 }
 
+export const SetHomeStyles = async (req: Request, res: Response) => {
+    try {
+        const { slots } = req.body;
+
+        // Reset previous home styles
+        await Style.updateMany({}, { ShowOnHome: false, HomeSlot: null });
+
+        if (Array.isArray(slots)) {
+            for (const item of slots) {
+                const name = item.StyleName;
+                if (name ) {
+                    await Style.findOneAndUpdate(
+                        { Name: name.trim() },
+                        { ShowOnHome: true, HomeSlot: item.slot }
+                    );
+                }
+            }
+        }
+
+        SendSuccess(res, 200, "Home styles updated successfully");
+    } catch (error) {
+        console.error("SetHomeStyles error:", error);
+        SendError(res, 500, "Server Error");
+    }
+};
+
+export const GetHomeStyles = async (req: Request, res: Response) => {
+    try {
+        const homeStyles = await Style.find({ ShowOnHome: true }).sort({ HomeSlot: 1 });
+        SendSuccess(res, 200, "Home styles fetched", { homeStyles });
+    } catch (error) {
+        console.error("GetHomeStyles error:", error);
+        SendError(res, 500, "Server Error");
+    }
+};

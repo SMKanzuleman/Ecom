@@ -29,16 +29,14 @@ const ProductsSection = ({ title, tag, products }: ProductProp) => {
 
 
 
-
-
     const [ShowAll, SetShowAll] = useState(false)
     return (
         <div className="w-full bg-wh min-h-[60vh] flex flex-col gap-5">
-            <div className="w-full font-heading text-4xl uppercase text-black font-bold lg:pt-20 lg:pb-20 pt-20 pb-10 text-center">{title}</div>
+            <div className="w-full font-accent text-4xl uppercase text-black font-bold lg:pt-20 lg:pb-20 pt-20 pb-10 text-center">{title}</div>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 px-2 bg-amber-00 lg:px-16 justify-items-center">
 
-                {FilterProducts().slice(0, ShowAll ? products.length : 4).map((item: any) => {
+                {FilterProducts().slice(0, ShowAll ? products.length : 8).map((item: any) => {
                     return (
                         <Link to={`/product/${item._id}`} key={item._id} >
                             <div key={item._id} className="lg:w-62.5 w-50 py-3 lg:py-0 h-auto animate-fade-up hover:scale-110 transition-transform duration-300 cursor-pointer ">

@@ -13,6 +13,8 @@ import "react-toastify/dist/ReactToastify.css"
 import { UserDashboard } from './pages/UserDashboard';
 import ProtectedRout from './Middlewares/ProtectedRout';
 import ResetPassword from './components/User/ResetPassword';
+import { Footer } from './components/Footer';
+
 
 
 export const App = () => {
@@ -21,9 +23,11 @@ export const App = () => {
   
   return (
     <div>
+      
       <ToastContainer position='top-right' style={{ top: "110px", right: "20px" }} />
 
       {!IsDashboard && <Navbar />}
+      
       {!IsDashboard && <Cart />}
 
 
@@ -54,6 +58,8 @@ export const App = () => {
         </Route>
 
       </Routes>
+
+      {!IsDashboard && <Footer />}
     </div>
   )
 }

@@ -2,11 +2,10 @@ import mongoose from "mongoose";
 type StyleType = {
     Name: string;
     Categories: string[];
-    ShowOnHome: Boolean;
-    Thumbnail: string;
+    ShowOnHome: boolean;
+    HomeSlot: number | null;
     createdAt: Date;
     updatedAt: Date;
-    HomeSlot: Number[];
 }
 
 const StyleScheme = new mongoose.Schema<StyleType>({
@@ -24,16 +23,10 @@ const StyleScheme = new mongoose.Schema<StyleType>({
         type: Boolean,
         default: false
     },
-    Thumbnail: {
-        type: String,
-        default: ""
-    },
     HomeSlot: {
-        type: [Number],
-        default: [],
-         
+        type: Number,
+        default: null
     }
-
 }, { timestamps: true })
 
 export const Style = mongoose.model<StyleType>("Style", StyleScheme)
