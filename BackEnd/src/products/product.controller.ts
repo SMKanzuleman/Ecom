@@ -212,7 +212,7 @@ export const GetStyles = async (req: Request, res: Response) => {
 export const DeleteStyle = async (req: Request, res: Response) => {
     try {
         const { styleId } = req.body
-        const success=await Style.findByIdAndDelete(styleId)
+        const success = await Style.findByIdAndDelete(styleId)
         SendSuccess(res, 200, "Style deleted")
     } catch (error) {
         console.error(error)

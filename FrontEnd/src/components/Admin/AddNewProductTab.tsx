@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { MdDelete } from "react-icons/md";
-import { FaCloudUploadAlt } from "react-icons/fa";
 import { RichTextEditor } from "./RichTextEditor";
 import { useAuth } from "../../context/AuthContext";
 import { toast } from 'react-toastify'

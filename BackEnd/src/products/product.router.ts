@@ -6,22 +6,22 @@ import { upload } from "../middlewares/upload";
 
 export const ProductRouter = Router()
 
-ProductRouter.get("/FilterData",GetFilterData)
+ProductRouter.get("/FilterData", GetFilterData)
 
 ProductRouter.delete("/Styles", DeleteStyle)
 
-ProductRouter.post("/",Authenticate,authorizeRoles("Admin"),upload.array("Imges",5) ,AddNewProduct )
+ProductRouter.post("/", Authenticate, authorizeRoles("Admin"), upload.array("Imges", 5), AddNewProduct)
 
 ProductRouter.get("/", GetAllProduct)
 
 ProductRouter.get("/Styles", GetStyles)
 
-ProductRouter.get("/:id",GetSingleProduct)
+ProductRouter.get("/:id", GetSingleProduct)
 
-ProductRouter.put("/:id",Authenticate,authorizeRoles("Admin"),upload.array("Imges",5), EditProduct)
+ProductRouter.put("/:id", Authenticate, authorizeRoles("Admin"), upload.array("Imges", 5), EditProduct)
 
-ProductRouter.delete("/:id", Authenticate,authorizeRoles("Admin"),DeleteSingleProduct)
+ProductRouter.delete("/:id", Authenticate, authorizeRoles("Admin"), DeleteSingleProduct)
 
-ProductRouter.delete("/",Authenticate,authorizeRoles("Admin"), DeleteAllProduct)
+ProductRouter.delete("/", Authenticate, authorizeRoles("Admin"), DeleteAllProduct)
 
 
