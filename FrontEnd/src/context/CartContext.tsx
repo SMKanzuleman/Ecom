@@ -42,7 +42,7 @@ const CartProvider = ({ children }: { children: React.ReactNode }) => {
     const SyncCart = async () => {
         try {
             if (!Token) return;
-            const res = await API.get("/cart",);
+            const res = await API.get("/cart");
 
             if (res.data.FoundedCart?.Items) {
 
@@ -79,12 +79,22 @@ const CartProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     useEffect(() => {
-        localStorage.setItem("User_Cart", JSON.stringify(Cart))
-    }, [Cart])
+        if(Token && Cart.length>0){
+            localStorage.setItem("User_Cart", JSON.stringify(Cart))
+        }
+        else if(!Token){
+            localStorage.removeItem("User_Cart")
+
+        }
+    }, [Cart,Token])
 
     useEffect(() => {
         if (Token) {
             SyncCart()
+        }
+        else {
+            setCart([])
+            localStorage.removeItem("User_Cart")
         }
     }, [Token])
 

@@ -10,11 +10,13 @@ import Dashboard from "../components/Admin/Dashboard";
 import ProductsTab from "../components/Admin/ProductsTab";
 import CustomersTab from "../components/Admin/CustomersTab";
 import AddNewProductTab from "../components/Admin/AddNewProductTab";
-import Setting from "../components/Admin/Setting";
+
 import API, { APIERROR } from "../Utils/API";
 import EditProduct from "../components/Admin/EditProduct";
 import { data } from "react-router-dom";
 import { showErrorToast, showSuccessToast } from "../Utils/toast";
+import { AddStyle } from "../components/Admin/AddStyle";
+import { SetHomeStyle } from "../components/Admin/SetHomeStyle";
 
 export const AdminDashboard = () => {
 
@@ -94,12 +96,12 @@ export const AdminDashboard = () => {
             const { success, message, ...FoundedStyles } = res.data;
             if (success) {
                 showSuccessToast(`styles there!`)
-                setStyles(Object.values(FoundedStyles)as any [])
+                setStyles(Object.values(FoundedStyles) as any[])
                 console.log(res.data)
             }
 
         } catch (error) {
-            APIERROR(error,"Error in ferhing styles")
+            APIERROR(error, "Error in ferhing styles")
         }
     }
 
@@ -176,27 +178,24 @@ export const AdminDashboard = () => {
 
                         </div>
                         <div> <button onClick={() => setSelectedUser(null)} className="btn-primary w-full">Close</button></div>
-
-
                     </div>
-
-
-
                 </div>
 
             )}
 
             <Sidebar Menu={Menu} setMenu={setMenu} />
+            
             <div className="w-full pb-20 lg:pb-5 py-5 lg:flex-1 overflow-y-auto bg-bg no-scrollbar px-10">
                 {Menu === "Dashboard" && (<Dashboard Stats={Stats} Products={Products} />)}
                 {Menu === "Products" && (<ProductsTab setMenu={setMenu} setSelectedProductId={setSelectedProductId} />)}
                 {Menu === "Orders" && (<OrdersTab />)}
                 {Menu === "Customers" && (<CustomersTab Stats={Stats} Users={Users} Orders={Orders} />)}
-                {Menu === "Setting" && (<Setting Styles={Styles} FetchStyles={FetchStyles} />)}
                 {Menu === "AddNewProduct" && (
                     <AddNewProductTab setMenu={setMenu} />
                 )}
-                {Menu == "EditProduct" && (<EditProduct EditId={SelectedProductId} setMenu={setMenu} />)}
+                {Menu === "EditProduct" && (<EditProduct EditId={SelectedProductId} setMenu={setMenu} />)}
+                {Menu === "AddStyles" && <AddStyle Styles={Styles} FetchStyles={FetchStyles} />}
+                {Menu === "HomeStyles" && <SetHomeStyle Styles={Styles} FetchStyles={FetchStyles} />}
 
             </div>
 

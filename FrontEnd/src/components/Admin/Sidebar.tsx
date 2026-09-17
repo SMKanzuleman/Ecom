@@ -10,6 +10,8 @@ import API from "../../Utils/API";
 import { showWaringToast } from "../../Utils/toast";
 import { LuPanelLeftClose } from "react-icons/lu";
 import { useState } from "react";
+import { FaChevronRight } from "react-icons/fa";
+import { useCart } from "../../context/CartContext";
 
 type SidebarProps = {
     Menu: string,
@@ -21,8 +23,10 @@ type SidebarProps = {
 const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
 
     const { setToken } = useAuth()
+    const {  ClearCart } = useCart()
     const Navigate = useNavigate()
     const [IsCollapsed, setIsCollapsed] = useState(false);
+    const [OpenSubMenu, setOpenSubMenu] = useState<any>(null);
 
 
     const HnadleLogout = async () => {
@@ -31,27 +35,27 @@ const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
             if (res.data) {
                 showWaringToast("Loged out.")
                 setToken("")
+                ClearCart()
                 Navigate("/")
             }
         } catch (error) {
             console.error(error)
         }
     }
-    return (
-        <div className={`hidden bg-black lg:flex lg:flex-col py-5 transition-all duration-300 ease-in-out relative ${IsCollapsed ? "lg:w-16" : "lg:w-[17%]"}`}>
 
-            <div className={`w-full flex flex-col ${IsCollapsed ? "lg:px-2" : "lg:px-5"}`}>
+    return (
+        <div className={`hidden bg-black lg:flex lg:flex-col py-5 transition-all duration-300 ease-in-out relative shrink-0 ${IsCollapsed ? "lg:w-20" : "lg:w-[18%]"}`}>
+
+            <div className={`w-full flex flex-col ${IsCollapsed ? "lg:px-3" : "lg:px-5"}`}>
                 <div className={`flex ${IsCollapsed ? "justify-center" : "justify-between"}  items-center group overflow-hidden`}>
-                    
                     <div
-                        className={`overflow-hidden whitespace-nowrap transition-all duration-300 ${IsCollapsed ? "max-w-0 opacity-0" : "w-full opacity-100"}`}>
+                        className={`overflow-hidden whitespace-nowrap transition-all duration-300 ${IsCollapsed ? "max-w-0 opacity-0 hidden" : "w-full opacity-100"}`}>
                         <Link to={`/`}>
                             <div className="font-accent text-3xl text-wh">Ecom</div>
                             <div className="font-accent text-sm tracking-wider text-gray-400">Admin Panel</div>
                         </Link>
 
                     </div>
-
                     <span>
                         <LuPanelLeftClose
                             onClick={() => setIsCollapsed(!IsCollapsed)}
@@ -86,30 +90,79 @@ const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
                         key: "Setting",
                         label: "Setting",
                         icon: <SiGoogleanalytics className="text-xl shrink-0" />,
+                        SubMenu: [
+                            { key: "AddStyles", label: "Add Styles" },
+                            { key: "HomeStyles", label: "HomePage Styles" }
+                        ]
                     },
                 ].map((item, index) => {
-                    const isActive = Menu === item.key
+                    const isSubActive = item.SubMenu?.some((sub: any) => sub.key === Menu);
+                    const isActive = Menu === item.key || isSubActive;
                     return (
-                        <div
-                            key={index}
-                            onClick={() => setMenu(item.key)}
-                            title={item.label}
-                            className={`flex items-center p-3 cursor-pointer 
-                            ${isActive ? "border-l-2 border-wh bg-wh/10" : "bg-black hover:bg-white/10"}
-                            ${IsCollapsed ? "justify-center" : "gap-4"}`}>
-                            {/* icon */}
-                            {item.icon}
-                            {/* Label */}
-                            <span
-                                className={`font-body whitespace-nowrap overflow-hidden transition-all duration-300 
-                                ${IsCollapsed ? "max-w-0 opacity-0" : "max-w-37.5 opacity-100"}`}>
-                                {item.label}
-                            </span>
+                        <div key={index} className="flex flex-col gap-3">
+
+                            <div
+                                onClick={() => {
+                                    if (item.SubMenu) {
+                                        const isOpening = OpenSubMenu !== item.key;
+                                        setOpenSubMenu(isOpening ? item.key : null);
+                                        if (isOpening) {
+                                            setMenu(item.SubMenu[0].key);
+                                        }
+                                    } else {
+                                        setMenu(item.key);
+                                        setOpenSubMenu(null);
+                                    }
+                                }}
+                                title={item.label}
+                                className={`flex items-center cursor-pointer rounded-xl transition-all duration-200
+                            ${isActive ? "border-l-2 border-wh bg-wh/10 text-wh font-semibold" : "bg-black text-wh/70 hover:bg-white/10 hover:text-wh"}
+                            ${IsCollapsed ? "justify-center p-3 mx-2" : "p-3 mx-3 pr-5 gap-4"}`}>
+                                {/* icon */}
+                                {item.icon}
+                                {/* Label */}
+                                <span
+                                    className={`font-body whitespace-nowrap overflow-hidden transition-all duration-300 
+                                ${IsCollapsed ? "max-w-0 opacity-0 hidden" : "max-w-37.5 opacity-100"}`}>
+                                    {item.label}
+                                </span>
+                                {item.SubMenu && !IsCollapsed && (
+                                    <FaChevronRight className={`${OpenSubMenu === item.key ? "rotate-90" : "rotate-0"} ml-auto shrink-0 transition-all duration-300 ease-in-out`} />
+                                )}
+                            </div>
+                            {/* SubMenu only when NOT collapsed */}
+                            {!IsCollapsed && OpenSubMenu === item.key && item.SubMenu && (
+                                item.SubMenu.map((i, sIdx) => {
+                                    const isSubActive = Menu === i.key;
+                                    return (
+                                        <div
+                                            key={sIdx}
+                                            onClick={() => {
+                                                setMenu(i.key);
+                                            }}
+                                            title={i.label}
+                                            className={`flex items-center gap-2.5 py-2.5 px-6 mx-3  rounded-lg animate-fade-up cursor-pointer transition-all duration-200 ${isSubActive
+                                                    ? "bg-white text-black font-semibold shadow-md"
+                                                    : "text-wh/70 hover:text-wh hover:bg-white/10"
+                                                }`}
+                                        >
+                                            <span
+                                                className={`w-1.5 h-1.5 rounded-full shrink-0 transition-colors ${isSubActive ? "bg-black" : "bg-white/40"
+                                                    }`}
+                                            />
+                                            <span
+                                                className="font-body text-sm whitespace-nowrap overflow-hidden"
+                                            >
+                                                {i.label}
+                                            </span>
+                                        </div>
+                                    );
+                                })
+                            )}
 
                         </div>
-                    )
+                    );
                 })}
-
             </div>
 
             {/* 3. Logout Button */}

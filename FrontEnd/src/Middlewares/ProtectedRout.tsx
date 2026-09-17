@@ -5,9 +5,11 @@ import { Navigate, Outlet } from 'react-router-dom'
 
 const ProtectedRout = () => {
 
-    const { Token } = useAuth()
+    const { Token, Loading } = useAuth()
+    if (Loading) {
+        return <div className="h-screen w-full flex items-center justify-center bg-bg font-accent">Loading...</div>;
+    }
     if (!Token) {
-        showWaringToast("Please Login first")
         return <Navigate to={"/auth"} />
     }
     return <Outlet />

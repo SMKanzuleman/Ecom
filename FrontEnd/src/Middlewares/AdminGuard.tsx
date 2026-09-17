@@ -4,9 +4,9 @@ import { Navigate } from 'react-router-dom'
 import { showWaringToast } from '../Utils/toast'
 
 const AdminGuard = ({ children }: { children: React.ReactNode }) => {
-    const { Role, Token,Loading } = useAuth()
-    if(Loading){
-        <div>Loading</div>
+    const { Role, Token, Loading } = useAuth()
+    if (Loading) {
+        return <div className="h-screen w-full flex items-center justify-center bg-bg font-accent">Loading...</div>;
     }
     if (!Token) {
         showWaringToast("Please login first")

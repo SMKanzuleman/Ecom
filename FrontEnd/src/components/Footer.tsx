@@ -3,7 +3,6 @@ import { FaFacebookF, FaInstagram, FaTwitter, FaEnvelope, FaPhoneAlt, FaMapMarke
 
 export const Footer = () => {
  
-
     return (
         <footer className="w-full bg-black mt-auto">
             {/* Main Content: 4 Columns */}
