@@ -21,13 +21,6 @@ export type OrderType = {
         LName: string
         Phone: Number
     }
-    PaymentDetails:{
-        Method:string,
-        CardNumber?:string,
-        CVV?:string,
-        MMYY?:string,
-
-    }
     OrderItems: {
         ProductId: mongoose.Types.ObjectId
         Name: string

@@ -17,7 +17,6 @@ const Home = () => {
         try {
 
             setProductsLoading(true)
-            await new Promise((resolve) => setTimeout(resolve, 10000));
             const res = await API.get("/products")
             if (res.data.AllProducts) {
                 setProducts(res.data.AllProducts)

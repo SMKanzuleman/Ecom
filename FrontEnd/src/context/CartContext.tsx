@@ -14,7 +14,7 @@ type CartType = {
     AddToCart: (product: any, size: string, color: string, quantity: number) => void
     DeleteFromCart: (id: string, size: string, color: string, quantity: number) => void
     UpdateQuantity: (Id: string, Size: string, Color: string, newQuan: number) => void
-    PlaceOrder: (e: React.FormEvent, ShippingAddress: any, PaymentDetail: any) => Promise<void>
+    // PlaceOrder: (e: React.FormEvent, ShippingAddress: any, PaymentDetail: any) => Promise<void>
     ClearCart: () => Promise<void>
 }
 
@@ -49,7 +49,7 @@ const CartProvider = ({ children }: { children: React.ReactNode }) => {
                 const itemsFromDb = res.data.FoundedCart.Items.map((item: any) => ({
                     _id: item.ProductId?._id || item._id,
                     Name: item.ProductId?.Name || "Product",
-                    Imges: item.Images,
+                    Imges: item.ProductId?.Images,
                     Price: item.ProductId?.Price || 0,
                     Size: item.Sizes || "Large",
                     Color: item.Colors || "",
@@ -66,6 +66,7 @@ const CartProvider = ({ children }: { children: React.ReactNode }) => {
 
     const ClearCart = async () => {
         try {
+
             const res = await API.delete("/cart");
             if (res.data) {
                 setCart([])
@@ -186,26 +187,10 @@ const CartProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }
 
-    const PlaceOrder = async (e: React.FormEvent, ShippingAddress: any, PaymentDetail: any) => {
-        try {
-            e.preventDefault()
-            const res = await API.post("/order", { Address: ShippingAddress, Payment: PaymentDetail })
 
-            if (res.data) {
-                showSuccessToast("🥳Congratulation.🎉")
-                await ClearCart()
-                Navigate("/")
-            }
-        } catch (error: any) {
-            console.error(error)
-            const message = error.response?.data?.message || error.message || "Something went wrong!";
-            showErrorToast(message)
-
-        }
-    }
 
     return (
-        <CartContext.Provider value={{ Cart, ClearCart, PlaceOrder, setCart, AddToCart, DeleteFromCart, IsCartOpen, setIsCartOpen, UpdateQuantity, CartPrice }}>
+        <CartContext.Provider value={{ Cart, ClearCart, setCart, AddToCart, DeleteFromCart, IsCartOpen, setIsCartOpen, UpdateQuantity, CartPrice }}>
             {children}
         </CartContext.Provider>
     )

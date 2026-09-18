@@ -15,19 +15,21 @@ import ProtectedRout from './Middlewares/ProtectedRout';
 import ResetPassword from './components/User/ResetPassword';
 import { Footer } from './components/Footer';
 
+import { OrderSuccess } from './components/OrderSuccess';
+
 
 
 export const App = () => {
   const location = useLocation()
   const IsDashboard = location.pathname === "/dashboard" || location.pathname === "/userdashboard"
-  
+
   return (
     <div>
-      
+
       <ToastContainer position='top-right' style={{ top: "110px", right: "20px" }} />
 
       {!IsDashboard && <Navbar />}
-      
+
       {!IsDashboard && <Cart />}
 
 
@@ -46,6 +48,7 @@ export const App = () => {
         <Route element={<ProtectedRout />}>
           <Route path="/userdashboard" element={<UserDashboard />} />
           <Route path="/password" element={<ResetPassword />} />
+          <Route path="/order-success" element={<OrderSuccess />} />
         </Route>
 
 

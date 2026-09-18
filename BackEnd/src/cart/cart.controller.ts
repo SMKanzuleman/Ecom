@@ -82,7 +82,7 @@ export const GetCart = async (req: AuthRequest, res: Response) => {
 export const RemoveFromCart = async (req: AuthRequest, res: Response) => {
     try {
         let { id: userId } = req.User
-        
+
 
         let { id: productId } = req.params
 
@@ -122,13 +122,14 @@ export const RemoveFromCart = async (req: AuthRequest, res: Response) => {
 export const RemoveCart = async (req: AuthRequest, res: Response) => {
     try {
         let { id: userId } = req.User
-        const FoundedCart = await Cart.findOne({ UserId: userId })
+        const FoundedCart = await Cart.findOneAndUpdate(
+            { UserId: userId },
+            { $set: { Items: [], CartPrice: 0 } }, // 👈 MongoDB ko directly bolo Items array [] kar do!
+            { new: true }
+        );
         if (!FoundedCart) {
             return SendError(res, 400, "Cart not found")
         }
-        FoundedCart.Items.length = 0
-        FoundedCart.CartPrice = 0
-        await FoundedCart.save()
         return SendSuccess(res, 200, `Cart removed`, { FoundedCart })
 
     } catch (error) {
@@ -156,9 +157,9 @@ export const UpdateQuantity = async (req: AuthRequest, res: Response) => {
 
         if (index > -1) {
             FoundedCart.Items[index].Quantity = q
-            
+
             FoundedCart.CartPrice = FoundedCart.Items.reduce((total, item: any) => {
-                const itemPrice =item.ProductId?.Price || 0;
+                const itemPrice = item.ProductId?.Price || 0;
                 return total + (itemPrice * item.Quantity);
             }, 0);
             console.log("d3")

@@ -38,25 +38,7 @@ const OrderScheme = new mongoose.Schema<OrderType>({
             required: true
         }
     },
-    PaymentDetails: {
-        Method: {
-            type: String,
-            enum: ["cod", "bank"],
-            required: true,
-        },
-        CardNumber: {
-            type: String, 
-            required: false,
-        },
-        CVV: {
-            type: String,
-            required: false,
-        },
-        MMYY: {
-            type: String,
-            required: false,
-        }
-    },
+  
     Address: {
         State: {
             type: String,

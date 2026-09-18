@@ -65,7 +65,7 @@ const Shop = () => {
   const FetchProducts = async () => {
     try {
       setLoading(true)
-      await new Promise((resolve) => setTimeout(resolve, 5000))
+  
 
       const res = await API.get("/products", {
         params: {
@@ -139,8 +139,6 @@ const Shop = () => {
     FetchProducts()
     FetchFilterData()
   }, [SelectedCategory, SelectedColor, SelectedStyle, MinPrice, MaxPrice, name, type])
-
-
 
   return (
     <div className="w-full bg-wh animate-fade-up duration-700 flex flex-col">

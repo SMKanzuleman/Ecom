@@ -5,8 +5,7 @@ import { useAuth } from "../../context/AuthContext";
 import { toast } from 'react-toastify'
 import { showSuccessToast } from "../../Utils/toast";
 import API from "../../Utils/API";
-
-
+import { FaCloudUploadAlt } from "react-icons/fa";
 type ProductTypeProp = {
     setMenu: (m: string) => void
 }

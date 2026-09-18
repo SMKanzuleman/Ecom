@@ -4,28 +4,75 @@ import { MdDelete } from "react-icons/md";
 import { useState } from "react";
 import { FaCartShopping } from "react-icons/fa6";
 import { MdOutlinePayment } from "react-icons/md";
+import API from "../Utils/API";
+import { showErrorToast, showSuccessToast } from "../Utils/toast";
+import { useNavigate } from "react-router-dom";
 
 
 const Checkout = () => {
 
   const standard = 250;
+
   const express = 350;
 
-
-
-  const { Cart, CartPrice, DeleteFromCart, PlaceOrder } = useCart()
-
+  const { Cart, CartPrice, DeleteFromCart, ClearCart } = useCart()
 
   const [Menu, setMenu] = useState("Shipping")
+
+  const Navigate = useNavigate()
 
   const [DeliveryMethod, setDeliveryMethod] = useState("standard");
 
   const [ShippingAddress, setShippingAddress] = useState({ Phone: "", RFName: "", RLName: "", Address: "", LandMark: "", City: "", State: "", Zip: "" });
 
-  const [PaymentDetail, setPaymentDetail] = useState<{ Type: "cod" | "bank"; CardNumber: string; CVV: string; MMYY: string; }>({ Type: "cod", CardNumber: "", CVV: "", MMYY: "", });
+  const [PaymentDetail, setPaymentDetail] = useState<"cod" | "bank">("cod");
+
+  const [isBankRedirecting, setIsBankRedirecting] = useState(false);
+
+  const [isPlacingOrder, setIsPlacingOrder] = useState(false);
 
   const DeliveryPrice = DeliveryMethod === "standard" ? standard : express
 
+  const PaywithBankAndOrder = async () => {
+    setIsBankRedirecting(true);
+    try {
+      console.log("XXX");
+      const isAnyEmpty = Object.values(ShippingAddress).some((value) => !value.trim());
+      if (isAnyEmpty) {
+        showErrorToast("All fields are required")
+        setIsBankRedirecting(false);
+        return
+      }
+      const res = await API.post("/order/stripe-session", { ShippingAddress, DeliveryPrice })
+      if (res.data.url) {
+        window.location.href = res.data.url
+      }
+    } catch (error) {
+      console.error(error)
+      setIsBankRedirecting(false)
+    }
+  }
+
+  const PlaceOrder = async () => {
+    setIsPlacingOrder(true)
+    try {
+
+      const res = await API.post("/order", { Address: ShippingAddress, Payment: PaymentDetail })
+
+      if (res.data) {
+        showSuccessToast("🥳Congratulation.🎉")
+        await ClearCart()
+        Navigate("/")
+      }
+    } catch (error: any) {
+      console.error(error)
+      const message = error.response?.data?.message || error.message || "Something went wrong!";
+      showErrorToast(message)
+
+    } finally {
+      setIsPlacingOrder(false)
+    }
+  }
 
 
   return (
@@ -133,8 +180,8 @@ const Checkout = () => {
                     id="cod"
                     name="pm"
                     // checked={Payment === "cod"}
-                    value={PaymentDetail.Type}
-                    onChange={(e) => setPaymentDetail({ ...PaymentDetail, Type: "cod" })}
+                    value={PaymentDetail}
+                    onChange={(e) => setPaymentDetail("cod")}
                     className="cursor-pointer accent-black w-4 h-4"
                   />
                   <div className="text-black font-medium">Cash on Delivery</div>
@@ -148,65 +195,55 @@ const Checkout = () => {
                     type="radio"
                     id="bank"
                     name="pm"
-                    value={PaymentDetail.Type}
-                    onChange={(e) => setPaymentDetail({ ...PaymentDetail, Type: "bank" })}
+                    value={PaymentDetail}
+                    onChange={(e) => setPaymentDetail("bank")}
                     className="cursor-pointer accent-black w-4 h-4"
                   />
                   <div className="text-black font-medium">Bank Transfer VISA card</div>
                 </label>
 
-                {PaymentDetail.Type === "bank" && (
-                  <div className="w-full py-5 flex flex-col gap-3.5 px-10 bg-gray-50/70 border-t border-gray-200">
-                    <div className="w-full">
-                      <input
-                        required={true}
-                        value={PaymentDetail.CardNumber}
-                        onChange={(e) => setPaymentDetail({ ...PaymentDetail, CardNumber: e.target.value })}
-
-                        type="text"
-                        className="w-full rounded-full px-5 bg-white border-2 border-gray-400/40 focus:outline-none text-black py-3 text-sm"
-                        placeholder="Card Number (16 digits)"
-                      />
-                    </div>
-                    <div className="w-full flex justify-between gap-3">
-                      <input
-                        required={true}
-                        value={PaymentDetail.MMYY}
-                        onChange={(e) => setPaymentDetail({ ...PaymentDetail, MMYY: e.target.value })}
-                        type="text"
-                        className="w-full rounded-full px-5 bg-white border-2 border-gray-400/40 focus:outline-none text-black py-3 text-sm"
-                        placeholder="MM / YY"
-                      />
-                      <input
-                        required={true}
-                        value={PaymentDetail.CVV}
-                        onChange={(e) => setPaymentDetail({ ...PaymentDetail, CVV: e.target.value })}
-                        type="text"
-                        className="w-full rounded-full px-5 bg-white border-2 border-gray-400/40 focus:outline-none text-black py-3 text-sm"
-                        placeholder="CVV"
-                      />
-                    </div>
-                  </div>
-                )}
-
               </form>
-
-
-
             </div>
 
             {/*SUbmit Button*/}
+
             <div className="w-full  flex justify-end">
-              <button className="btn-primary lg:w-[20%] w-full" onClick={(e) => PlaceOrder(e, ShippingAddress, PaymentDetail)}>
-                Place order
-              </button>
+              {PaymentDetail === "cod" ? (
+                <button disabled={isPlacingOrder} type="button" className="btn-primary lg:w-[20%] w-full flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                  onClick={(e) => {
+                    e.preventDefault()
+                    PlaceOrder()
+                  }}>
+                  {isPlacingOrder ? (
+                    <span className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                  ) : (
+                    "Place order"
+                  )}
+                </button>
+              )
+                :
+                (
+                  <button disabled={isBankRedirecting} onClick={(e) => {
+                    e.preventDefault()
+                    console.log("Clicking");
+
+                    PaywithBankAndOrder()
+                  }} className="btn-primary lg:w-[20%] w-full flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
+                    {isBankRedirecting ? (
+                      <span className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
+                    ) : (
+                      "Pay with Card"
+                    )}
+                  </button>
+
+                )}
 
             </div>
 
           </form>
         </div>
 
-      </div>
+      </div >
 
       <div className="w-full lg:w-[30%] h-full border-l-2 border-gray-400/30 px-10 pt-5 flex flex-col">
         <div className="font-accent text-black text-2xl font-medium">Order summary</div>
@@ -267,7 +304,7 @@ const Checkout = () => {
       </div>
 
 
-    </div>
+    </div >
   )
 }
 
