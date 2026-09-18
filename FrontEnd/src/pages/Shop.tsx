@@ -9,11 +9,14 @@ import { VscChevronRightCompact } from "react-icons/vsc";
 import { IoChevronUp } from "react-icons/io5";
 import { FaChevronDown } from "react-icons/fa6";
 import API from '../Utils/API';
+import { ProductImage } from '../Utils/ProductImage';
 
 const Shop = () => {
 
+  const [Loading, setLoading] = useState(false);
+
   const { name, type } = useParams()
-  const navigate=useNavigate()
+  const navigate = useNavigate()
 
   const MIN = 0;
   const MAX = 10000;
@@ -27,11 +30,11 @@ const Shop = () => {
 
   const [Categories, setCategories] = useState<any>([]);
   const [Colors, setColors] = useState<any>([]);
-  const [Styles, setStyles] = useState<{Name:string,Categories:string[]}[]>([]);
+  const [Styles, setStyles] = useState<{ Name: string, Categories: string[] }[]>([]);
 
   const [SelectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [SelectedColor, setSelectedColors] = useState<string | null>(null);
-  const [SelectedStyle, setSelectedStyle] = useState<{Name:string,Categories:string[]}>();
+  const [SelectedStyle, setSelectedStyle] = useState<{ Name: string, Categories: string[] }>();
 
   const FilteredProducts = Products.filter((p: any) => {
 
@@ -61,6 +64,9 @@ const Shop = () => {
 
   const FetchProducts = async () => {
     try {
+      setLoading(true)
+      await new Promise((resolve) => setTimeout(resolve, 5000))
+
       const res = await API.get("/products", {
         params: {
           category: SelectedCategory,
@@ -85,7 +91,10 @@ const Shop = () => {
 
     } catch (err) {
       console.error(err)
+    } finally {
+      setLoading(false)
     }
+
   }
   const FetchFilterData = async () => {
     try {
@@ -129,7 +138,7 @@ const Shop = () => {
   useEffect(() => {
     FetchProducts()
     FetchFilterData()
-  }, [SelectedCategory, SelectedColor, SelectedStyle, MinPrice, MaxPrice,name,type])
+  }, [SelectedCategory, SelectedColor, SelectedStyle, MinPrice, MaxPrice, name, type])
 
 
 
@@ -285,18 +294,34 @@ const Shop = () => {
         <div className='lg:w-[80%] w-full rounded-4xl flex flex-col'>
           <div className=" grid grid-cols-2 lg:grid-cols-4 px-2  lg:gap-3  justify-items-center">
 
-            {Products.slice(FirstIndex, LastIndex).map((item: any) => {
-              return (<Link to={`/product/${item._id}`} key={item._id} >
-                <div key={item._id} className="lg:w-62.5 w-50 py-3 lg:py-0 h-auto animate-fade-up hover:scale-105 transition-transform duration-300 cursor-pointer ">
-                  <img src={item.Images?.[0] || logo} alt="" className="w-full aspect-[4/5] object-cover bg-bg p-2 rounded-4xl " />
-                  <p className="font-heading text-left text-black text-lg pt-2 px-3">{item.Name}</p>
-                  <div className="flex justify-between px-3 py-1">
-                    <p className="font-heading text-left text-black text-xl font-semibold py-0"><span className="font-heading">Rs.</span>{item.Price}</p>
-                  </div>
+            {Loading ? (
+              [1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12,13,14,15].map((n) => (
+                <div key={n} className="lg:w-62.5 w-50 py-3 lg:py-0 h-auto animate-pulse flex flex-col gap-3">
+                  {/* Image placeholder */}
+                  <div className="w-full bg-gray-300 rounded-4xl aspect-square" />
+                  {/* Title line placeholder */}
+                  <div className="h-5 bg-gray-300 rounded-md w-3/4 mx-3" />
+                  {/* Price line placeholder */}
+                  <div className="h-6 bg-gray-300 rounded-md w-1/3 mx-3" />
                 </div>
-              </Link>
-              )
-            })}
+              ))
+            ) : (
+
+              Products.slice(FirstIndex, LastIndex).map((item: any) => {
+                return (<Link to={`/product/${item._id}`} key={item._id} >
+                  <div key={item._id} className="lg:w-62.5 w-50 py-3 lg:py-0 h-auto animate-fade-up hover:scale-105 transition-transform duration-300 cursor-pointer ">
+                    {/* <img src={item.Images?.[0] || logo} alt="" className="w-full aspect-[4/5] object-cover bg-bg p-2 rounded-4xl " /> */}
+                    <ProductImage src={item.Images[0]} alt='No Image' className='aspect-4/5' />
+                    <p className="font-heading text-left text-black text-lg pt-2 px-3">{item.Name}</p>
+                    <div className="flex justify-between px-3 py-1">
+                      <p className="font-heading text-left text-black text-xl font-semibold py-0"><span className="font-heading">Rs.</span>{item.Price}</p>
+                    </div>
+                  </div>
+                </Link>
+                )
+              })
+
+            )}
 
           </div>
 

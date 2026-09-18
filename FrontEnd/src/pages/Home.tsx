@@ -10,20 +10,27 @@ import BrowsingSTyles from "../components/BrowsingSTyles";
 
 const Home = () => {
     const [Products, setProducts] = useState<any>([])
-    const {Token,Role,Name} =useAuth()
-    
+    const { Token, Role, Name } = useAuth()
+    const [ProductsLoading, setProductsLoading] = useState(false);
+
     const FetchProducts = async () => {
         try {
+
+            setProductsLoading(true)
+            await new Promise((resolve) => setTimeout(resolve, 10000));
             const res = await API.get("/products")
             if (res.data.AllProducts) {
                 setProducts(res.data.AllProducts)
-                console.log("yy Home main token hie ",Token)
-                console.log("Role",Role)
-                console.log("Name of User in Home: ",Name);
+                console.log("yy Home main token hie ", Token)
+                console.log("Role", Role)
+                console.log("Name of User in Home: ", Name);
             }
         } catch (err) {
             console.error(err)
+        } finally {
+            setProductsLoading(false)
         }
+
     }
 
     useEffect(() => {
@@ -34,12 +41,12 @@ const Home = () => {
         <div className="animate-fade-up">
             <HeroSection />
             <Brands />
-            <ProductsSection title={"Top Selling"} tag={"top_selling"} products={Products} />
-            <ProductsSection title={"New Arrivals"} tag={"new_arrival"} products={Products} />
+            <ProductsSection title={"Top Selling"} tag={"top_selling"} products={Products} ProductsLoading={ProductsLoading} />
+            <ProductsSection title={"New Arrivals"} tag={"new_arrival"} products={Products} ProductsLoading={ProductsLoading} />
             <div className="py-5 bg-wh"></div>
             <BrowsingSTyles />
             <Newsletter />
-            
+
         </div>
     );
 };
