@@ -92,7 +92,8 @@ const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
                         icon: <SiGoogleanalytics className="text-xl shrink-0" />,
                         SubMenu: [
                             { key: "AddStyles", label: "Add Styles" },
-                            { key: "HomeStyles", label: "HomePage Styles" }
+                            { key: "HomeStyles", label: "HomePage Styles" },
+                            { key: "Footer", label: "Configure Footer " }
                         ]
                     },
                 ].map((item, index) => {
@@ -146,10 +147,7 @@ const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
                                                     : "text-wh/70 hover:text-wh hover:bg-white/10"
                                                 }`}
                                         >
-                                            <span
-                                                className={`w-1.5 h-1.5 rounded-full shrink-0 transition-colors ${isSubActive ? "bg-black" : "bg-white/40"
-                                                    }`}
-                                            />
+                                          
                                             <span
                                                 className="font-body text-sm whitespace-nowrap overflow-hidden"
                                             >

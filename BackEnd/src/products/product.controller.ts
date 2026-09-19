@@ -230,7 +230,7 @@ export const SetHomeStyles = async (req: Request, res: Response) => {
         if (Array.isArray(slots)) {
             for (const item of slots) {
                 const name = item.StyleName;
-                if (name ) {
+                if (name) {
                     await Style.findOneAndUpdate(
                         { Name: name.trim() },
                         { ShowOnHome: true, HomeSlot: item.slot }
@@ -252,6 +252,31 @@ export const GetHomeStyles = async (req: Request, res: Response) => {
         SendSuccess(res, 200, "Home styles fetched", { homeStyles });
     } catch (error) {
         console.error("GetHomeStyles error:", error);
+        SendError(res, 500, "Server Error");
+    }
+};
+
+export const SearchProducts = async (req: Request, res: Response) => {
+    try {
+        let Query = (req.query.q as String).trim()
+
+        if (!Query) {
+            SendError(res, 404, "No Query");
+        }
+
+        const SearchRegx = new RegExp(Query, "i")
+
+        const FoundedProducts = await Product.find({
+            $or: [
+                { Name: SearchRegx },
+                { Description: SearchRegx },
+                { Category: SearchRegx }
+            ]
+        }).select("Name Brand Images Price Stock Category").limit(8)
+
+        SendSuccess(res, 200, "Search Macth", { FoundedProducts });
+    } catch (error) {
+        console.error("Search error:", error);
         SendError(res, 500, "Server Error");
     }
 };

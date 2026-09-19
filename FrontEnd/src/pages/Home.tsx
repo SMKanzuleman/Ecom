@@ -41,10 +41,10 @@ const Home = () => {
             <HeroSection />
             <Brands />
             <ProductsSection title={"Top Selling"} tag={"top_selling"} products={Products} ProductsLoading={ProductsLoading} />
-            <ProductsSection title={"New Arrivals"} tag={"new_arrival"} products={Products} ProductsLoading={ProductsLoading} />
             <div className="py-5 bg-wh"></div>
-            <BrowsingSTyles />
             <Newsletter />
+            <ProductsSection title={"New Arrivals"} tag={"new_arrival"} products={Products} ProductsLoading={ProductsLoading} />
+            <BrowsingSTyles />
 
         </div>
     );

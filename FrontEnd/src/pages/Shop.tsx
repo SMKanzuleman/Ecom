@@ -65,7 +65,7 @@ const Shop = () => {
   const FetchProducts = async () => {
     try {
       setLoading(true)
-  
+
 
       const res = await API.get("/products", {
         params: {
@@ -293,7 +293,7 @@ const Shop = () => {
           <div className=" grid grid-cols-2 lg:grid-cols-4 px-2  lg:gap-3  justify-items-center">
 
             {Loading ? (
-              [1, 2, 3, 4, 5, 6, 7, 8,9,10,11,12,13,14,15].map((n) => (
+              [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((n) => (
                 <div key={n} className="lg:w-62.5 w-50 py-3 lg:py-0 h-auto animate-pulse flex flex-col gap-3">
                   {/* Image placeholder */}
                   <div className="w-full bg-gray-300 rounded-4xl aspect-square" />

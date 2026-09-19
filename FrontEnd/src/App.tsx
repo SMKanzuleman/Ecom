@@ -13,9 +13,12 @@ import "react-toastify/dist/ReactToastify.css"
 import { UserDashboard } from './pages/UserDashboard';
 import ProtectedRout from './Middlewares/ProtectedRout';
 import ResetPassword from './components/User/ResetPassword';
+
 import { Footer } from './components/Footer';
 
-import { OrderSuccess } from './components/OrderSuccess';
+import { OrderSuccess
+
+ } from './components/OrderSuccess';
 
 
 

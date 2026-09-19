@@ -1,38 +1,91 @@
 import { Link } from "react-router-dom";
 import { FaFacebookF, FaInstagram, FaTwitter, FaEnvelope, FaPhoneAlt, FaMapMarkerAlt } from "react-icons/fa";
+import { useEffect, useState } from "react";
+import API, { APIERROR } from "../Utils/API";
 
 export const Footer = () => {
- 
+
+    // New link form inputs
+    const [LinkLabel, setLinkLabel] = useState('')
+    const [SelectedCategory, setSelectedCategory] = useState('')
+    const [SelectedStyle, setSelectedStyle] = useState('')
+
+    // Explore Pages list
+    const [ExploreLinks, setExploreLinks] = useState<any[]>([])
+
+    // Contact Details States
+    const [ContactEmail, setContactEmail] = useState('')
+    const [ContactPhone, setContactPhone] = useState('')
+    const [BusinessAddress, setBusinessAddress] = useState('')
+    const [BusinessTimings, setBusinessTimings] = useState('')
+
+    // Brand & Social Links States
+    const [BrandDescription, setBrandDescription] = useState('')
+    const [FacebookUrl, setFacebookUrl] = useState('')
+    const [InstagramUrl, setInstagramUrl] = useState('')
+    const [TwitterUrl, setTwitterUrl] = useState('')
+
+
+    const FetchFooterConfig = async () => {
+        try {
+            const res = await API.get("/site/footer");
+            if (res.data?.Footer) {
+                const f = res.data.Footer;
+                if (f.ExplorePagesLinks) {
+                    setExploreLinks(f.ExplorePagesLinks);
+                }
+                if (f.ContactEmail) setContactEmail(f.ContactEmail);
+                if (f.ContactPhone) setContactPhone(f.ContactPhone);
+                if (f.Address) setBusinessAddress(f.Address);
+                if (f.BusinessTimings) setBusinessTimings(f.BusinessTimings);
+                if (f.BrandDescription) setBrandDescription(f.BrandDescription);
+                if (f.SocialLinks) {
+                    if (f.SocialLinks.Facebook) setFacebookUrl(f.SocialLinks.Facebook);
+                    if (f.SocialLinks.Instagram) setInstagramUrl(f.SocialLinks.Instagram);
+                    if (f.SocialLinks.Twitter) setTwitterUrl(f.SocialLinks.Twitter);
+                }
+            }
+        } catch (error) {
+            APIERROR(error, "Error in Fetching Footer Config")
+        }
+    };
+
+    useEffect(() => {
+        FetchFooterConfig()
+    }, [])
+
     return (
         <footer className="w-full bg-black mt-auto">
             {/* Main Content: 4 Columns */}
             <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10">
-                
+
                 {/* 1st Section: About Brand */}
                 <div className="flex flex-col gap-4">
                     <h2 className="text-3xl text-wh font-bold font-accent tracking-wider">
                         ECOM
                     </h2>
                     <p className="text-sm font-body leading-relaxed max-w-sm">
-                        Crafting modern streetwear and timeless essentials. Designed for those who express individuality through refined aesthetics and effortless comfort.
+                        {BrandDescription}
                     </p>
                     <div className="flex items-center gap-3 pt-2">
                         <a
-                            href="#"
+                            href={`${FacebookUrl}`}
+                            target="new"
                             aria-label="Facebook"
                             className="w-9 h-9 rounded-full border border-gray-800 flex items-center justify-center hover:border-gray-500 transition-colors"
                         >
                             <FaFacebookF className="text-xs" />
                         </a>
                         <a
-                            href="#"
+                            href={`${InstagramUrl}`}
                             aria-label="Instagram"
                             className="w-9 h-9 rounded-full border border-gray-800 flex items-center justify-center hover:border-gray-500 transition-colors"
                         >
                             <FaInstagram className="text-xs" />
                         </a>
                         <a
-                            href="#"
+                            href={`${TwitterUrl}`}
+                            target="new"
                             aria-label="Twitter"
                             className="w-9 h-9 rounded-full border border-gray-800 flex items-center justify-center hover:border-gray-500 transition-colors"
                         >
@@ -49,36 +102,15 @@ export const Footer = () => {
                             Explore
                         </h3>
                         <ul className="flex flex-col gap-2.5 text-sm font-body">
-                            <li>
-                                <Link to="/shop" className="hover:underline underline-offset-4 transition-all">
-                                    Shop All Products
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/shop?category=T-Shirts" className="hover:underline underline-offset-4 transition-all">
-                                    T-Shirts & Tops
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/shop?category=Jackets" className="hover:underline underline-offset-4 transition-all">
-                                    Jackets & Coats
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/shop?style=Casual" className="hover:underline underline-offset-4 transition-all">
-                                    Casual Style
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/shop?style=Business" className="hover:underline underline-offset-4 transition-all">
-                                    Formal & Business
-                                </Link>
-                            </li>
-                            <li>
-                                <Link to="/shop?onSale=true" className="hover:underline underline-offset-4 transition-all">
-                                    Special Offers & Sale
-                                </Link>
-                            </li>
+
+                            {ExploreLinks.map((link, index) => (
+                                <li>
+                                    <Link key={index} to={`${link.Url}`} className="hover:underline underline-offset-4 transition-all">
+                                        {link.Label}
+                                    </Link>
+                                </li>
+                            ))}
+
                         </ul>
                     </div>
 
@@ -130,20 +162,20 @@ export const Footer = () => {
                     <ul className="flex flex-col gap-3 text-sm font-body">
                         <li className="flex items-start gap-3">
                             <FaMapMarkerAlt className="text-sm mt-1 shrink-0" />
-                            <span>123 Fashion Avenue, Commercial Zone, Karachi, Pakistan</span>
+                            <span>{BusinessAddress}</span>
                         </li>
                         <li className="flex items-center gap-3">
                             <FaPhoneAlt className="text-sm shrink-0" />
-                            <span>+92 300 1234567</span>
+                            <span>{ContactPhone}</span>
                         </li>
                         <li className="flex items-center gap-3">
                             <FaEnvelope className="text-sm shrink-0" />
-                            <span>support@ecomstore.com</span>
+                            <span>{ContactPhone}</span>
                         </li>
                     </ul>
                     <div className="pt-2">
                         <span className="text-xs font-heading tracking-wide">
-                            Mon - Sat: 9:00 AM &ndash; 9:00 PM PKT
+                            {BusinessTimings}
                         </span>
                     </div>
                 </div>

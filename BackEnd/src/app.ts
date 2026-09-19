@@ -11,6 +11,7 @@ import cors from "cors"
 import { AdminRouter } from "./admin/admin.router";
 import { ReviewRouter } from "./reviews/review.router";
 import { UserRouter } from "./User/User.router";
+import { SiteConfigRouter } from "./site config/siteconfig.router";
 
 
 
@@ -29,6 +30,7 @@ app.use("/order", OrderRouter)
 app.use("/dashboard", AdminRouter)
 app.use("/reviews", ReviewRouter)
 app.use("/user", UserRouter)
+app.use("/site",SiteConfigRouter)
 
 
 

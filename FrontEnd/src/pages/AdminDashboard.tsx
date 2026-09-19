@@ -17,6 +17,7 @@ import { data } from "react-router-dom";
 import { showErrorToast, showSuccessToast } from "../Utils/toast";
 import { AddStyle } from "../components/Admin/AddStyle";
 import { SetHomeStyle } from "../components/Admin/SetHomeStyle";
+import { ConfigFooter } from "../components/Admin/ConfigFooter";
 
 export const AdminDashboard = () => {
 
@@ -196,6 +197,7 @@ export const AdminDashboard = () => {
                 {Menu === "EditProduct" && (<EditProduct EditId={SelectedProductId} setMenu={setMenu} />)}
                 {Menu === "AddStyles" && <AddStyle Styles={Styles} FetchStyles={FetchStyles} />}
                 {Menu === "HomeStyles" && <SetHomeStyle Styles={Styles} FetchStyles={FetchStyles} />}
+                {Menu=== "Footer" && <ConfigFooter />}
 
             </div>
 

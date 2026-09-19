@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { AddNewProduct, DeleteAllProduct, DeleteSingleProduct, DeleteStyle, EditProduct, GetAllProduct, GetFilterData, GetHomeStyles, GetSingleProduct, GetStyles, SetHomeStyles } from "./product.controller";
+import { AddNewProduct, DeleteAllProduct, DeleteSingleProduct, DeleteStyle, EditProduct, GetAllProduct, GetFilterData, GetHomeStyles, GetSingleProduct, GetStyles, SearchProducts, SetHomeStyles } from "./product.controller";
 import { Authenticate } from "../middlewares/authentication";
 import { authorizeRoles } from "../middlewares/authorization";
 import { upload } from "../middlewares/upload";
@@ -7,6 +7,8 @@ import { upload } from "../middlewares/upload";
 export const ProductRouter = Router()
 
 ProductRouter.get("/FilterData", GetFilterData)
+
+ProductRouter.get("/search", SearchProducts)
 
 ProductRouter.delete("/Styles", DeleteStyle)
 

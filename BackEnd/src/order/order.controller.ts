@@ -1,4 +1,4 @@
-import { Response } from "express";
+import { Response,Request } from "express";
 import { AuthRequest } from "../config/auth.config";
 import { SendError, SendSuccess } from "../utils/responce";
 import { Cart } from "../cart/cart.model";
@@ -152,6 +152,7 @@ export const CancelOrder = async (req: AuthRequest, res: Response) => {
 
     }
 }
+
 export const StripeSession = async (req: AuthRequest, res: Response) => {
     try {
         let { id: userId } = req.User
@@ -258,9 +259,7 @@ export const VerifyStrpeAndCreateOrder = async (req: AuthRequest, res: Response)
                     Stock: -i.Quantity
                 }
             })
-
         }
-
         const Address = JSON.parse(Session.metadata?.ShippingAddress || "{}")
 
         const NewOrder = await Order.create({
@@ -282,11 +281,9 @@ export const VerifyStrpeAndCreateOrder = async (req: AuthRequest, res: Response)
 
             OrderItems: FoundedItems
         })
-
         foundedCart.Items = [] as any;
         foundedCart.CartPrice = 0;
         await foundedCart.save();
-
         SendSuccess(res, 200, "Order Created")
 
     } catch (error: any) {
@@ -294,5 +291,6 @@ export const VerifyStrpeAndCreateOrder = async (req: AuthRequest, res: Response)
         return SendError(res, 500, error.message || "Internal Server error")
     }
 }
+
 
 
