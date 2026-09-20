@@ -7,6 +7,7 @@ import { AiFillEdit } from "react-icons/ai";
 import { CgSpinner } from "react-icons/cg";
 import { AiFillDelete } from "react-icons/ai";
 import { FiX } from 'react-icons/fi';
+import Button from "../../animated components/Button";
 
 export const AddStyle = ({ Styles, FetchStyles }: any) => {
     const { Token } = useAuth();
@@ -93,12 +94,12 @@ export const AddStyle = ({ Styles, FetchStyles }: any) => {
                         </span>
                     </div>
 
-                    <button
-                        className="btn-primary mt-auto w-[30%]"
+                    <Button
+                        className="mt-auto w-[30%]"
                         onClick={AddStyle}
                     >
                         Save
-                    </button>
+                    </Button>
                 </div>
 
                 <div className="flex flex-col gap-4 w-[55%]">

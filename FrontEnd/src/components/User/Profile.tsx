@@ -5,6 +5,7 @@ import { FaEdit } from "react-icons/fa";
 import { useState } from "react";
 import API from "../../Utils/API";
 import { showSuccessToast } from "../../Utils/toast";
+import Button from "../../animated components/Button";
 
 
 type ShippingAddressType = {
@@ -139,8 +140,8 @@ const Profile = ({ setMenu, UserName, UserEmail, DefaultAddress, setDefaultAddre
               </div>
 
               <div className="w-full flex justify-between items-center py-2">
-                <button onClick={() => setEditAddress(false)} className="btn-primary py-2  text-wh bg-red-600">cancel</button>
-                <button onClick={(e) => {
+                <Button onClick={() => setEditAddress(false)} className="py-2 w-auto text-wh bg-red-600">cancel</Button>
+                <Button onClick={(e) => {
                   e.preventDefault()
                   setSaving(true)
                   setTimeout(() => {
@@ -152,7 +153,7 @@ const Profile = ({ setMenu, UserName, UserEmail, DefaultAddress, setDefaultAddre
                     setAddress({ Location: "", LandMark: "", State: "", City: "", Zip: "", Phone: "" })
                   }, 2000)
 
-                }} className={`btn-primary py-2 ${Saving ? "opacity-75 cursor-not-allowed" : ""} `}>{Saving ? "Saving..." : "Save"}</button>
+                }} className={`py-2 w-auto ${Saving ? "opacity-75 cursor-not-allowed" : ""}`}>{Saving ? "Saving..." : "Save"}</Button>
               </div>
             </form>
 

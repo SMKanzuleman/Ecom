@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Title } from "../Title";
 import { showErrorToast, showSuccessToast } from "../../Utils/toast";
 import API from "../../Utils/API";
+import Button from "../../animated components/Button";
 
 export const SetHomeStyle = ({ Styles, FetchStyles }: any) => {
 
@@ -69,14 +70,14 @@ export const SetHomeStyle = ({ Styles, FetchStyles }: any) => {
                     </p>
                 </div>
 
-                <button
+                <Button
                     type="button"
                     onClick={handleSaveHomeSlots}
                     disabled={savingSlots}
-                    className="btn-primary px-8 py-2.5 rounded-xl font-semibold shadow hover:scale-105 active:scale-95 transition-all disabled:opacity-50 cursor-pointer"
+                    className="px-8 py-2.5 w-auto rounded-xl font-semibold shadow disabled:opacity-50"
                 >
                     {savingSlots ? "Saving..." : "Save"}
-                </button>
+                </Button>
             </div>
 
             {/* Visual 4-Slot Layout Selector */}

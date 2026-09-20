@@ -7,6 +7,7 @@ import { MdOutlinePayment } from "react-icons/md";
 import API from "../Utils/API";
 import { showErrorToast, showSuccessToast } from "../Utils/toast";
 import { useNavigate } from "react-router-dom";
+import Button from "../animated components/Button";
 
 
 const Checkout = () => {
@@ -209,7 +210,7 @@ const Checkout = () => {
 
             <div className="w-full  flex justify-end">
               {PaymentDetail === "cod" ? (
-                <button disabled={isPlacingOrder} type="button" className="btn-primary lg:w-[20%] w-full flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                <Button disabled={isPlacingOrder} type="button" className="lg:w-[20%] w-full flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
                   onClick={(e) => {
                     e.preventDefault()
                     PlaceOrder()
@@ -219,22 +220,22 @@ const Checkout = () => {
                   ) : (
                     "Place order"
                   )}
-                </button>
+                </Button>
               )
                 :
                 (
-                  <button disabled={isBankRedirecting} onClick={(e) => {
+                  <Button disabled={isBankRedirecting} onClick={(e) => {
                     e.preventDefault()
                     console.log("Clicking");
 
                     PaywithBankAndOrder()
-                  }} className="btn-primary lg:w-[20%] w-full flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
+                  }} className="lg:w-[20%] w-full flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed">
                     {isBankRedirecting ? (
                       <span className="w-5 h-5 border-2 border-white/40 border-t-white rounded-full animate-spin" />
                     ) : (
                       "Pay with Card"
                     )}
-                  </button>
+                  </Button>
 
                 )}
 
@@ -281,7 +282,7 @@ const Checkout = () => {
         <div className="pt-4 border-t-2 bg-amber-00 border-gray-400/30 flex flex-col gap-5">
           <div className="w-full flex justify-between px-0">
             <input type="text" className="btn-primary w-[70%] bg-wh border-2 border-gray-700/30 focus:outline-none cursor-auto text-black py-2" placeholder="promo code" />
-            <button className="btn-primary py-2">Apply</button>
+            <Button className="py-2 w-auto">Apply</Button>
           </div>
           <div className="w-full flex flex-col gap-2">
             <div className="flex justify-between px-0 py-0">

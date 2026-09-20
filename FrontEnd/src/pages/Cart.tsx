@@ -2,6 +2,7 @@ import { useCart } from "../context/CartContext";
 import { MdDelete } from "react-icons/md";
 import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
+import Button from "../animated components/Button";
 
 
 
@@ -99,7 +100,7 @@ const Cart = () => {
             <p>Rs.{CartPrice}</p>
           </div>
           <Link to={`/checkout`} className="w-full flex justify-center items-center" onClick={() => setIsCartOpen(false)}>
-            <button className="btn-primary w-[90%]">Proceed to CheckOut</button>
+            <Button className="w-[90%]">Proceed to CheckOut</Button>
           </Link>
         </div>
       </div >

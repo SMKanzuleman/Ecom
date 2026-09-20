@@ -9,7 +9,8 @@ import { Link } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import API, { APIERROR } from '../Utils/API';
 import { ProductImage } from '../Utils/ProductImage';
-
+import { motion } from 'motion/react'
+import { fadeInDown, fadeInUp, scaleUp, staggerContainer } from '../Utils/Motion';
 const Navbar = () => {
     const [SearcchOpen, setSearchOpen] = useState(false)
     const { setIsCartOpen } = useCart()
@@ -79,7 +80,11 @@ const Navbar = () => {
 
 
     return (
-        <div className="w-full flex min-h-[10vh] bg-wh sticky top-0 z-10">
+        <motion.div
+            variants={staggerContainer(0.08, 0.1)}
+            initial="hidden"
+            animate="visible"
+            className="w-full flex min-h-[10vh] bg-wh sticky top-0 z-10">
 
             <div
                 onClick={() => {
@@ -92,7 +97,9 @@ const Navbar = () => {
                     }`}
             />
 
-            <div className="lg:w-[20%] w-[40%] flex items-center lg:justify-end justify-center gap-5 px-1 bg-amber-00">
+            <motion.div
+                variants={scaleUp}
+                className="lg:w-[20%] w-[40%] flex items-center lg:justify-end justify-center gap-5 px-1 bg-amber-00">
                 <GiHamburgerMenu className="text-black text-3xl lg:hidden " onClick={() => {
                     setHamBOpen(!HamBOpen)
                     console.log("CLicked");
@@ -101,7 +108,7 @@ const Navbar = () => {
                 <Link to={"/"} >
                     <img src={logo} alt="Logo" className="h-9 w-auto cursor-pointer" />
                 </Link>
-            </div>
+            </motion.div>
 
             {HamBOpen && (
                 <div className={`fixed top-0 left-0 w-[70%] bg-bg min-h-screen z-50 ${Closing ? "animate-slide-out" : "animate-slide-in"}`}>
@@ -142,7 +149,9 @@ const Navbar = () => {
                 </div>
             )}
 
-            <div id="navlinks" className="w-[15%] lg:w-[40%] hidden sm:flex ">
+            <motion.div
+            variants={scaleUp} 
+            id="navlinks" className="w-[15%] lg:w-[40%] hidden sm:flex ">
 
                 <div className="w-full flex justify-center items-center gap-8 text-black font-heading ">
                     {/* <a href="#" className="hover:text-text transition-transform duration-1000 ">Shop</a> */}
@@ -153,9 +162,12 @@ const Navbar = () => {
                 </div>
 
 
-            </div>
+            </motion.div>
+
             {/* Input on PC */}
-            <div ref={SearchRef} className="hidden sm:flex w-[15%] lg:w-[20%]  items-center">
+            <motion.div
+             variants={scaleUp}
+             ref={SearchRef} className="hidden sm:flex w-[15%] lg:w-[20%]  items-center">
                 <div className="w-full relative">
                     <HiOutlineSearch className="absolute left-4 top-3 text-black" />
                     <input
@@ -206,10 +218,10 @@ const Navbar = () => {
                     )}
                 </div>
 
-            </div>
+            </motion.div>
 
             {/* Input on Mobile */}
-            {SearcchOpen ? <div className=" w-[60%]  lg:w-[20%] flex items-center justify-center gap-5 px-5 bg-amber-00 relative">
+            {SearcchOpen ? <motion.div variants={fadeInUp} className=" w-[60%]  lg:w-[20%] flex items-center justify-center gap-5 px-5 bg-amber-00 relative">
                 <div className="w-full relative">
                     <HiOutlineSearch className="absolute left-4 top-3 text-black" />
                     <MdClear className="absolute top-2 right-4 text-2xl text-red-600" onClick={() => { setSearchOpen(!setSearchOpen) }} />
@@ -238,12 +250,12 @@ const Navbar = () => {
                                         }}
                                         className="flex bg-bg  items-center gap-3 py-1 hover:bg-bg rounded-xl transition-colors"
                                     >
-                                         <img
+                                        <img
                                             src={item.Images?.[0] || 'https://placehold.co/100/000000/FFF?text=No+Images'}
                                             alt={item.Name}
                                             className="w-15 h-15 object-cover rounded-lg bg-bg shrink-0"
-                                        /> 
-                                      
+                                        />
+
                                         <div className="flex flex-col flex-1 min-w-0">
                                             <span className="text-[14px] font-semibold text-black truncate">{item.Name}</span>
                                             <span className="text-[10px]">{item.Category}</span>
@@ -263,8 +275,8 @@ const Navbar = () => {
                     )}
                 </div>
 
-            </div> :
-                <div className=" w-[60%] lg:w-[20%] flex items-center justify-center gap-5 pl-16 bg-amber-00 relative">
+            </motion.div> :
+                <motion.div variants={scaleUp} className=" w-[60%] lg:w-[20%] flex items-center justify-center gap-5 pl-16 bg-amber-00 relative">
                     <HiOutlineSearch onClick={() => { setSearchOpen(!SearcchOpen) }} className=" text-black text-3xl font-bold lg:hidden" />
                     <Link to={"/dashboard"}>
                         <RiAccountPinCircleFill className="text-3xl text-black cursor-pointer hover:scale-120 transition-transform duration-200" />
@@ -275,11 +287,11 @@ const Navbar = () => {
 
                     </div>
 
-                </div>}
+                </motion.div>}
 
 
 
-        </div>
+        </motion.div>
     )
 }
 

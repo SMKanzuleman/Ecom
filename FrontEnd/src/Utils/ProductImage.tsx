@@ -2,7 +2,7 @@ import { useState } from "react";
 import { PlaceholderImage } from "./PlaceholderImage";
 
 
-export const ProductImage = ({ src, alt,className }: { src: string, alt: string,className:string }) => {
+export const ProductImage = ({ src, alt,className="" }: { src: string, alt: string,className?:string }) => {
     
     const [hasError, sethasError] = useState(false);
 

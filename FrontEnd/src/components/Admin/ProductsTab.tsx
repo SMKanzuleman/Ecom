@@ -8,6 +8,7 @@ import { MdEdit } from "react-icons/md";
 import AdminPagenation from "./AdminPagenation";
 import API from "../../Utils/API";
 import ExportCSV from "../../Utils/ExportCSV";
+import Button from "../../animated components/Button";
 
 type ProductTypeProp = {
     setMenu: (m: string) => void
@@ -86,15 +87,15 @@ const ProductsTab = ({ setMenu, setSelectedProductId }: ProductTypeProp) => {
             <div className="w-full flex lg:flex-row flex-col lg:justify-between gap-5">
                 <div className="font-accent text-3xl font-bold text-black">Products</div>
                 <div className="w-full flex justify-between">
-                    <div><button className="btn-primary lg:hidden" > <LiaFilterSolid /> Filters</button></div>
-                    <div><button onClick={() => {
+                    <div><Button className="lg:hidden w-auto"> <LiaFilterSolid /> Filters</Button></div>
+                    <div><Button onClick={() => {
                         setMenu("AddNewProduct")
                         
-                    }} className="btn-primary" > <FaPlus /> Add Product</button></div>
+                    }} className="w-auto"> <FaPlus /> Add Product</Button></div>
                 </div>
-                <div><button onClick={()=>
+                <div><Button onClick={()=>
                     HandleExportProducts()
-                } className="btn-primary">Export</button></div>
+                } className="w-auto">Export</Button></div>
             </div>
 
             {/* Main Box */}

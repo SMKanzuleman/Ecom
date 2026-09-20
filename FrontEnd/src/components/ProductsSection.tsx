@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom';
-import { PlaceholderImage } from '../Utils/PlaceholderImage';
+
+import Button from '../animated components/Button';
 import { ProductImage } from '../Utils/ProductImage';
+import { motion } from "motion/react";
+import { fadeInDown, staggerContainer } from '../Utils/Motion';
 
 
 
@@ -41,23 +44,24 @@ const ProductsSection = ({ title, tag, products, ProductsLoading }: ProductProp)
 
     }
     const [ShowAll, SetShowAll] = useState(false)
+
     return (
-        <div className="w-full bg-wh min-h-[60vh] flex flex-col gap-5">
+        <motion.div className="w-full bg-wh min-h-[60vh] flex flex-col gap-5">
             <div className="w-full font-accent text-4xl uppercase text-black font-bold lg:pt-20 lg:pb-20 pt-20 pb-10 text-center">{title}</div>
 
-            <div className="grid grid-cols-2 lg:grid-cols-4 px-2 bg-amber-00 lg:px-16 gap-2 justify-items-center">
+            <motion.div className="grid grid-cols-2 lg:grid-cols-4 px-2 bg-amber-00 lg:px-16 gap-2 justify-items-center">
 
                 {ProductsLoading ? (
 
                     [1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
-                        <div key={n} className="lg:w-62.5 w-50 py-3 lg:py-0 h-auto animate-pulse flex flex-col gap-3">
+                        <motion.div variants={fadeInDown} key={n} className="lg:w-62.5 w-50 py-3 lg:py-0 h-auto animate-pulse flex flex-col gap-3">
                             {/* Image placeholder */}
                             <div className="w-full bg-gray-300 rounded-4xl aspect-square" />
                             {/* Title line placeholder */}
                             <div className="h-5 bg-gray-300 rounded-md w-3/4 mx-3" />
                             {/* Price line placeholder */}
                             <div className="h-6 bg-gray-300 rounded-md w-1/3 mx-3" />
-                        </div>
+                        </motion.div>
                     ))
 
                 ) : (
@@ -65,8 +69,20 @@ const ProductsSection = ({ title, tag, products, ProductsLoading }: ProductProp)
                     FilterProducts().slice(0, ShowAll ? products.length : 8).map((item: any) => {
                         return (
                             <Link to={`/product/${item._id}`} key={item._id} >
-                                <div key={item._id} className="lg:w-62.5 w-50 py-3 lg:py-0 h-auto animate-fade-up hover:scale-101 transition-transform duration-300 cursor-pointer ">
-                                  <ProductImage src={item.Images[0]} alt='No image Found' />
+                                <motion.div
+                                    variants={fadeInDown}
+                                    initial="hidden"
+                                    whileInView="visible"
+                                    viewport={{ once: true }}
+                                    whileHover={{
+                                        rotateX: 10,
+                                        rotateY: 10,
+                                        scale: 1.05,
+                                        y: -8
+                                    }}
+                                    transition={{ type: "spring", stiffness: 300, damping: 15 }}
+                                    key={item._id} className="lg:w-62.5 w-50 py-3 lg:py-0 h-auto   cursor-pointer ">
+                                    <ProductImage src={item.Images[0]} alt='No image Found' />
                                     <p className="font-heading text-left text-black text-lg pt-2 px-3">{item.Name}</p>
                                     <div className="flex justify-between px-3 py-1">
                                         <p className="font-heading text-left text-black text-xl font-semibold py-0"><span className="font-heading">Rs.</span>{item.Price}</p>
@@ -77,23 +93,24 @@ const ProductsSection = ({ title, tag, products, ProductsLoading }: ProductProp)
                                             </div>
                                         )}
                                     </div>
-                                </div>
+                                </motion.div>
                             </Link>
                         )
                     })
 
                 )}
 
-            </div>
-            <div className="w-full flex justify-center">
+            </motion.div>
 
-                <button className={`btn-primary w-[30%] lg:w-[10%] ${products.length <= 4 ? "hidden" : "block"} `} onClick={() => {
+            <div className="w-full flex justify-center">
+                <Button className={`w-[30%] lg:w-[10%] ${products.length <= 4 ? "hidden" : "block"}`} onClick={() => {
                     SetShowAll(!ShowAll)
-                }}>{ShowAll ? "Show less" : "Show All"}</button>
+                }}>{ShowAll ? "Show less" : "Show All"}</Button>
             </div>
-        </div>
+        </motion.div>
     )
 }
+
 
 export default ProductsSection
 

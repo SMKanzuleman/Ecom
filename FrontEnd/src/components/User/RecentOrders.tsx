@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { GiShoppingBag } from "react-icons/gi";
+import Button from '../../animated components/Button';
 
 const RecentOrders = ({ MyOrders }: any) => {
 
   const [SelectOrders, setSelectOrders] = useState("All");
 
 
-  const FilteredOrders = SelectOrders === "All" ? MyOrders : MyOrders.filter((item) => item.OrderStatus === SelectOrders);
+  const FilteredOrders = SelectOrders === "All" ? MyOrders : MyOrders.filter((item:any) => item.OrderStatus === SelectOrders);
 
   const [ExpendId, setExpendId] = useState<string | null>(null);
 
@@ -41,12 +42,12 @@ const RecentOrders = ({ MyOrders }: any) => {
           <span className="text-[14px] tracking text-text lg:block hidden font-heading">Here's a quick overview of your orders.</span>
         </div>
 
-        <div className='bg-wh rounded-full flex  justify-between lg:gap-3 lg:text-[14px]  text-xs h-fit p-1 w-fit overflow-hidden'>
-          <button onClick={() => setSelectOrders("All")} className={`btn-primary py-2  ${SelectOrders === "All" ? "bg-black  text-wh" : " bg-wh text-text"}`}>All</button>
-          <button onClick={() => setSelectOrders("processing")} className={`btn-primary py-1 ${SelectOrders === "processing" ? "bg-amber-500  text-wh" : " bg-wh text-text"}`}>Processing</button>
-          <button onClick={() => setSelectOrders("shipped")} className={`btn-primary py-1 ${SelectOrders === "shipped" ? "bg-blue-600  text-wh" : " bg-wh text-text"}`}>Shipped</button>
-          <button onClick={() => setSelectOrders("delivered")} className={`btn-primary py-1 ${SelectOrders === "delivered" ? "bg-green-600 text-wh" : " bg-wh text-text"}`}>Delivered</button>
-          <button onClick={() => setSelectOrders("cancelled")} className={`btn-primary py-1 ${SelectOrders === "cancelled" ? "bg-red-600  text-wh" : " bg-wh text-text"}`}>Cancelled</button>
+        <div className='bg-wh rounded-full flex justify-between lg:gap-3 lg:text-[14px] text-xs h-fit p-1 w-fit overflow-hidden'>
+          <Button onClick={() => setSelectOrders("All")} className={`py-2 w-auto ${SelectOrders === "All" ? "bg-black text-wh" : "bg-wh text-text"}`}>All</Button>
+          <Button onClick={() => setSelectOrders("processing")} className={`py-1 w-auto ${SelectOrders === "processing" ? "bg-amber-500 text-wh" : "bg-wh text-text"}`}>Processing</Button>
+          <Button onClick={() => setSelectOrders("shipped")} className={`py-1 w-auto ${SelectOrders === "shipped" ? "bg-blue-600 text-wh" : "bg-wh text-text"}`}>Shipped</Button>
+          <Button onClick={() => setSelectOrders("delivered")} className={`py-1 w-auto ${SelectOrders === "delivered" ? "bg-green-600 text-wh" : "bg-wh text-text"}`}>Delivered</Button>
+          <Button onClick={() => setSelectOrders("cancelled")} className={`py-1 w-auto ${SelectOrders === "cancelled" ? "bg-red-600 text-wh" : "bg-wh text-text"}`}>Cancelled</Button>
         </div>
 
       </div>

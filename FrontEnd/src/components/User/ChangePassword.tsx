@@ -5,6 +5,7 @@ import { showErrorToast, showSuccessToast } from "../../Utils/toast";
 import API, { APIERROR } from "../../Utils/API";
 import axios from "axios";
 import ResetPassword from "./ResetPassword";
+import Button from "../../animated components/Button";
 
 export const ChangePassword = ({ setMenu }: any) => {
 
@@ -112,11 +113,11 @@ export const ChangePassword = ({ setMenu }: any) => {
                             {/* Submit + cancel */}
 
                             <div className="w-full flex justify-between items-center py-5">
-                                <button type="submit"
+                                <Button type="submit"
                                     onClick={HandleChangePassword}
                                     disabled={Loading}
-                                    className={`btn-primary w-full py-2 ${Loading && "bg-black/60"}`}
-                                >{Loading ? "Saving" : "Save"}</button>
+                                    className={`py-2 ${Loading && "bg-black/60"}`}
+                                >{Loading ? "Saving" : "Save"}</Button>
                             </div>
                         </>
                     ) : (

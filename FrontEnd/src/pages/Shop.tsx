@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react'
 import heroimg from '../assets/Stickman_shop.png'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { FaStar, FaStarHalfAlt, FaRegStar, FaChevronUp } from "react-icons/fa";
-import logo from '../assets/logo.svg'
+import { FaChevronUp } from "react-icons/fa";
 import Pagination from '../components/Pagination';
-import { IoFilterSharp } from "react-icons/io5";
 import { VscChevronRightCompact } from "react-icons/vsc";
-import { IoChevronUp } from "react-icons/io5";
 import { FaChevronDown } from "react-icons/fa6";
 import API from '../Utils/API';
 import { ProductImage } from '../Utils/ProductImage';
+import Button from '../animated components/Button';
+import { motion } from "motion/react";
+import { fadeInDown, productcards, staggerContainer } from '../Utils/Motion';
+
 
 const Shop = () => {
 
@@ -49,13 +50,9 @@ const Shop = () => {
   })
 
   const [CurrentPage, setCurrentPage] = useState(1)
-  const [PostPerPage, setPostPerPage] = useState(15)
+  const [PostPerPage, setPostPerPage] = useState(50)
   const LastIndex = CurrentPage * PostPerPage;
-  const FirstIndex = LastIndex - PostPerPage;
-
-
-
-
+  const FirstIndex = LastIndex - PostPerPage
 
   const [PriceToggle, setPriceToggle] = useState(false)
   const [StyleToggle, setStyleToggle] = useState(false)
@@ -141,26 +138,32 @@ const Shop = () => {
   }, [SelectedCategory, SelectedColor, SelectedStyle, MinPrice, MaxPrice, name, type])
 
   return (
-    <div className="w-full bg-wh animate-fade-up duration-700 flex flex-col">
+    <motion.div
+      variants={staggerContainer(0.08, 0.1)}
+      initial={"hidden"}
+      animate={"visible"}
+      className="w-full bg-wh  flex flex-col">
       {/*Header*/}
-      <div className='w-full bg-black px-20 h-[200px] flex justify-between items-center relative'>
+      <motion.div
+        variants={fadeInDown}
+        className='w-full bg-black px-20 h-[200px] flex justify-between items-center relative'>
         <div className='flex justify-center items-center w-full'>
           <h1 className='font-accent text-4xl font-semibold text-wh'>{name ? name : "Shop"}</h1>
         </div>
         <div className='absolute lg:right-28 right-3 lg:top-7 top-24'>
           <img src={heroimg} alt="" className='lg:w-52 w-32' />
         </div>
-      </div>
+      </motion.div>
       {/*Body*/}
       <div className="w-full flex flex-col lg:flex-row lg:px-10 py-32">
 
         {/*Left sidebar*/}
 
-        <div className='lg:w-[20%] w-full rounded-4xl  bg-bg flex flex-col px-10 py-5 h-fit'>
+        <motion.div variants={fadeInDown} className='lg:w-[20%] w-full rounded-4xl  bg-bg flex flex-col px-10 py-5 h-fit'>
 
           <div className='w-full flex justify-between items-center py-5 border-b-2 border-gray-400/30'>
             <div className='text-black text-xl font-semibold'>Filters</div>
-            {hasActiveFilters || name && <button className='btn-primary py-2 rounded-full bg-red-600' onClick={() => ClearAllFilters()}>clear</button>}
+            {hasActiveFilters || name && <Button className='py-2 w-auto rounded-full bg-red-600' onClick={() => ClearAllFilters()}>clear</Button>}
           </div>
 
           {/* categories */}
@@ -286,11 +289,16 @@ const Shop = () => {
           )}
 
 
-        </div>
+        </motion.div>
 
         {/*Right sidebar*/}
         <div className='lg:w-[80%] w-full rounded-4xl flex flex-col'>
-          <div className=" grid grid-cols-2 lg:grid-cols-4 px-2  lg:gap-3  justify-items-center">
+          <motion.div
+            variants={staggerContainer(0.06, 0.1)}
+            initial="hidden"
+            whileInView="visible"
+            key={Products.length > 0 ? "loaded" : "loading"}
+            className=" grid grid-cols-2 lg:grid-cols-4 px-2  lg:gap-3  justify-items-center">
 
             {Loading ? (
               [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15].map((n) => (
@@ -306,22 +314,34 @@ const Shop = () => {
             ) : (
 
               Products.slice(FirstIndex, LastIndex).map((item: any) => {
-                return (<Link to={`/product/${item._id}`} key={item._id} >
-                  <div key={item._id} className="lg:w-62.5 w-50 py-3 lg:py-0 h-auto animate-fade-up hover:scale-105 transition-transform duration-300 cursor-pointer ">
-                    {/* <img src={item.Images?.[0] || logo} alt="" className="w-full aspect-[4/5] object-cover bg-bg p-2 rounded-4xl " /> */}
-                    <ProductImage src={item.Images[0]} alt='No Image' className='aspect-4/5' />
-                    <p className="font-heading text-left text-black text-lg pt-2 px-3">{item.Name}</p>
-                    <div className="flex justify-between px-3 py-1">
-                      <p className="font-heading text-left text-black text-xl font-semibold py-0"><span className="font-heading">Rs.</span>{item.Price}</p>
-                    </div>
-                  </div>
-                </Link>
+                return (
+                  <Link to={`/product/${item._id}`} key={item._id} >
+                    <motion.div
+                      variants={productcards}
+                      initial="hidden"
+                      whileInView="visible"                     // 👈 Jab ye card scroll mein aayega TAB chalega
+                      viewport={{once:true, amount: 0.2 }}     // 👈 Card ka 20% samne aate hi trigger hoga
+                      transition={{ type: "spring", stiffness: 300, damping: 20 }}
+                      whileHover={{
+                        rotateX: 10,       // 👈 3D Tilt upar/neeche
+                        rotateY: 10,      // 👈 3D Tilt left/right
+                        scale: 1.05,       // 👈 Halka sa zoom
+                        y: -8              // 👈 Halka sa lift
+                      }}
+                      key={item._id} className="lg:w-62.5 w-50 py-3 lg:py-0 h-auto  cursor-pointer ">
+                      <ProductImage src={item.Images[0]} alt='No Image' className='aspect-4/5' />
+                      <p className="font-heading text-left text-black text-lg pt-2 px-3">{item.Name}</p>
+                      <div className="flex justify-between px-3 py-1">
+                        <p className="font-heading text-left text-black text-xl font-semibold py-0"><span className="font-heading">Rs.</span>{item.Price}</p>
+                      </div>
+                    </motion.div>
+                  </Link>
                 )
               })
 
             )}
 
-          </div>
+          </motion.div>
 
           <Pagination
             Products={FilteredProducts}
@@ -333,7 +353,7 @@ const Shop = () => {
 
 
 
-    </div>
+    </motion.div>
   )
 }
 

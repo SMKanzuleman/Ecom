@@ -6,6 +6,7 @@ import API from "../../Utils/API";
 import { showSuccessToast } from "../../Utils/toast";
 import { FaSave } from "react-icons/fa";
 import ExportCSV from "../../Utils/ExportCSV";
+import Button from "../../animated components/Button";
 
 
 
@@ -75,7 +76,7 @@ export const OrdersTab = () => {
                     <span className="font-bold lg:text-3xl text-xl">Orders </span>
                     <span className="text-[14px] tracking-wide text-text lg:block hidden">Manage and track your customer Orders</span>
                 </div>
-                <div className="lg:w-[20%] w-[50%] justify-items-end"> <button onClick={() => HandleExportOrders()} className="btn-primary lg:text-sm text-[12px]"><FaDownload />Export</button></div>
+                <div className="lg:w-[20%] w-[50%] justify-items-end"> <Button onClick={() => HandleExportOrders()} className="lg:text-sm text-[12px] w-auto"><FaDownload />Export</Button></div>
             </div>
 
             {/* Menu Selection */}

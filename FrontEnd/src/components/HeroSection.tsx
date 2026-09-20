@@ -6,11 +6,15 @@ import HeroImg from "../assets/HeroImg-remove-bg-io (3).webp";
 import { Link } from "react-router-dom";
 import { motion } from "motion/react"
 import Button from "../animated components/Button";
+import { fadeInUp, scaleUp, staggerContainer } from "../Utils/Motion";
 
 
 const HeroSection = () => {
     return (
-        <div
+        <motion.div
+            variants={staggerContainer(0.02, 0.1)}
+            initial={"hidden"}
+            animate={"visible"}
             id="HeroSection"
             className="w-full lg:min-h-[80vh] min-h-fit  bg-wh   flex flex-col lg:flex-row "
         >
@@ -19,7 +23,7 @@ const HeroSection = () => {
                 className="lg:w-[55%] w-full flex flex-col items-left justify-center lg:px-32 px-6 gap-6"
             >
                 <motion.h1
-                    initial={{ opacity: 0, y: 10, filter: "blur(5px)", scale: 0.95 }}
+                    initial={{ opacity: 0, y: 40, filter: "blur(5px)", scale: 0.95 }}
                     animate={{ opacity: 1, y: 0, filter: "blur(0px)", scale: 1 }}
                     transition={{
                         duration: 0.9,
@@ -30,12 +34,12 @@ const HeroSection = () => {
                 >
                     Clothes that match your style.
                 </motion.h1>
-                <p className="text-justify text-lg">
+                <motion.p variants={fadeInUp} className="text-justify text-lg">
                     Browse through our diverse range of meticulously crafted garments,
                     designed to bring out your individuality and cater to your sense of
                     style.
-                </p>
-                <div className="flex lg:gap-4 gap-2">
+                </motion.p>
+                <motion.div variants={scaleUp} className="flex lg:gap-4 gap-2">
                     <Link to={"/shop"} className="w-45 lg:w-[30%]" >
                         <Button className={""}>
                             < FaCartShopping />
@@ -44,22 +48,22 @@ const HeroSection = () => {
 
                     </Link>
                     <Link to={"/shop"} className="w-45 lg:w-[30%]">
-                        <button className="btn-primary w-full ">
+                        <Button>
                             <IoMdTrendingUp />
                             Trending
-                        </button>
-
+                        </Button>
                     </Link>
-                </div>
+                </motion.div>
             </div>
-            <div
+            <motion.div
+                variants={fadeInUp}
                 id="right"
                 className="relative lg:w-[45%] w-full  flex flex-col justify-end"
             >
                 <img src={HeroImg} alt="" className="w-full" />
                 <RiGeminiFill className="absolute lg:top-24 top-16 lg:right-36 right-70 text-black text-6xl" />
-            </div>
-        </div>
+            </motion.div>
+        </motion.div>
 
     )
 }

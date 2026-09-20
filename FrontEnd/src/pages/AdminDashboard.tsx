@@ -18,6 +18,7 @@ import { showErrorToast, showSuccessToast } from "../Utils/toast";
 import { AddStyle } from "../components/Admin/AddStyle";
 import { SetHomeStyle } from "../components/Admin/SetHomeStyle";
 import { ConfigFooter } from "../components/Admin/ConfigFooter";
+import Button from "../animated components/Button";
 
 export const AdminDashboard = () => {
 
@@ -152,7 +153,7 @@ export const AdminDashboard = () => {
                         </div>
                         {/* Apply Filter btn */}
                         <div className="w-full py-5">
-                            <button className="w-full btn-primary">Apply Filter</button>
+                            <Button className="w-full">Apply Filter</Button>
                         </div>
 
 
@@ -178,7 +179,7 @@ export const AdminDashboard = () => {
                             <div className="text-black text-2xl">&#125;</div>
 
                         </div>
-                        <div> <button onClick={() => setSelectedUser(null)} className="btn-primary w-full">Close</button></div>
+                        <div> <Button onClick={() => setSelectedUser(null)} className="w-full">Close</Button></div>
                     </div>
                 </div>
 

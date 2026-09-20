@@ -5,6 +5,7 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 import { RichTextEditor } from "./RichTextEditor";
 
 import API from "../../Utils/API";
+import Button from "../../animated components/Button";
 
 
 
@@ -192,7 +193,7 @@ const EditProduct = ({ EditId,setMenu }: any) => {
             {/* Header */}
             <div className="w-full flex justify-between py-5">
                 <span className=" font-accent text-black  font-bold lg:text-3xl text-xl decoration-dotted underline underline-offset-8">Edit Product </span>
-                <button onClick={()=>HandleEditProduct()} className="btn-primary py-1">Save</button>
+                <Button onClick={()=>HandleEditProduct()} className="py-1 w-auto">Save</Button>
             </div>
 
             {/* Edit Product */}

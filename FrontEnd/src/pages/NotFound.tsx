@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom'
+import Button from '../animated components/Button'
 
 export const NotFound = () => {
     return (
@@ -7,7 +8,7 @@ export const NotFound = () => {
                 <h1 className='text-9xl font-bold text-wh/20'>404</h1>
                 <h1 className='text-9xl font-bold text-wh/20'>NotFound</h1>
                 <Link to="/">
-                    <button className='btn-primary bg-wh/90 text-black py-1.5 rounded-lg'>Return Home</button>
+                    <Button className='bg-wh/90 text-black py-1.5 rounded-lg'>Return Home</Button>
                 </Link>
             </div>
 

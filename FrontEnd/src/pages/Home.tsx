@@ -7,6 +7,8 @@ import ProductsSection from '../components/ProductsSection';
 import { useAuth } from "../context/AuthContext";
 import API from "../Utils/API";
 import BrowsingSTyles from "../components/BrowsingSTyles";
+import { motion } from "motion/react";
+import { fadeInUp } from "../Utils/Motion";
 
 const Home = () => {
     const [Products, setProducts] = useState<any>([])
@@ -42,7 +44,18 @@ const Home = () => {
             <Brands />
             <ProductsSection title={"Top Selling"} tag={"top_selling"} products={Products} ProductsLoading={ProductsLoading} />
             <div className="py-5 bg-wh"></div>
-            <Newsletter />
+            <motion.div
+                variants={fadeInUp}
+                
+                initial="hidden"
+                whileInView="visible"                  
+                viewport={{ amount: 0.2 }} 
+                
+                >
+
+                <Newsletter />
+
+            </motion.div>
             <ProductsSection title={"New Arrivals"} tag={"new_arrival"} products={Products} ProductsLoading={ProductsLoading} />
             <BrowsingSTyles />
 
@@ -51,3 +64,4 @@ const Home = () => {
 };
 
 export default Home;
+

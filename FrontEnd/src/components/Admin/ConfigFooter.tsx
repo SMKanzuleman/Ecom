@@ -5,6 +5,7 @@ import { MdDelete } from 'react-icons/md'
 import { FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa'
 import { CgSpinner } from 'react-icons/cg'
 import { showSuccessToast, showWaringToast } from '../../Utils/toast'
+import Button from '../../animated components/Button'
 
 export const ConfigFooter = () => {
 
@@ -229,13 +230,13 @@ export const ConfigFooter = () => {
                             <div className='text-[11px] text-gray-700 font-mono line-clamp-1'>
                                 URL: {SelectedCategory && SelectedStyle ? `/shop?category=${SelectedCategory}&style=${SelectedStyle}` : SelectedCategory ? `/category/${SelectedCategory}` : SelectedStyle ? `/style/${SelectedStyle}` : '/shop'}
                             </div>
-                            <button
+                            <Button
                                 type='button'
                                 onClick={handleAddLink}
-                                className='btn-primary px-5 py-1.5 rounded-lg text-xs font-semibold cursor-pointer active:scale-95 transition-all'
+                                className='px-5 py-1.5 w-auto rounded-lg text-xs font-semibold'
                             >
                                 + Add Link
-                            </button>
+                            </Button>
                         </div>
                     </div>
 
@@ -338,15 +339,15 @@ export const ConfigFooter = () => {
 
                         {/* Save Button */}
                         <div className='pt-2 flex justify-end'>
-                            <button
+                            <Button
                                 type='button'
                                 disabled={SavingContact}
                                 onClick={handleSaveContactInfo}
-                                className='btn-primary px-8 py-2 rounded-lg font-semibold text-sm cursor-pointer active:scale-95 transition-all flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed'
+                                className='px-8 py-2 w-auto rounded-lg font-semibold text-sm flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed'
                             >
                                 {SavingContact && <CgSpinner className='animate-spin text-lg' />}
                                 <span>{SavingContact ? 'Saving...' : 'Save Contact Info'}</span>
-                            </button>
+                            </Button>
                         </div>
                     </div>
                 </div>
@@ -429,15 +430,15 @@ export const ConfigFooter = () => {
 
                 {/* Save Brand & Social Button */}
                 <div className='pt-2 flex justify-end border-t border-gray-100'>
-                    <button
+                    <Button
                         type='button'
                         disabled={SavingBrand}
                         onClick={handleSaveBrandDetails}
-                        className='btn-primary px-8 py-2.5 rounded-xl font-semibold text-sm shadow cursor-pointer active:scale-95 transition-all flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed'
+                        className='px-8 py-2.5 w-auto rounded-xl font-semibold text-sm shadow flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed'
                     >
                         {SavingBrand && <CgSpinner className='animate-spin text-lg' />}
                         <span>{SavingBrand ? 'Saving...' : 'Save Brand & Social Details'}</span>
-                    </button>
+                    </Button>
                 </div>
             </div>
 

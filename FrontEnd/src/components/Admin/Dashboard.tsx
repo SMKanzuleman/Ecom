@@ -11,6 +11,7 @@ import { FaDownload } from "react-icons/fa6";
 import { FaPercent } from "react-icons/fa";
 import API from "../../Utils/API";
 import ExportCSV from "../../Utils/ExportCSV";
+import Button from "../../animated components/Button";
 
 
 
@@ -60,7 +61,7 @@ const Dashboard = ({ Stats, Products }: any) => {
                     <span className="font-bold lg:text-3xl text-xl">Dashboard <span className=" -mt-5 ">Overiew</span> </span>
                     <span className="text-[14px] tracking-wide text-text lg:block hidden">Welcome back,Here what is happening</span>
                 </div>
-                <div className="lg:w-[20%] w-[50%] justify-items-end"> <button onClick={() => HandleExportOrders()} className="btn-primary lg:text-sm text-[12px]"><FaDownload />Export Report</button></div>
+                <div className="lg:w-[20%] w-[50%] justify-items-end"> <Button onClick={() => HandleExportOrders()} className="lg:text-sm text-[12px]"><FaDownload />Export Report</Button></div>
             </div>
             {/*KPI Row*/}
             <div className="w-full grid lg:grid-cols-4 grid-cols-2  gap-5">

@@ -3,6 +3,7 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import API, { APIERROR } from "../../Utils/API";
 import { showErrorToast, showSuccessToast } from "../../Utils/toast";
 import axios from "axios";
+import Button from "../../animated components/Button";
 
 const ResetPassword = ({ setMenu }: any) => {
 
@@ -144,13 +145,13 @@ const ResetPassword = ({ setMenu }: any) => {
                     </button>
 
                     <div className="w-full flex justify-between items-center py-5">
-                        <button type="submit" disabled={Saving} className={`btn-primary w-full py-2 ${Saving ? "bg-black/60" : ""}`}
+                        <Button type="submit" disabled={Saving} className={`py-2 ${Saving ? "bg-black/60" : ""}`}
                             onClick={(e) => {
                                 e.preventDefault()
                                 HandleResetPassword()
                             }}>
                             {Saving ? "Saving..." : "Save"}
-                        </button>
+                        </Button>
                     </div>
                 </form>
 

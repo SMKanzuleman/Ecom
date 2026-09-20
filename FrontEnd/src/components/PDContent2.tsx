@@ -3,7 +3,8 @@ import { IoIosArrowDropdownCircle } from "react-icons/io";
 import { FaStar } from "react-icons/fa";
 import { FaWindowClose } from "react-icons/fa";
 import API from "../Utils/API";
-import { showErrorToast, showSuccessToast } from "../Utils/toast";
+import { showSuccessToast } from "../Utils/toast";
+import Button from "../animated components/Button";
 
 
 const PDContent2 = ({ Product }: any) => {
@@ -189,9 +190,9 @@ const PDContent2 = ({ Product }: any) => {
                             </div>
 
                             {/* Write Review Button */}
-                            <button onClick={() => setOpenReviewPopup(true)} className="btn-primary">
+                            <Button onClick={() => setOpenReviewPopup(true)} className="w-auto">
                                 Write Review
-                            </button>
+                            </Button>
                         </div>
                         <div className="w-full  h-auto   columns-1 lg:columns-3 gap-5  py-8 px-6 animate-fade-up">
 
@@ -260,7 +261,7 @@ const PDContent2 = ({ Product }: any) => {
                     </div>
                 )}
                 {OpenReviewPopup && (
-                    <div className="fixed inset-0 bg-black/50 flex items-center justify-center">
+                    <div className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center">
                         {/* Popup */}
                         <div className="w-1/2 h-1/2 bg-wh rounded-lg shadow-2xl flex flex-col gap-5 px-5 animate-fade-up">
                             {/* Header */}
@@ -309,15 +310,17 @@ const PDContent2 = ({ Product }: any) => {
                                     className="flex-1 min-h-0 p-5 h-full text-LG focus:outline-none no-scrollbar border-2 rounded-lg border-gray-700/20">
                                 </textarea>
                                 <div className="flex justify-end py-5">
-                                    <button
+                                    <Button
                                         onClick={() => HandleAddReview()}
-                                        className="btn-primary py-2">Publish</button>
+                                        className="py-2 w-auto">Publish</Button>
                                 </div>
                             </div>
                         </div>
                     </div>
                 )}
             </div>
+
+            
         </div>
     )
 }

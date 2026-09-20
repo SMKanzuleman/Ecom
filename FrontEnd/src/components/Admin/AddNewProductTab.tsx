@@ -6,6 +6,7 @@ import { toast } from 'react-toastify'
 import { showSuccessToast } from "../../Utils/toast";
 import API from "../../Utils/API";
 import { FaCloudUploadAlt } from "react-icons/fa";
+import Button from "../../animated components/Button";
 type ProductTypeProp = {
     setMenu: (m: string) => void
 }
@@ -135,8 +136,8 @@ const AddNewProductTab = ({ setMenu }: ProductTypeProp) => {
             <div className="w-full flex lg:flex-row flex-col lg:justify-between gap-5 lg:items-center py-5">
                 <div className="font-accent text-3xl font-bold text-black w-[40%]">Add Product</div>
                 <div className="w-full flex justify-end gap-5">
-                    <div><button className="btn-primary bg-wh text-black w-[120px]" onClick={() => { showSuccessToast("Go Fuck ur asss")}} > Discard</button></div>
-                    <div><button className="btn-primary w-[120px]" onClick={() => ADDPRODUCT()} > Save</button></div>
+                    <div><Button className="bg-wh text-black w-[120px]" onClick={() => { showSuccessToast("Go Fuck ur asss")}} > Discard</Button></div>
+                    <div><Button className="w-[120px]" onClick={() => ADDPRODUCT()} > Save</Button></div>
                 </div>
             </div>
 

@@ -1,8 +1,8 @@
-import { motion } from "motion/react"
+import {type HTMLMotionProps, motion } from "motion/react"
 
-type ButtonProps = {
+interface ButtonProps extends HTMLMotionProps<"button"> {
     children: React.ReactNode,
-    className: String
+    className?: string
 }
 
 

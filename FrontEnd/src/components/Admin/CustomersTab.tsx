@@ -10,6 +10,7 @@ import { useAuth } from '../../context/AuthContext';
 import AdminPagenation from './AdminPagenation';
 import API from "../../Utils/API";
 import ExportCSV from "../../Utils/ExportCSV";
+import Button from "../../animated components/Button";
 
 const CustomersTab = ({ Stats, Users, Orders }: any) => {
 
@@ -52,7 +53,7 @@ const CustomersTab = ({ Stats, Users, Orders }: any) => {
                     <span className="font-bold lg:text-3xl text-xl">Customer </span>
                     <span className="text-[14px] tracking-wide text-text lg:block hidden">Manage and view your registered user base.</span>
                 </div>
-                <div className="lg:w-[20%] w-[50%] justify-items-end"> <button onClick={() => HandleExportCustumers()} className="btn-primary lg:text-sm text-[12px]"><FaDownload />Export</button></div>
+                <div className="lg:w-[20%] w-[50%] justify-items-end"> <Button onClick={() => HandleExportCustumers()} className="lg:text-sm text-[12px] w-auto"><FaDownload />Export</Button></div>
             </div>
             {/*KPI Row*/}
             <div className="w-full grid lg:grid-cols-3 grid-cols-2  gap-5">
