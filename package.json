@@ -1,13 +1,14 @@
 {
   "dependencies": {
     "@tailwindcss/vite": "^4.3.3",
+    "motion": "^13.4.0",
     "tailwindcss": "^4.3.3"
   },
   "name": "ecom",
   "version": "1.0.0",
   "description": "- [Introduction](#introduction)",
   "main": "index.js",
- "scripts": {
+  "scripts": {
     "dev": "concurrently \"npm run dev --prefix BackEnd\" \"npm run dev --prefix FrontEnd\""
   },
   "repository": {
