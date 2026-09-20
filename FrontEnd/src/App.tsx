@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation } from 'react-router-dom';
+import { Routes, Route, useLocation, Outlet } from 'react-router-dom';
 import { Auth } from './pages/Auth';
 import Home from './pages/Home';
 import ProductDetail from './pages/ProductDetail';
@@ -16,34 +16,45 @@ import ResetPassword from './components/User/ResetPassword';
 
 import { Footer } from './components/Footer';
 
-import { OrderSuccess
+import {
+  OrderSuccess
 
- } from './components/OrderSuccess';
+} from './components/OrderSuccess';
+import { NotFound } from './pages/NotFound';
+
+
+const ShowNavAndFooter = () => {
+  return (
+    <>
+      <Navbar />
+      <Cart />
+      <Outlet />
+      <Footer />
+    </>
+
+  )
+}
 
 
 
 export const App = () => {
-  const location = useLocation()
-  const IsDashboard = location.pathname === "/dashboard" || location.pathname === "/userdashboard"
 
   return (
     <div>
 
       <ToastContainer position='top-right' style={{ top: "110px", right: "20px" }} />
 
-      {!IsDashboard && <Navbar />}
-
-      {!IsDashboard && <Cart />}
-
 
       <Routes>
         {/* unpretected Route */}
-        <Route path="/" element={<Home />} />
-        <Route path="/checkout" element={<Checkout />} />
-        <Route path="/auth" element={<Auth />} />
-        <Route path="/shop" element={<Shop />} />
-        <Route path="product/:id" element={<ProductDetail />} />
-        <Route path="/:type/:name" element={<Shop />} />
+        <Route element={<ShowNavAndFooter />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/checkout" element={<Checkout />} />
+          <Route path="/auth" element={<Auth />} />
+          <Route path="/shop" element={<Shop />} />
+          <Route path="product/:id" element={<ProductDetail />} />
+          <Route path="/:type/:name" element={<Shop />} />
+        </Route>
 
         <Route path="cart" element={<Cart />} />
 
@@ -63,9 +74,12 @@ export const App = () => {
         }>
         </Route>
 
+        {/* NOtFound */}
+        <Route path='*' element={<NotFound />} />
+
       </Routes>
 
-      {!IsDashboard && <Footer />}
+
     </div>
   )
 }

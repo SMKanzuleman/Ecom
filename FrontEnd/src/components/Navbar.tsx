@@ -22,8 +22,6 @@ const Navbar = () => {
 
     const SearchRef = useRef<HTMLDivElement>(null)
 
-
-
     const [ExploreLinks, setExploreLinks] = useState<any[]>([])
 
     const FetchNavLinks = async () => {
