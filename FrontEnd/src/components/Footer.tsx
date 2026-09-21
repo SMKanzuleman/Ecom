@@ -170,7 +170,7 @@ export const Footer = () => {
                         </li>
                         <li className="flex items-center gap-3">
                             <FaEnvelope className="text-sm shrink-0" />
-                            <span>{ContactPhone}</span>
+                            <span>{ContactEmail}</span>
                         </li>
                     </ul>
                     <div className="pt-2">

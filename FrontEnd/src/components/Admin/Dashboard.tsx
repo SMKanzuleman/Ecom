@@ -12,6 +12,8 @@ import { FaPercent } from "react-icons/fa";
 import API from "../../Utils/API";
 import ExportCSV from "../../Utils/ExportCSV";
 import Button from "../../animated components/Button";
+import { motion } from "motion/react";
+import { fadeInDown, fadeInUp, staggerContainer } from "../../Utils/Motion";
 
 
 
@@ -53,18 +55,23 @@ const Dashboard = ({ Stats, Products }: any) => {
     }
 
     return (
-        <div className="w-full flex flex-col py-5 animate-fade-up">
+        <motion.div
+            variants={staggerContainer(0.08, 0.1)}
+            initial="hidden"
+            animate="visible"
+            className="w-full flex flex-col py-5 animate-fade-up">
 
             {/*Header Row*/}
-            <div className="w-full flex justify-between py-5">
+            <motion.div variants={fadeInDown} className="w-full flex justify-between py-5">
                 <div className="lg:w-[80%] w-[50%] font-accent text-black flex flex-col">
                     <span className="font-bold lg:text-3xl text-xl">Dashboard <span className=" -mt-5 ">Overiew</span> </span>
                     <span className="text-[14px] tracking-wide text-text lg:block hidden">Welcome back,Here what is happening</span>
                 </div>
-                <div className="lg:w-[20%] w-[50%] justify-items-end"> <Button onClick={() => HandleExportOrders()} className="lg:text-sm text-[12px]"><FaDownload />Export Report</Button></div>
-            </div>
+                <div className="lg:w-[15%] w-[50%] justify-items-end"> <Button onClick={() => HandleExportOrders()} className="lg:text-sm  text-[12px]"><FaDownload />Export Report</Button></div>
+            </motion.div>
+
             {/*KPI Row*/}
-            <div className="w-full grid lg:grid-cols-4 grid-cols-2  gap-5">
+            <motion.div variants={fadeInDown} className="w-full grid lg:grid-cols-4 grid-cols-2  gap-5">
                 {/*KPI */}
                 <div className=" bg-wh p-5 flex flex-col rounded-lg gap-0.5 relative">
                     <div className="w-full flex justify-between items-center">
@@ -128,9 +135,9 @@ const Dashboard = ({ Stats, Products }: any) => {
                     <div className="w-full text-sm tracking-wider -mt-1">Conversion rate</div>
                 </div>
 
-            </div>
+            </motion.div>
             {/* Graph Row */}
-            <div className="w-full grid lg:grid-cols-[750px_1fr] gap-5 py-5 ">
+            <motion.div variants={fadeInUp} className="w-full grid lg:grid-cols-[750px_1fr] gap-5 py-5 ">
                 <div className="bg-wh rounded-lg flex flex-col justify-center items-center lg:pr-10 pr-5">
 
                     <div className=" w-full font-accent text-xl font-bold text-black flex justify-start px-10 py-5">Sales overview</div>
@@ -164,17 +171,13 @@ const Dashboard = ({ Stats, Products }: any) => {
 
 
                         })}
-
-
-
-
                     </div>
 
                 </div>
-            </div>
-            {/* Recent order Row */}
+            </motion.div>
 
-            <div className={`w-full bg-wh rounded-lg px-10 animate-fade-up`}>
+            {/* Recent order Row */}
+            <motion.div variants={fadeInUp} className={`w-full bg-wh rounded-lg px-10 animate-fade-up`}>
                 <div className="w-full py-5 font-accent font-bold text-xl text-black ">
                     Recent order
                 </div>
@@ -203,9 +206,9 @@ const Dashboard = ({ Stats, Products }: any) => {
 
 
 
-            </div>
+            </motion.div>
 
-        </div>
+        </motion.div>
     )
 }
 

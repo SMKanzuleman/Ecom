@@ -9,6 +9,9 @@ import AdminPagenation from "./AdminPagenation";
 import API from "../../Utils/API";
 import ExportCSV from "../../Utils/ExportCSV";
 import Button from "../../animated components/Button";
+import { motion } from "motion/react";
+import { fadeInDown, fadeInUp, staggerContainer } from "../../Utils/Motion";
+
 
 type ProductTypeProp = {
     setMenu: (m: string) => void
@@ -80,30 +83,30 @@ const ProductsTab = ({ setMenu, setSelectedProductId }: ProductTypeProp) => {
 
 
     return (
-        <div className="w-full animate-fade-up">
+        <motion.div variants={staggerContainer(0.08, 0.1)} initial="hidden" animate="visible" className="w-full animate-fade-up">
 
             {/* Header */}
 
-            <div className="w-full flex lg:flex-row flex-col lg:justify-between gap-5">
+            <motion.div variants={fadeInDown} className="w-full flex lg:flex-row flex-col lg:justify-between gap-5">
                 <div className="font-accent text-3xl font-bold text-black">Products</div>
                 <div className="w-full flex justify-between">
                     <div><Button className="lg:hidden w-auto"> <LiaFilterSolid /> Filters</Button></div>
                     <div><Button onClick={() => {
                         setMenu("AddNewProduct")
-                        
+
                     }} className="w-auto"> <FaPlus /> Add Product</Button></div>
                 </div>
-                <div><Button onClick={()=>
+                <div><Button onClick={() =>
                     HandleExportProducts()
                 } className="w-auto">Export</Button></div>
-            </div>
+            </motion.div>
 
             {/* Main Box */}
 
             <div className="flex flex-col lg:grid lg:grid-cols-[1fr_3fr] gap-5 py-5">
 
                 {/* Left */}
-                <div className="bg-wh shadow-xl rounded-lg px-5  lg:flex hidden h-fit flex-col py-5">
+                <motion.div variants={fadeInDown} className="bg-wh shadow-xl rounded-lg px-5  lg:flex hidden h-fit flex-col py-5">
                     {/* Filter + Icon */}
                     <div className="flex justify-between items-center border-b-2 border-gray-700/10 pb-5">
                         <div className=" font-accent text-2xl text-black font-bold">Filters</div>
@@ -138,9 +141,9 @@ const ProductsTab = ({ setMenu, setSelectedProductId }: ProductTypeProp) => {
                         <button className="w-full btn-primary">Apply Filter</button>
                     </div> */}
 
-                </div>
+                </motion.div>
                 {/* Right */}
-                <div className="bg-wh rounded-lg shadow-xl flex flex-col h-fit">
+                <motion.div variants={fadeInUp} className="bg-wh rounded-lg shadow-xl flex flex-col h-fit">
                     {/* Showing 1-10 of 124 items */}
 
                     {/* Header */}
@@ -192,10 +195,10 @@ const ProductsTab = ({ setMenu, setSelectedProductId }: ProductTypeProp) => {
                     </div>
 
 
-                </div>
+                </motion.div>
             </div>
 
-        </div>
+        </motion.div>
     )
 }
 

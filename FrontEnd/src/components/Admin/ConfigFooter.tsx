@@ -6,6 +6,9 @@ import { FaFacebookF, FaInstagram, FaTwitter } from 'react-icons/fa'
 import { CgSpinner } from 'react-icons/cg'
 import { showSuccessToast, showWaringToast } from '../../Utils/toast'
 import Button from '../../animated components/Button'
+import { motion } from "motion/react";
+import { fadeInDown, fadeInUp, scaleUp, staggerContainer } from '../../Utils/Motion'
+
 
 export const ConfigFooter = () => {
 
@@ -161,17 +164,17 @@ export const ConfigFooter = () => {
 
 
     return (
-        <div className='flex flex-col gap-5'>
+        <motion.div variants={staggerContainer(0.08, 0.1)} initial="hidden" animate="visible" className='flex flex-col gap-5'>
 
-            <div className="p-5 flex flex-col">
+            <motion.div variants={fadeInDown} className="p-5 flex flex-col">
                 <Title name='Configure Footer' />
                 <div className='text-sm text-gray-500'>Make it yours.</div>
-            </div>
+            </motion.div>
 
             <div className='grid grid-cols-1 lg:grid-cols-2 gap-5'>
 
                 {/* Explore Pages */}
-                <div className='flex flex-col bg-wh rounded-2xl shadow-sm border border-gray-200/70 p-6 gap-4'>
+                <motion.div variants={fadeInUp} className='flex flex-col bg-wh rounded-2xl shadow-sm border border-gray-200/70 p-6 gap-4'>
 
                     <div className='flex flex-col border-b border-gray-200/60 pb-3'>
                         <div className='font-accent text-xl font-bold text-black'>Explore Pages</div>
@@ -226,17 +229,21 @@ export const ConfigFooter = () => {
                         </div>
 
                         {/* Add Button */}
-                        <div className='flex justify-between items-center pt-1'>
+                        <div className='flex w-full  justify-between items-center pt-1'>
                             <div className='text-[11px] text-gray-700 font-mono line-clamp-1'>
                                 URL: {SelectedCategory && SelectedStyle ? `/shop?category=${SelectedCategory}&style=${SelectedStyle}` : SelectedCategory ? `/category/${SelectedCategory}` : SelectedStyle ? `/style/${SelectedStyle}` : '/shop'}
                             </div>
-                            <Button
-                                type='button'
-                                onClick={handleAddLink}
-                                className='px-5 py-1.5 w-auto rounded-lg text-xs font-semibold'
-                            >
-                                + Add Link
-                            </Button>
+                            <div className='w-30'>
+                                <Button
+                                    type='button'
+                                    onClick={handleAddLink}
+                                    className='px-5 py-1.5 w-auto rounded-lg text-xs font-semibold'
+                                >
+                                    + Add Link
+                                </Button>
+
+                            </div>
+
                         </div>
                     </div>
 
@@ -279,10 +286,10 @@ export const ConfigFooter = () => {
                             </tbody>
                         </table>
                     </div>
-                </div>
+                </motion.div>
 
                 {/* Contact Detail */}
-                <div className='flex flex-col bg-wh rounded-2xl shadow-sm border border-gray-200/70 p-6 gap-4'>
+                <motion.div variants={fadeInDown} className='flex flex-col bg-wh rounded-2xl shadow-sm border border-gray-200/70 p-6 gap-4'>
                     <div className='flex flex-col border-b border-gray-200/60 pb-3'>
                         <div className='font-accent text-xl font-bold text-black'>Contact Details</div>
                         <p className='text-xs '>Enter your official support email, phone, business address and operating hours.</p>
@@ -338,25 +345,28 @@ export const ConfigFooter = () => {
                         </div>
 
                         {/* Save Button */}
-                        <div className='pt-2 flex justify-end'>
-                            <Button
-                                type='button'
-                                disabled={SavingContact}
-                                onClick={handleSaveContactInfo}
-                                className='px-8 py-2 w-auto rounded-lg font-semibold text-sm flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed'
-                            >
-                                {SavingContact && <CgSpinner className='animate-spin text-lg' />}
-                                <span>{SavingContact ? 'Saving...' : 'Save Contact Info'}</span>
-                            </Button>
+                        <div className="flex justify-end">
+
+                            <div className='pt-2 w-40'>
+                                <Button
+                                    type='button'
+                                    disabled={SavingContact}
+                                    onClick={handleSaveContactInfo}
+                                    className='px-0 py-2 w-auto rounded-full font-semibold text-sm flex items-center  disabled:opacity-60 disabled:cursor-not-allowed'
+                                >
+                                    {SavingContact && <CgSpinner className='animate-spin text-lg' />}
+                                    <span>{SavingContact ? 'Saving...' : 'Save Info'}</span>
+                                </Button>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </motion.div>
 
             </div>
 
             {/* Brand & Social Details */}
 
-            <div className='flex flex-col bg-wh rounded-2xl shadow-sm border border-gray-200/70 p-6 gap-5'>
+            <motion.div variants={fadeInUp} className='flex flex-col bg-wh rounded-2xl shadow-sm border border-gray-200/70 p-6 gap-5'>
                 <div className='flex flex-col border-b border-gray-200/60 pb-3'>
                     <div className='font-accent text-xl font-bold text-black'>Brand & Social Details</div>
                     <p className='text-xs text-gray-500 font-body'>Configure the brand bio shown in the footer and your social media profiles.</p>
@@ -429,19 +439,22 @@ export const ConfigFooter = () => {
                 </div>
 
                 {/* Save Brand & Social Button */}
-                <div className='pt-2 flex justify-end border-t border-gray-100'>
-                    <Button
-                        type='button'
-                        disabled={SavingBrand}
-                        onClick={handleSaveBrandDetails}
-                        className='px-8 py-2.5 w-auto rounded-xl font-semibold text-sm shadow flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed'
-                    >
-                        {SavingBrand && <CgSpinner className='animate-spin text-lg' />}
-                        <span>{SavingBrand ? 'Saving...' : 'Save Brand & Social Details'}</span>
-                    </Button>
-                </div>
-            </div>
+                <div className='flex justify-end'>
 
-        </div>
+                    <div className='pt-2 flex justify-end border-t border-gray-100'>
+                        <Button
+                            type='button'
+                            disabled={SavingBrand}
+                            onClick={handleSaveBrandDetails}
+                            className='px-8 py-2.5 w-auto rounded-xl font-semibold text-sm shadow flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed'
+                        >
+                            {SavingBrand && <CgSpinner className='animate-spin text-lg' />}
+                            <span>{SavingBrand ? 'Saving...' : 'Save Details'}</span>
+                        </Button>
+                    </div>
+                </div>
+            </motion.div>
+
+        </motion.div>
     )
 }

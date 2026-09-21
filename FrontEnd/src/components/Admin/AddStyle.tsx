@@ -8,6 +8,8 @@ import { CgSpinner } from "react-icons/cg";
 import { AiFillDelete } from "react-icons/ai";
 import { FiX } from 'react-icons/fi';
 import Button from "../../animated components/Button";
+import { motion } from "motion/react";
+
 
 export const AddStyle = ({ Styles, FetchStyles }: any) => {
     const { Token } = useAuth();
@@ -71,7 +73,7 @@ export const AddStyle = ({ Styles, FetchStyles }: any) => {
 
 
     return (
-        <div>
+        <div className="py-10 flex flex-col gap-5">
             <Title name="Add Custom Style" />
 
 

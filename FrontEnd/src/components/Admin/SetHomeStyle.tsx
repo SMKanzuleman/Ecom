@@ -70,14 +70,16 @@ export const SetHomeStyle = ({ Styles, FetchStyles }: any) => {
                     </p>
                 </div>
 
-                <Button
-                    type="button"
-                    onClick={handleSaveHomeSlots}
-                    disabled={savingSlots}
-                    className="px-8 py-2.5 w-auto rounded-xl font-semibold shadow disabled:opacity-50"
-                >
-                    {savingSlots ? "Saving..." : "Save"}
-                </Button>
+                <div>
+                    <Button
+                        type="button"
+                        onClick={handleSaveHomeSlots}
+                        disabled={savingSlots}
+                        className="px-8 py-2.5 w-auto rounded-xl font-semibold shadow disabled:opacity-50"
+                    >
+                        {savingSlots ? "Saving..." : "Save"}
+                    </Button>
+                </div>
             </div>
 
             {/* Visual 4-Slot Layout Selector */}

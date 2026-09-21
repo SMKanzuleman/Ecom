@@ -9,6 +9,9 @@ import API from "../../Utils/API";
 import { showWaringToast } from "../../Utils/toast";
 import { useState } from "react";
 import { LuPanelLeftClose } from "react-icons/lu";
+import { motion, AnimatePresence } from "motion/react";
+import Button from "../../animated components/Button";
+import { fadeInUp } from "../../Utils/Motion";
 
 type SidebarProps = {
     Menu: any
@@ -36,11 +39,15 @@ const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
 
     return (
 
-       <div className={`hidden bg-black lg:flex lg:flex-col py-5 transition-all duration-300 ease-in-out relative ${IsCollapsed ? "lg:w-16" : "lg:w-[17%]"}`}>
+        <motion.div
+            variants={fadeInUp}
+            initial="hidden"
+            animate="visible"
+            className={`hidden bg-black lg:flex lg:flex-col py-5 transition-all duration-300 ease-in-out relative ${IsCollapsed ? "lg:w-16" : "lg:w-[17%]"}`}>
 
             <div className={`w-full flex flex-col ${IsCollapsed ? "lg:px-2" : "lg:px-5"}`}>
                 <div className={`flex ${IsCollapsed ? "justify-center" : "justify-between"}  items-center group overflow-hidden`}>
-                    
+
                     <div
                         className={`overflow-hidden whitespace-nowrap transition-all duration-300 ${IsCollapsed ? "max-w-0 opacity-0" : "w-full opacity-100"}`}>
                         <Link to={`/`}>
@@ -78,7 +85,10 @@ const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
                 ].map((item, index) => {
                     const isActive = Menu === item.key
                     return (
-                        <div
+                        <motion.div
+                            whileHover={{ x: IsCollapsed ? 0 : 4 }}
+                            whileTap={{ scale: 0.97 }}
+                            transition={{ duration: 0.15 }}
                             key={index}
                             onClick={() => setMenu(item.key)}
                             title={item.label}
@@ -94,7 +104,7 @@ const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
                                 {item.label}
                             </span>
 
-                        </div>
+                        </motion.div>
                     )
                 })}
 
@@ -104,7 +114,7 @@ const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
             <div
                 className={`w-full absolute bottom-2 transition-all duration-300 ${IsCollapsed ? "px-2 " : "px-5"}`}
             >
-                <button
+                <Button
                     className="btn-primary bg-bg w-full text-black flex items-center justify-center rounded-lg p-2  gap-2 overflow-hidden"
                     onClick={() => HnadleLogout()}
                     title={IsCollapsed ? "Logout" : ""}
@@ -116,17 +126,16 @@ const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
                     >
                         Logout
                     </span>
-                </button>
+                </Button>
             </div>
 
 
 
 
-        </div >
+        </motion.div >
     )
 }
 
 export default Sidebar
 
 
- 

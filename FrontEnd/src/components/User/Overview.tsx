@@ -74,7 +74,7 @@ const Overview = ({ TotalOrders, TotalInProgress, TotalUserSpending, CancelledOr
 
           <div className="flex flex-col justify-between items gap-1">
             <span className="font-accent text- tracking-wider  text-text">Total Spent</span>
-            <div className="font-heading font-semibold text-5xl text-black">{TotalUserSpending}<span className="text-xs text-text font-accent uppercase tracking-widest">pkr</span> </div>
+            <div className="font-heading font-semibold text-5xl text-black">{Math.round(TotalUserSpending)}<span className="text-xs text-text font-accent uppercase tracking-widest">pkr</span> </div>
           </div>
           <div className="w-10 h-10 bg-bg rounded-full flex justify-center items-center text-black">
             <HiMiniCurrencyDollar className="text-3xl" />

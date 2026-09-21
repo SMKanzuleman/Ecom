@@ -12,6 +12,9 @@ import { LuPanelLeftClose } from "react-icons/lu";
 import { useState } from "react";
 import { FaChevronRight } from "react-icons/fa";
 import { useCart } from "../../context/CartContext";
+import { motion, AnimatePresence } from "motion/react";
+import Button from "../../animated components/Button";
+import { fadeInDown } from "../../Utils/Motion";
 
 type SidebarProps = {
     Menu: string,
@@ -23,7 +26,7 @@ type SidebarProps = {
 const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
 
     const { setToken } = useAuth()
-    const {  ClearCart } = useCart()
+    const { ClearCart } = useCart()
     const Navigate = useNavigate()
     const [IsCollapsed, setIsCollapsed] = useState(false);
     const [OpenSubMenu, setOpenSubMenu] = useState<any>(null);
@@ -44,8 +47,13 @@ const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
     }
 
     return (
-        <div className={`hidden bg-black lg:flex lg:flex-col py-5 transition-all duration-300 ease-in-out relative shrink-0 ${IsCollapsed ? "lg:w-20" : "lg:w-[18%]"}`}>
+        <motion.div 
+        variants={fadeInDown}
+        initial="hidden"
+        animate="visible"
+        className={`hidden bg-black lg:flex lg:flex-col py-5  relative shrink-0 ${IsCollapsed ? "lg:w-20" : "lg:w-[18%]"}`}>
 
+            {/* Logo , collapse */}
             <div className={`w-full flex flex-col ${IsCollapsed ? "lg:px-3" : "lg:px-5"}`}>
                 <div className={`flex ${IsCollapsed ? "justify-center" : "justify-between"}  items-center group overflow-hidden`}>
                     <div
@@ -63,7 +71,7 @@ const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
                     </span>
                 </div>
             </div>
-
+            {/* Links */}
             <div className="w-full flex flex-col gap-2 text-wh py-12 overflow-hidden">
                 {[
                     {
@@ -101,8 +109,10 @@ const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
                     const isActive = Menu === item.key || isSubActive;
                     return (
                         <div key={index} className="flex flex-col gap-3">
-
-                            <div
+                            <motion.div
+                                whileHover={{ x: IsCollapsed ? 0 : 4 }}
+                                whileTap={{ scale: 0.97 }}
+                                transition={{ duration: 0.15 }}
                                 onClick={() => {
                                     if (item.SubMenu) {
                                         const isOpening = OpenSubMenu !== item.key;
@@ -130,44 +140,47 @@ const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
                                 {item.SubMenu && !IsCollapsed && (
                                     <FaChevronRight className={`${OpenSubMenu === item.key ? "rotate-90" : "rotate-0"} ml-auto shrink-0 transition-all duration-300 ease-in-out`} />
                                 )}
-                            </div>
+                            </motion.div>
+
                             {/* SubMenu only when NOT collapsed */}
-                            {!IsCollapsed && OpenSubMenu === item.key && item.SubMenu && (
-                                item.SubMenu.map((i, sIdx) => {
-                                    const isSubActive = Menu === i.key;
-                                    return (
-                                        <div
-                                            key={sIdx}
-                                            onClick={() => {
-                                                setMenu(i.key);
-                                            }}
-                                            title={i.label}
-                                            className={`flex items-center gap-2.5 py-2.5 px-6 mx-3  rounded-lg animate-fade-up cursor-pointer transition-all duration-200 ${isSubActive
+                            <AnimatePresence>
+                                {!IsCollapsed && OpenSubMenu === item.key && item.SubMenu && (
+                                    item.SubMenu.map((i, sIdx) => {
+                                        const isSubActive = Menu === i.key;
+                                        return (
+                                            <motion.div
+                                                whileHover={{ x: 4 }}
+                                                whileTap={{ scale: 0.97 }}
+                                                key={sIdx}
+                                                onClick={() => {
+                                                    setMenu(i.key);
+                                                }}
+                                                title={i.label}
+                                                className={`flex items-center gap-2.5 py-2.5 px-6 mx-3  rounded-lg  cursor-pointer  ${isSubActive
                                                     ? "bg-white text-black font-semibold shadow-md"
                                                     : "text-wh/70 hover:text-wh hover:bg-white/10"
-                                                }`}
-                                        >
-                                          
-                                            <span
-                                                className="font-body text-sm whitespace-nowrap overflow-hidden"
+                                                    }`}
                                             >
-                                                {i.label}
-                                            </span>
-                                        </div>
-                                    );
-                                })
-                            )}
+                                                <span
+                                                    className="font-body text-sm whitespace-nowrap overflow-hidden"
+                                                >
+                                                    {i.label}
+                                                </span>
+                                            </motion.div>
+                                        );
+                                    })
+                                )}
+                            </AnimatePresence>
 
                         </div>
                     );
                 })}
             </div>
-
             {/* 3. Logout Button */}
             <div
                 className={`w-full absolute bottom-2 transition-all duration-300 ${IsCollapsed ? "px-2 " : "px-5"}`}
             >
-                <button
+                <Button
                     className="btn-primary bg-bg w-full text-black flex items-center justify-center rounded-lg p-2  gap-2 overflow-hidden"
                     onClick={() => HnadleLogout()}
                     title={IsCollapsed ? "Logout" : ""}
@@ -179,13 +192,13 @@ const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
                     >
                         Logout
                     </span>
-                </button>
+                </Button>
             </div>
 
 
 
 
-        </div >
+        </motion.div >
     )
 }
 

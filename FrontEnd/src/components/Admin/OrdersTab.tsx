@@ -7,6 +7,8 @@ import { showSuccessToast } from "../../Utils/toast";
 import { FaSave } from "react-icons/fa";
 import ExportCSV from "../../Utils/ExportCSV";
 import Button from "../../animated components/Button";
+import { motion } from "motion/react";
+import { fadeInDown, fadeInUp, staggerContainer } from "../../Utils/Motion";
 
 
 
@@ -66,32 +68,32 @@ export const OrdersTab = () => {
 
 
     return (
-        <div className="w-full animate-fade-up flex flex-col gap-5">
+        <motion.div variants={staggerContainer(0.08,0.1)} initial="hidden" animate="visible" className="w-full animate-fade-up flex flex-col gap-5">
 
 
             {/*Header Row*/}
 
-            <div className="w-full flex justify-between">
+            <motion.div variants={fadeInDown} className="w-full flex justify-between py-5">
                 <div className="lg:w-[80%] w-[50%] font-accent text-black flex flex-col">
                     <span className="font-bold lg:text-3xl text-xl">Orders </span>
                     <span className="text-[14px] tracking-wide text-text lg:block hidden">Manage and track your customer Orders</span>
                 </div>
-                <div className="lg:w-[20%] w-[50%] justify-items-end"> <Button onClick={() => HandleExportOrders()} className="lg:text-sm text-[12px] w-auto"><FaDownload />Export</Button></div>
-            </div>
+                <div className="lg:w-[10%] w-[50%] justify-items-end"> <Button onClick={() => HandleExportOrders()} className="lg:text-sm text-[12px] w-auto"><FaDownload />Export</Button></div>
+            </motion.div>
 
             {/* Menu Selection */}
 
-            <div className="w-fit flex py-1 px-2 bg-wh rounded-full lg:gap-5 items-center  lg:justify-start justify-between ">
+            <motion.div variants={fadeInDown} className="w-fit flex py-1 px-2 bg-wh rounded-full lg:gap-5 items-center  lg:justify-start justify-between ">
                 <div onClick={() => setOrderMenu("All")} className={`cursor-pointer ${OrderMenu === "All" ? "text-wh bg-black rounded-full px-3 py-1" : "text-text"}`}>All</div>
                 <div onClick={() => setOrderMenu("shipped")} className={`cursor-pointer ${OrderMenu === "shipped" ? "text-wh bg-black rounded-full px-3 py-1" : "text-text"}`}>Shipped</div>
                 <div onClick={() => setOrderMenu("delivered")} className={`cursor-pointer ${OrderMenu === "delivered" ? "text-wh bg-black rounded-full px-3 py-1" : "text-text"}`}>Delivered</div>
                 <div onClick={() => setOrderMenu("processing")} className={`cursor-pointer ${OrderMenu === "processing" ? "text-wh bg-black rounded-full px-3 py-1" : "text-text"}`}>Processing</div>
                 <div onClick={() => setOrderMenu("cancelled")} className={`cursor-pointer ${OrderMenu === "cancelled" ? "text-wh bg-black rounded-full px-3 py-1" : "text-text"}`}>Cancelled</div>
-            </div>
+            </motion.div>
 
             <div className="text-red-500 flex justify-center lg:hidden">*Use Desktop site to change order status*</div>
 
-            <div className="bg-wh rounded-lg shadow-xl flex flex-col">
+            <motion.div variants={fadeInUp} className="bg-wh rounded-lg shadow-xl flex flex-col">
                 {/* Header */}
                 <div className=" bg-bg font-semibold text-black  border-2 rounded-t-lg grid lg:grid-cols-[1fr_1fr_1fr_1fr_1fr_1fr] grid-cols-[1fr_1fr_1fr_1fr] gap-x-5 py-4 px-3 border-b-2 border-gray-700/10">
                     <div className="lg:block hidden">Order Id</div>
@@ -160,8 +162,8 @@ export const OrdersTab = () => {
                 </div>
 
 
-            </div>
+            </motion.div>
 
-        </div>
+        </motion.div>
     )
 }

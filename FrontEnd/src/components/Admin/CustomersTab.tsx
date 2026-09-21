@@ -11,6 +11,8 @@ import AdminPagenation from './AdminPagenation';
 import API from "../../Utils/API";
 import ExportCSV from "../../Utils/ExportCSV";
 import Button from "../../animated components/Button";
+import { motion } from "motion/react";
+import { fadeInDown, fadeInUp, staggerContainer } from "../../Utils/Motion";
 
 const CustomersTab = ({ Stats, Users, Orders }: any) => {
 
@@ -44,19 +46,19 @@ const CustomersTab = ({ Stats, Users, Orders }: any) => {
     }
 
     return (
-        <div className="w-full animate-fade-up flex flex-col gap-5">
+        <motion.div variants={staggerContainer(0.08,0.1)} initial="hidden" animate="visible" className="w-full animate-fade-up flex flex-col gap-5">
 
 
             {/*Header Row*/}
-            <div className="w-full flex justify-between">
+            <motion.div variants={fadeInUp} className="w-full flex justify-between">
                 <div className="lg:w-[80%] w-[50%] font-accent text-black flex flex-col">
                     <span className="font-bold lg:text-3xl text-xl">Customer </span>
                     <span className="text-[14px] tracking-wide text-text lg:block hidden">Manage and view your registered user base.</span>
                 </div>
                 <div className="lg:w-[20%] w-[50%] justify-items-end"> <Button onClick={() => HandleExportCustumers()} className="lg:text-sm text-[12px] w-auto"><FaDownload />Export</Button></div>
-            </div>
+            </motion.div>
             {/*KPI Row*/}
-            <div className="w-full grid lg:grid-cols-3 grid-cols-2  gap-5">
+            <motion.div variants={fadeInUp} className="w-full grid lg:grid-cols-3 grid-cols-2  gap-5">
                 {/*KPI */}
                 <div className=" bg-wh p-5 flex flex-col rounded-lg gap-0.5 relative hover:scale-101 duration-200">
                     <div className="w-full flex justify-between items-center">
@@ -89,9 +91,9 @@ const CustomersTab = ({ Stats, Users, Orders }: any) => {
                     <div className="w-full text-sm tracking-wider -mt-1">AVG Lifetime value</div>
                 </div>
 
-            </div>
+            </motion.div>
 
-            <div className="bg-wh rounded-lg shadow-xl flex flex-col">
+            <motion.div variants={fadeInDown} className="bg-wh rounded-lg shadow-xl flex flex-col">
 
                 {/* Header */}
                 <div className=" bg-bg font-semibold text-black  border-2 border-black grid lg:grid-cols-[1fr_2fr_1fr_1fr_1fr_1fr] grid-cols-[1.5fr_1fr] gap-x-5 py-4 px-3 border-b-2 border-gray-700/10">
@@ -128,26 +130,26 @@ const CustomersTab = ({ Stats, Users, Orders }: any) => {
                                         <div>
                                             {user.Email}</div>
                                     </div>
-                                    <div className="lg:b lock hidden">{user.Password}</div>
-                                    {/* <div>10</div> */ }
+                                    <div className="lg:block hidden">{user.Password? user.Password : ""}</div>
+                                    {/* <div>10</div> */}
                                     <div className="lg:block hidden">{user.Provider}</div>
                                     <div className="lg:block hidden"> Rs.{GetCustomerSpending(user._id).toLocaleString()}</div>
                                     <div className="lg:block hidden">{new Date(user.createdAt).toLocaleDateString("en-GB")}</div>
                                 </div>
 
-                )
+                            )
                         })}
 
-                <AdminPagenation FirstIndex={FirstIndex} LastIndex={LastIndex} CurrentPage={CurrentPage} setCurrentpage={setCurrentPage} PostPerPage={PostPerPage} Capacity={Users.length} />
+                    <AdminPagenation FirstIndex={FirstIndex} LastIndex={LastIndex} CurrentPage={CurrentPage} setCurrentpage={setCurrentPage} PostPerPage={PostPerPage} Capacity={Users.length} />
 
-            </div>
+                </div>
 
 
-        </div>
-            </div >
+            </motion.div>
+        </motion.div >
 
-    
-            )
+
+    )
 }
 
-        export default CustomersTab              
+export default CustomersTab              
