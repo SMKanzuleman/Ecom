@@ -50,7 +50,7 @@ const Shop = () => {
   })
 
   const [CurrentPage, setCurrentPage] = useState(1)
-  const [PostPerPage, setPostPerPage] = useState(50)
+  const [PostPerPage, setPostPerPage] = useState(15)
   const LastIndex = CurrentPage * PostPerPage;
   const FirstIndex = LastIndex - PostPerPage
 
