@@ -103,9 +103,12 @@ const ProductsSection = ({ title, tag, products, ProductsLoading }: ProductProp)
             </motion.div>
 
             <div className="w-full flex justify-center">
-                <Button className={`w-[30%] lg:w-[10%] ${products.length <= 4 ? "hidden" : "block"}`} onClick={() => {
-                    SetShowAll(!ShowAll)
-                }}>{ShowAll ? "Show less" : "Show All"}</Button>
+                <div className='w-[30%] lg:w-[10%]'>
+
+                    <Button className={` ${products.length <= 4 ? "hidden" : "block"}`} onClick={() => {
+                        SetShowAll(!ShowAll)
+                    }}>{ShowAll ? "Show less" : "Show All"}</Button>
+                </div>
             </div>
         </motion.div>
     )

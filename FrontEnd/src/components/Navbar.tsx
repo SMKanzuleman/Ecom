@@ -136,7 +136,7 @@ const Navbar = () => {
                     <div className="w-full flex flex-col justify-center items-start pl-24 pt-20 gap-8 text-black text-2xl  font-heading ">
                         <Link to={"/shop"} className='hover:text-text transition-transform duration-1000'>Shop</Link>
                         {ExploreLinks.map((link, index) => (
-                            <Link to={"/shop"} className='hover:text-text transition-transform duration-1000'>Shop</Link>
+                            <Link to={`/${link.Url}`} className='hover:text-text transition-transform duration-1000'>{link.Label}</Link>
                         ))}
                     </div>
 

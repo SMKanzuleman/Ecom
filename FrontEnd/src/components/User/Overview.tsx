@@ -26,16 +26,14 @@ const Overview = ({ TotalOrders, TotalInProgress, TotalUserSpending, CancelledOr
 
       {/* KPI Row */}
 
-      <div className="w-full grid lg:grid-cols-4 grid-cols-4 justify-center lg:px-0 px-5  gap-4">
+      <div className="w-full grid lg:grid-cols-4 grid-cols-2 justify-center lg:px-0 px-5  gap-4">
         {/*KPI */}
-
-
 
         <div className=" bg-wh  flex justify-between rounded-lg p-5 gap-0.5 relative">
 
           <div className="flex flex-col justify-between items gap-1">
             <span className="font-accent tracking-wider  text-text">Total Orders</span>
-            <div className="font-heading text-5xl font-semibold text-black font-">{TotalOrders}</div>
+            <div className="font-heading lg:text-5xl text-4xl font-semibold text-black font-">{TotalOrders}</div>
           </div>
           <div className="w-10 h-10 bg-bg rounded-full flex justify-center items-center text-black">
             <GiShoppingBag className="text-lg" />
@@ -48,20 +46,18 @@ const Overview = ({ TotalOrders, TotalInProgress, TotalUserSpending, CancelledOr
 
           <div className="flex flex-col justify-between items gap-1">
             <span className="font-accent tracking-wider  text-text">In Progress</span>
-            <div className="font-heading text-5xl font-semibold text-black font-">{TotalInProgress}</div>
+            <div className="font-heading lg:text-5xl text-4xl font-semibold text-black font-">{TotalInProgress}</div>
           </div>
           <div className="w-10 h-10 bg-bg rounded-full flex justify-center items-center text-black">
             <GiShoppingBag className="text-lg" />
           </div>
-
-
         </div>
 
         <div className=" bg-wh  flex justify-between rounded-lg p-5 gap-0.5 relative">
 
           <div className="flex flex-col justify-between items gap-1">
             <span className="font-accent tracking-wider  text-text">Cancelled Orders</span>
-            <div className="font-heading text-5xl font-semibold text-black font-">{CancelledOrders}</div>
+            <div className="font-heading lg:text-5xl text-4xl font-semibold text-black font-">{CancelledOrders}</div>
           </div>
           <div className="w-10 h-10 bg-bg rounded-full flex justify-center items-center text-black">
             <GiShoppingBag className="text-lg" />
@@ -74,7 +70,7 @@ const Overview = ({ TotalOrders, TotalInProgress, TotalUserSpending, CancelledOr
 
           <div className="flex flex-col justify-between items gap-1">
             <span className="font-accent text- tracking-wider  text-text">Total Spent</span>
-            <div className="font-heading font-semibold text-5xl text-black">{Math.round(TotalUserSpending)}<span className="text-xs text-text font-accent uppercase tracking-widest">pkr</span> </div>
+            <div className="font-heading font-semibold lg:text-5xl text-4xl text-black">{Math.round(TotalUserSpending)}<span className="text-xs text-text font-accent uppercase tracking-widest">pkr</span> </div>
           </div>
           <div className="w-10 h-10 bg-bg rounded-full flex justify-center items-center text-black">
             <HiMiniCurrencyDollar className="text-3xl" />

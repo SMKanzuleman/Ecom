@@ -34,7 +34,7 @@ const Cart = () => {
           <button onClick={() => setIsCartOpen(!IsCartOpen)} className="btn-primary px-5 py-1">X</button>
         </div>
 
-        <div className="flex-1 overflow-y-auto bg-amb00 relative bg-wh flex gap-5 flex-col justify-start py-10 px-10">
+        <div className="flex-1 overflow-y-auto bg-amb00 relative bg-wh flex gap-5 flex-col justify-start py-10 lg:px-10 px-5">
 
           {Cart.map((item) => {
             return (
@@ -49,36 +49,36 @@ const Cart = () => {
                   />
                 </div>
 
-                <div className="w-[70%] flex flex-col items-start text-black">
+                <div className="w-[70%] flex flex-col items-start gap-1 text-black">
                   <p>{item.Name}</p>
 
                   <div className="w-full flex items-center justify-start gap-15 px-2">
 
                     <div className="flex items-center gap-2">
-
                       <p className="text-wh px-2 text-xs flex justify-center items-center p-1  rounded-full bg-black">{item.Size}</p>
                       <p className={`w-7 h-7 rounded-full`}
                         style={{ backgroundColor: item.Color }}></p>
+                      <div className=" bg-black flex-1 rounded-full flex items-center justify-between overflow-hidden gap-3 px-3">
+                        <button onClick={() => {
+                          UpdateQuantity(item._id, item.Size, item.Color, item.Quantity - 1)
+
+                        }}
+                          className=" w-[30%] py-1 cursor-pointer font-bold hover:scale-150 duration-100 text-wh">
+                          -
+                        </button>
+                        <div className="w-[40%] py-1 text-wh text-center">{item.Quantity}</div>
+                        <button onClick={() => {
+                          UpdateQuantity(item._id, item.Size, item.Color, item.Quantity + 1)
+                        }}
+                          className="w-[30%] text-wh py-1 cursor-pointer font-bold hover:scale-150 duration-100">
+                          +
+                        </button>
+                      </div>
                     </div>
 
-                    <div className=" bg-black rounded-full flex items-center justify-between overflow-hidden gap-3 px-3">
-                      <button onClick={() => {
-                        UpdateQuantity(item._id, item.Size, item.Color, item.Quantity - 1)
-
-                      }}
-                        className=" w-[30%] py-1 cursor-pointer font-bold hover:scale-150 duration-100 text-wh">
-                        -
-                      </button>
-                      <div className="w-[40%] py-1 text-wh text-center">{item.Quantity}</div>
-                      <button onClick={() => {
-                        UpdateQuantity(item._id, item.Size, item.Color, item.Quantity + 1)
-                      }}
-                        className="w-[30%] text-wh py-1 cursor-pointer font-bold hover:scale-150 duration-100">
-                        +
-                      </button>
-                    </div>
 
                   </div>
+
                 </div>
 
                 <div className="w-[10%] flex items-center justify-center gap-2">
@@ -99,8 +99,8 @@ const Cart = () => {
             <p>Subtotal:</p>
             <p>Rs.{CartPrice}</p>
           </div>
-          <Link to={`/checkout`} className="w-full flex justify-center items-center" onClick={() => setIsCartOpen(false)}>
-            <Button className="w-[90%]">Proceed to CheckOut</Button>
+          <Link to={`/checkout`} className="w-full px-5 flex justify-center items-center" onClick={() => setIsCartOpen(false)}>
+            <Button className="">Proceed to CheckOut</Button>
           </Link>
         </div>
       </div >

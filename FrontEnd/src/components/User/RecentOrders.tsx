@@ -42,12 +42,12 @@ const RecentOrders = ({ MyOrders }: any) => {
           <span className="text-[14px] tracking text-text lg:block hidden font-heading">Here's a quick overview of your orders.</span>
         </div>
 
-        <div className='bg-wh rounded-full flex justify-between lg:gap-3 lg:text-[14px] text-xs h-fit p-1 w-fit overflow-hidden'>
-          <Button onClick={() => setSelectOrders("All")} className={`py-2 w-auto ${SelectOrders === "All" ? "bg-black text-wh" : "bg-wh text-text"}`}>All</Button>
-          <Button onClick={() => setSelectOrders("processing")} className={`py-1 w-auto ${SelectOrders === "processing" ? "bg-amber-500 text-wh" : "bg-wh text-text"}`}>Processing</Button>
-          <Button onClick={() => setSelectOrders("shipped")} className={`py-1 w-auto ${SelectOrders === "shipped" ? "bg-blue-600 text-wh" : "bg-wh text-text"}`}>Shipped</Button>
-          <Button onClick={() => setSelectOrders("delivered")} className={`py-1 w-auto ${SelectOrders === "delivered" ? "bg-green-600 text-wh" : "bg-wh text-text"}`}>Delivered</Button>
-          <Button onClick={() => setSelectOrders("cancelled")} className={`py-1 w-auto ${SelectOrders === "cancelled" ? "bg-red-600 text-wh" : "bg-wh text-text"}`}>Cancelled</Button>
+        <div className='bg-wh rounded-full flex gap-2 justify-between lg:gap-3 lg:text-[14px] text-xs h-fit p-1 w-fit overflow-hidden'>
+          <button onClick={() => setSelectOrders("All")} className={`py-2 px-3 text-[14px] rounded-full ${SelectOrders === "All" ? "bg-black  text-wh" : "bg-wh text-text"}`}>All</button>
+          <button onClick={() => setSelectOrders("processing")} className={`py-1 px-3 text-[14px] rounded-full ${SelectOrders === "processing" ? "bg-amber-500 text-wh" : "bg-wh text-text"}`}>Processing</button>
+          <button onClick={() => setSelectOrders("shipped")} className={`py-1 px-3 text-[14px] rounded-full ${SelectOrders === "shipped" ? "bg-blue-600 text-wh" : "bg-wh text-text"}`}>Shipped</button>
+          <button onClick={() => setSelectOrders("delivered")} className={`py-1 px-3 text-[14px] rounded-full ${SelectOrders === "delivered" ? "bg-green-600 text-wh" : "bg-wh text-text"}`}>Delivered</button>
+          <button onClick={() => setSelectOrders("cancelled")} className={`py-1 px-3 text-[14px] rounded-full ${SelectOrders === "cancelled" ? "bg-red-600 text-wh" : "bg-wh text-text"}`}>Cancelled</button>
         </div>
 
       </div>

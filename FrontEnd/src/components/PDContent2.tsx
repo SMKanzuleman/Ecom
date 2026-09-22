@@ -173,7 +173,7 @@ const PDContent2 = ({ Product }: any) => {
                 {ActiveTab === "Reviews" && (
                     <div className="w-full flex flex-col gap-">
 
-                        <div className="w-full flex justify-between items-center px-6 py-2">
+                        <div className="w-full flex justify-between gap-7 items-center px-6 py-2">
                             {/* 🌟 Sort Dropdown */}
                             <div className="flex items-center gap-2 text-sm text-black font-semibold outline-none">
                                 <span className="text-lg">Sort By:</span>
@@ -190,10 +190,14 @@ const PDContent2 = ({ Product }: any) => {
                             </div>
 
                             {/* Write Review Button */}
-                            <Button onClick={() => setOpenReviewPopup(true)} className="w-auto">
-                                Write Review
-                            </Button>
+                            <div className="flex-1">
+
+                                <Button onClick={() => setOpenReviewPopup(true)} className="">
+                                    Write Review
+                                </Button>
+                            </div>
                         </div>
+
                         <div className="w-full  h-auto   columns-1 lg:columns-3 gap-5  py-8 px-6 animate-fade-up">
 
                             {sortedReviews.map((r: any, index) => {
@@ -320,7 +324,7 @@ const PDContent2 = ({ Product }: any) => {
                 )}
             </div>
 
-            
+
         </div>
     )
 }

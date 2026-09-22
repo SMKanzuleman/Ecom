@@ -43,7 +43,7 @@ const BrowsingSTyles = () => {
 
     return (
         <div className="w-full flex justify-center bg-wh py-12">
-            <div className="w-3/4 bg-bg rounded-3xl p-10 shadow-sm border border-gray-100">
+            <div className="w-3/4 bg-bg rounded-3xl p-5 lg:p-10 shadow-sm border border-gray-100">
 
                 {/* Header */}
                 <div className="text-center mb-10">
@@ -64,7 +64,7 @@ const BrowsingSTyles = () => {
                         {/* Slot 1: 40% */}
                         <Link
                             to={`${slot1.link}`}
-                            className="w-full md:w-[40%] bg-white text-black hover:scale-x-101  ease-in-out hover:text-white h-48 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 shadow-sm hover:shadow-xl group border border-gray-200/80 cursor-pointer"
+                            className="w-full md:w-[40%]  bg-white text-black hover:scale-x-101  ease-in-out hover:text-white h-48 rounded-2xl p-6 flex flex-col justify-between transition-all duration-300 shadow-sm hover:shadow-xl group border border-gray-200/80 cursor-pointer"
                         >
                             <div className="flex justify-between items-start">
                                 <span className="text-xs font-bold tracking-widest opacity-60">01</span>
@@ -73,7 +73,7 @@ const BrowsingSTyles = () => {
                                 </div>
                             </div>
                             <div>
-                                <h3 className="text-5xl font-heading  uppercase tracking-wider">{slot1.name}</h3>
+                                <h3 className="lg:text-5xl text-4xl font-semibold font-heading  uppercase tracking-wider">{slot1.name}</h3>
                             </div>
                         </Link>
 
@@ -89,7 +89,7 @@ const BrowsingSTyles = () => {
                                 </div>
                             </div>
                             <div>
-                                <h3 className="text-5xl font uppercase text-wh/30 ">{slot2?.name}</h3>
+                                <h3 className="lg:text-5xl text-4xl font-semibold font-heading tracking-wider uppercase text-wh/30 ">{slot2?.name}</h3>
                             </div>
                         </Link>
                     </div>
@@ -108,7 +108,7 @@ const BrowsingSTyles = () => {
                                 </div>
                             </div>
                             <div>
-                                <h3 className="text-5xl text-wh/30  uppercase ">{slot3.name}</h3>
+                                <h3 className="lg:text-5xl text-4xl font-semibold font-heading tracking-wider  text-wh/30  uppercase ">{slot3.name}</h3>
                             </div>
                         </Link>
 
@@ -124,7 +124,7 @@ const BrowsingSTyles = () => {
                                 </div>
                             </div>
                             <div>
-                                <h3 className="text-5xl text-black uppercase tracking-wider">{slot4.name}</h3>
+                                <h3 className="lg:text-5xl text-4xl font-semibold font-heading   text-black uppercase tracking-wider">{slot4.name}</h3>
                             </div>
                         </Link>
                     </div>
