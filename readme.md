@@ -22,21 +22,21 @@
 
 ## 2. Features
 
-<ol>
-  <li><strong>Multi-Provider Authentication</strong><br/>Secure email/password login and one-click Google OAuth 2.0 with JWT access and HTTP-only refresh tokens.</li>
-  <li><strong>Instant Product Search</strong><br/>Debounced 300ms live search in the navbar with MongoDB regex querying across product names, categories, and descriptions.</li>
-  <li><strong>Advanced Catalog Filtering</strong><br/>Multi-facet catalog filtering by categories, dual-thumb interactive price range sliders, color swatches, and dress styles.</li>
-  <li><strong>Interactive Product Showcase</strong><br/>Dynamic image gallery with live variant selection, discount badge calculation, and stock limits.</li>
-  <li><strong>Customer Reviews &amp; Ratings</strong><br/>Star-rating submission modal with sorting options and verified buyer feedback display.</li>
-  <li><strong>Persistent Slide-Out Cart</strong><br/>Global sliding cart drawer supporting individual variant combinations, real-time quantity controls, and live subtotal updates.</li>
-  <li><strong>Dual Payment &amp; Stripe Integration</strong><br/>Seamless checkout supporting Cash on Delivery and server-verified Stripe card payments with webhook order confirmation.</li>
-  <li><strong>Real-Time Admin Analytics</strong><br/>Interactive KPI dashboard featuring revenue charts, conversion rates, order counts, and instant CSV export reports.</li>
-  <li><strong>Full Inventory Studio</strong><br/>Complete product lifecycle manager with multi-image uploads, size pickers, hex color tags, and rich text descriptions.</li>
-  <li><strong>Order Fulfillment Hub</strong><br/>Admin order tracker with live status updates and customer shipping details.</li>
-  <li><strong>Visual Storefront Configurator</strong><br/>Dynamic admin tools to customize the homepage style showcase and configure footer contact details, brand bio, and social links.</li>
-  <li><strong>Customer Self-Service Portal</strong><br/>User dashboard to monitor order timelines, manage shipping addresses, and securely update passwords.</li>
-  <li><strong>Fluid Motion &amp; Micro-Interactions</strong><br/>Modern UI powered by Framer Motion with staggered page reveals, 3D card tilt physics, and tactile button feedback.</li>
-</ol>
+## Features
+
+**1. Multi-Provider Authentication:** Secure email/password login and one-click Google OAuth 2.0 with JWT access and HTTP-only refresh tokens.
+**2. Instant Product Search:** Debounced 300ms live search in the navbar with MongoDB regex querying across product names, categories, and descriptions.
+**3. Advanced Catalog Filtering:** Multi-facet catalog filtering by categories, dual-thumb interactive price range sliders, color swatches, and dress styles.
+**4. Interactive Product Showcase:** Dynamic image gallery with live variant selection, discount badge calculation, and stock limits.
+**5. Customer Reviews & Ratings:** Star-rating submission modal with sorting options and verified buyer feedback display.
+**6. Persistent Slide-Out Cart:** Global sliding cart drawer supporting individual variant combinations, real-time quantity controls, and live subtotal updates.
+**7. Dual Payment & Stripe Integration:** Seamless checkout supporting Cash on Delivery and server-verified Stripe card payments with webhook order confirmation.
+**8. Real-Time Admin Analytics:** Interactive KPI dashboard featuring revenue charts, conversion rates, order counts, and instant CSV export reports.
+**9. Full Inventory Studio:** Complete product lifecycle manager with multi-image uploads, size pickers, hex color tags, and rich text descriptions.
+**10. Order Fulfillment Hub:** Admin order tracker with live status updates and customer shipping details.
+**11. Visual Storefront Configurator:** Dynamic admin tools to customize the homepage style showcase and configure footer contact details, brand bio, and social links.
+**12. Customer Self-Service Portal:** User dashboard to monitor order timelines, manage shipping addresses, and securely update passwords.
+**13. Fluid Motion & Micro-Interactions:** Modern UI powered by Framer Motion with staggered page reveals, 3D card tilt physics, and tactile button feedback.
 
 ## 3. Installation
 
@@ -81,7 +81,6 @@ RESEND_API_KEY="Your Resend API key"
 STRIPE_SECRET_KEY="Your Stripe secret key"
 CLIENT_URL="Your frontend URL"
 ```
-
 
 <p><strong>4. Start the backend:</strong></p>
 
@@ -268,4 +267,3 @@ npm run dev
     </td>
   </tr>
 </table>
-
