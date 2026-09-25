@@ -1,14 +1,11 @@
-<details open>
-
-<summary><h2 id="1-introduction" style="display: inline;"><a href="#1-introduction">1. Introduction</a></h2></summary>
+## 1. Introduction
 
 <div align="center">
   <h1>
-    <img src="./Docs/Thumbnail.PNG" alt="E-Commerce Pro" width="56" height="56" />
-    Ecom
+    <img src="./Docs/LOGO.png" alt="E-Commerce Pro" width="200" height="200" />
+   
   </h1>
-  <hr/>
-  <p><strong>A Full-Stack MERN Application for Online Clothing Brands</strong></p>
+  <p><strong>Ecom-A Full-Stack MERN Application for Online Clothing Brands</strong></p>
   <p>
     <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js" />
     <img src="https://img.shields.io/badge/Express.js-404D59?style=for-the-badge&logo=express&logoColor=white" alt="Express.js" />
@@ -24,10 +21,7 @@
 
 <p>This repository contains the source code for E-Commerce Pro, a complete responsive e-commerce platform built with a React frontend and Node.js backend.The application includes product discovery, authentication, persistent cart management, customer and admin dashboards, order fulfillment, reviews, Cloudinary image uploads, and secure payment processing through Stripe.</p>
 
-</details>
-
-<details>
-<summary><h2 id="2-features" style="display: inline;"><a href="#2-features">2. Features</a></h2></summary>
+## 2. Features
 
 <ol>
   <li><strong>Multi-Provider Authentication</strong><br/>Secure email/password login and one-click Google OAuth 2.0 with JWT access and HTTP-only refresh tokens.</li>
@@ -44,10 +38,8 @@
   <li><strong>Customer Self-Service Portal</strong><br/>User dashboard to monitor order timelines, manage shipping addresses, and securely update passwords.</li>
   <li><strong>Fluid Motion &amp; Micro-Interactions</strong><br/>Modern UI powered by Framer Motion with staggered page reveals, 3D card tilt physics, and tactile button feedback.</li>
 </ol>
-</details>
 
-<details open>
-<summary><h2 id="3-installation" style="display: inline;"><a href="#3-installation">3. Installation</a></h2></summary>
+## 3. Installation
 
 <br/>
 <p><strong>1. Clone the repository and open the project folder:</strong></p>
@@ -57,8 +49,7 @@ git clone https://github.com/SMKanzuleman/Ecom
 cd Ecom
 ```
 
-<details open>
-<summary><span id="31-backend" style="font-size: 1.25em; font-weight: 700;"><a href="#31-backend">3.1 Backend</a></span></summary>
+### 3.1 Backend
 
 <br/>
 <p><strong>2. Install the backend dependencies:</strong></p>
@@ -99,10 +90,7 @@ CLIENT_URL="Your frontend URL"
 npm run dev
 ```
 
-</details>
-
-<details open>
-<summary><span id="32-frontend" style="font-size: 1.25em; font-weight: 700;"><a href="#32-frontend">3.2 Frontend</a></span></summary>
+### 3.2 Frontend
 
 <br/>
 <p><strong>5. Open a new terminal, then install and start the frontend:</strong></p>
@@ -113,15 +101,9 @@ npm install
 npm run dev
 ```
 
-</details>
+## 4. Screenshots
 
-</details>
-
-<details>
-<summary><h2 id="4-screenshots" style="display: inline;"><a href="#4-screenshots">4. Screenshots</a></h2></summary>
-
-<details open>
-<summary><span id="1-storefront" style="font-size: 1.25em; font-weight: 700; margin-left: 20px;"><a href="#1-storefront">1. Storefront</a></span></summary>
+### 4.1 Storefront
 
 <table width="100%">
   <tr>
@@ -185,10 +167,7 @@ npm run dev
   </tr>
 </table>
 
-</details>
-
-<details open>
-<summary><span id="2-admin-dashboard" style="font-size: 1.25em; font-weight: 700; margin-left: 20px;"><a href="#2-admin-dashboard">2. Admin Dashboard</a></span></summary>
+### 4.2 Admin Dashboard
 
 <table width="100%">
 <tr>
@@ -261,10 +240,7 @@ npm run dev
 
 <br/>
 
-</details>
-
-<details open>
-<summary><span id="3-customer-dashboard" style="font-size: 1.25em; font-weight: 700; margin-left: 20px;"><a href="#3-customer-dashboard">3. Customer Dashboard</a></span></summary>
+### 4.3 Customer Dashboard
 
 <table width="100%">
   <tr>
@@ -294,6 +270,3 @@ npm run dev
   </tr>
 </table>
 
-</details>
-
-</details>
