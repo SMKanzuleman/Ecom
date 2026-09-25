@@ -4,7 +4,7 @@
 
 <div align="center">
   <h1>
-    <img src="./Docs/Thumbnail.PNG" alt="E-Commerce Pro" width="56" height="56" />
+    <img src="./Docs/Thumbnail.PNG" alt="" width="56" height="56" />
     Ecom
   </h1>
   <hr/>
