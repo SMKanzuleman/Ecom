@@ -15,7 +15,7 @@
     <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
 
   </p>
-  <p><strong>Live:</strong> <a href="https://github.com/SMKanzuleman/Ecom">Ecom</a> <strong>Screenshots:</strong> <a href="https://github.com/SMKanzuleman/Ecom">here</a></p>
+  <p><strong>Live:</strong> <a [href="https://github.com/SMKanzuleman/Ecom](https://projectecom-omega.vercel.app/)">Ecom</a> <strong>Screenshots:</strong> <a href="https://github.com/SMKanzuleman/Ecom">here</a></p>
 
 </div>
 
