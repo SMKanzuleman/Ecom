@@ -1,4 +1,4 @@
-import { Response,Request } from "express";
+import { Response, Request } from "express";
 import { AuthRequest } from "../config/auth.config";
 import { SendError, SendSuccess } from "../utils/responce";
 import { Cart } from "../cart/cart.model";
@@ -6,7 +6,10 @@ import { Order } from "./order.model";
 import { User } from "../auth/user.model";
 import { Product } from "../products/product.model";
 import Stripe from "stripe";
+import dotenv from "dotenv"
+dotenv.config()
 
+const REDIRECT_URL_AFTER_PAYMENT=process.env.FRONTEND_URL
 
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "")
@@ -201,8 +204,8 @@ export const StripeSession = async (req: AuthRequest, res: Response) => {
             payment_method_types: ["card"],
             line_items: line_items,
             mode: "payment",
-            success_url: `http://localhost:2024/order-success?session_id={CHECKOUT_SESSION_ID}`,
-            cancel_url: `http://localhost:2024/checkout`,
+            success_url: `${REDIRECT_URL_AFTER_PAYMENT}/order-success?session_id={CHECKOUT_SESSION_ID}`,
+            cancel_url: `${REDIRECT_URL_AFTER_PAYMENT}`,
             metadata: {
                 userId: userId.toString(),
                 ShippingAddress: JSON.stringify(ShippingAddress),
