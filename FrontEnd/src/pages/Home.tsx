@@ -52,7 +52,6 @@ const Home = () => {
                 viewport={{ amount: 0.2 }} 
                 
                 >
-
                 <Newsletter />
 
             </motion.div>

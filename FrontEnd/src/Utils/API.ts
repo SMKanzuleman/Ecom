@@ -1,8 +1,10 @@
 import axios from "axios";
 import { showErrorToast } from "./toast";
 
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL;
+
 const API = axios.create({
-    baseURL: "http://localhost:2026",
+    baseURL: BACKEND_URL,
     withCredentials: true,
 });
 
@@ -25,7 +27,7 @@ API.interceptors.response.use(
 
             try {
                 // 1️⃣ Automatic Background Refresh!
-                const res = await axios.post("http://localhost:2026/auth/refresh", {}, { withCredentials: true });
+                const res = await axios.post(`${BACKEND_URL}/auth/refresh`, {}, { withCredentials: true });
                 const newToken = res.data.token;
                 API.defaults.headers.common["Authorization"] = `Bearer ${newToken}`
 
