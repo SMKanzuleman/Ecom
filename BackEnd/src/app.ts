@@ -20,7 +20,7 @@ app.use(express.json())
 app.use(morgan("dev"))
 app.use(cookieParser())
 app.use(cors({
-    origin: "http://localhost:2024",
+    origin: Config.Frontend,
     credentials: true
 }))
 app.use("/auth/", AuthRouter)
@@ -30,9 +30,7 @@ app.use("/order", OrderRouter)
 app.use("/dashboard", AdminRouter)
 app.use("/reviews", ReviewRouter)
 app.use("/user", UserRouter)
-app.use("/site",SiteConfigRouter)
-
-
+app.use("/site", SiteConfigRouter)
 
 app.get("/", (req, res) => {
     return res.send(`<a href="/auth/google">Account with Google <a/>`)

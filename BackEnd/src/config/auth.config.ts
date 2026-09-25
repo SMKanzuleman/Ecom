@@ -10,8 +10,9 @@ type AuthConfig = {
     NODE_ENV: string
     OAuthClientId: string,
     OAuthClientSecret: string
-    OAuthCallbackUrl:string
-    ResendApiKey:string
+    OAuthCallbackUrl: string
+    ResendApiKey: string
+    Frontend: string
 }
 
 export interface AuthRequest extends Request {
@@ -24,9 +25,10 @@ export const AuthConfig: AuthConfig = {
     AccessExpiry: process.env.ACCESS_TOKEN_EXPIRY || "10m",
     RefreshSecretKey: process.env.REFRESH_TOKEN_JWT_SECRET || "12444",
     RefreshExpiry: process.env.REFRESH_TOKEN_EXPIRY || "7d",
-    OAuthClientId:process.env.OAUTH_CLIENT_ID || "",
+    OAuthClientId: process.env.OAUTH_CLIENT_ID || "",
     OAuthClientSecret: process.env.OAUTH_CLIENT_SECRET || "",
     OAuthCallbackUrl: process.env.OAUTH_CALLBACK_URL || " ",
-    ResendApiKey:process.env.RESEND_API_KEY || " "
-    
+    ResendApiKey: process.env.RESEND_API_KEY || " ",
+    Frontend: process.env.FRONTEND_URL || ""
+
 }

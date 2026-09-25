@@ -68,7 +68,7 @@ export const GoogleCallback = async (req: Request, res: Response) => {
 
         const AccessToken = GenerateToken(user._id.toString(), user.Role, AuthConfig.AccessSecretKey, AuthConfig.AccessExpiry)
 
-        return res.redirect("http://localhost:2024/");
+        return res.redirect(`${AuthConfig.Frontend}`);
 
 
     } catch (error) {
