@@ -15,7 +15,8 @@
     <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
 
   </p>
-  <p><strong>Live:</strong> <a href="https://github.com/SMKanzuleman/Ecom">E-Com</a></p>
+  <p><strong>Live:</strong> <a href="https://github.com/SMKanzuleman/Ecom">Ecom</a> <strong>Screenshots:</strong> <a href="https://github.com/SMKanzuleman/Ecom">here</a></p>
+
 </div>
 
 <p>This repository contains the source code for E-Commerce Pro, a complete responsive e-commerce platform built with a React frontend and Node.js backend.The application includes product discovery, authentication, persistent cart management, customer and admin dashboards, order fulfillment, reviews, Cloudinary image uploads, and secure payment processing through Stripe.</p>
