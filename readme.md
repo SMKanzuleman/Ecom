@@ -22,21 +22,19 @@
 
 ## 2. Features
 
-## Features
-
-**1. Multi-Provider Authentication:** Secure email/password login and one-click Google OAuth 2.0 with JWT access and HTTP-only refresh tokens.
-**2. Instant Product Search:** Debounced 300ms live search in the navbar with MongoDB regex querying across product names, categories, and descriptions.
-**3. Advanced Catalog Filtering:** Multi-facet catalog filtering by categories, dual-thumb interactive price range sliders, color swatches, and dress styles.
-**4. Interactive Product Showcase:** Dynamic image gallery with live variant selection, discount badge calculation, and stock limits.
-**5. Customer Reviews & Ratings:** Star-rating submission modal with sorting options and verified buyer feedback display.
-**6. Persistent Slide-Out Cart:** Global sliding cart drawer supporting individual variant combinations, real-time quantity controls, and live subtotal updates.
-**7. Dual Payment & Stripe Integration:** Seamless checkout supporting Cash on Delivery and server-verified Stripe card payments with webhook order confirmation.
-**8. Real-Time Admin Analytics:** Interactive KPI dashboard featuring revenue charts, conversion rates, order counts, and instant CSV export reports.
-**9. Full Inventory Studio:** Complete product lifecycle manager with multi-image uploads, size pickers, hex color tags, and rich text descriptions.
-**10. Order Fulfillment Hub:** Admin order tracker with live status updates and customer shipping details.
-**11. Visual Storefront Configurator:** Dynamic admin tools to customize the homepage style showcase and configure footer contact details, brand bio, and social links.
-**12. Customer Self-Service Portal:** User dashboard to monitor order timelines, manage shipping addresses, and securely update passwords.
-**13. Fluid Motion & Micro-Interactions:** Modern UI powered by Framer Motion with staggered page reveals, 3D card tilt physics, and tactile button feedback.
+1. **Multi-Provider Authentication:** Secure email/password login and one-click Google OAuth 2.0 with JWT access and HTTP-only refresh tokens.
+2. **Instant Product Search:** Debounced 300ms live search in the navbar with MongoDB regex querying across product names, categories, and descriptions.
+3. **Advanced Catalog Filtering:** Multi-facet catalog filtering by categories, dual-thumb interactive price range sliders, color swatches, and dress styles.
+4. **Interactive Product Showcase:** Dynamic image gallery with live variant selection, discount badge calculation, and stock limits.
+5. **Customer Reviews & Ratings:** Star-rating submission modal with sorting options and verified buyer feedback display.
+6. **Persistent Slide-Out Cart:** Global sliding cart drawer supporting individual variant combinations, real-time quantity controls, and live subtotal updates.
+7. **Dual Payment & Stripe Integration:** Seamless checkout supporting Cash on Delivery and server-verified Stripe card payments with webhook order confirmation.
+8. **Real-Time Admin Analytics:** Interactive KPI dashboard featuring revenue charts, conversion rates, order counts, and instant CSV export reports.
+9. **Full Inventory Studio:** Complete product lifecycle manager with multi-image uploads, size pickers, hex color tags, and rich text descriptions.
+10. **Order Fulfillment Hub:** Admin order tracker with live status updates and customer shipping details.
+11. **Visual Storefront Configurator:** Dynamic admin tools to customize the homepage style showcase and configure footer contact details, brand bio, and social links.
+12. **Customer Self-Service Portal:** User dashboard to monitor order timelines, manage shipping addresses, and securely update passwords.
+13. **Fluid Motion & Micro-Interactions:** Modern UI powered by Framer Motion with staggered page reveals, 3D card tilt physics, and tactile button feedback.
 
 ## 3. Installation
 
