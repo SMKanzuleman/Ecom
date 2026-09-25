@@ -42,7 +42,7 @@ const RegisterUser = async (req: Request, res: Response) => {
     res.cookie("token", RefreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: "none",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
     return SendSuccess(res, 201, "User registered sucessfully", {
@@ -87,7 +87,7 @@ const LoginUser = async (req: Request, res: Response) => {
     res.cookie("token", RefreshToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: "none",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
     return SendSuccess(res, 200, "User Found sucessfully", {
@@ -159,7 +159,7 @@ const Logout = async (req: Request, res: Response) => {
     res.clearCookie("token", {
       httpOnly: true,
       secure: AuthConfig.NODE_ENV === "production",
-      sameSite: "lax"
+      sameSite: "none"
     });
 
     return SendSuccess(res, 200, "Logged out successfully");

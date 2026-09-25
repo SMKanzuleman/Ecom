@@ -53,6 +53,7 @@ export const App = () => {
           <Route path="/auth" element={<Auth />} />
           <Route path="/shop" element={<Shop />} />
           <Route path="product/:id" element={<ProductDetail />} />
+          <Route path="/order-success" element={<OrderSuccess />} />
           <Route path="/:type/:name" element={<Shop />} />
         </Route>
 
@@ -62,7 +63,6 @@ export const App = () => {
         <Route element={<ProtectedRout />}>
           <Route path="/userdashboard" element={<UserDashboard />} />
           <Route path="/password" element={<ResetPassword />} />
-          <Route path="/order-success" element={<OrderSuccess />} />
         </Route>
 
 
