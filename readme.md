@@ -14,7 +14,7 @@
     <img src="https://img.shields.io/badge/Framer_Motion-EF008F?style=for-the-badge&logo=framer&logoColor=white" alt="Framer Motion" />
     <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
   </p>
-  <p><strong>Live:</strong> <a href="https://projectecom-omega.vercel.app">Ecom</a> <strong>Screenshots:</strong> <a href="https://github.com/SMKanzuleman/Ecom">here</a></p>
+  <p><strong>Live:</strong> <a href="https://projectecom-omega.vercel.app">Ecom</a> <strong>Screenshots:</strong> <a href="#4-screenshots">here</a></p>
 
 </div>
 
