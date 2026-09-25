@@ -2,13 +2,7 @@
 
 <div align="center">
   <h1>
-<<<<<<< HEAD
     <img src="./Docs/LOGO.png" alt="E-Commerce Pro" width="200" height="200" />
-   
-=======
-    <img src="./Docs/Thumbnail.PNG" alt="" width="56" height="56" />
-    Ecom
->>>>>>> db12709a518153fad4ecd04240970c5630b93fa5
   </h1>
   <p><strong>Ecom-A Full-Stack MERN Application for Online Clothing Brands</strong></p>
   <p>
