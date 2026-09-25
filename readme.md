@@ -1,6 +1,6 @@
 <details open>
 
-<summary><span id="1-introduction" style="font-size: 1.5em; font-weight: 700;"><a href="#1-introduction">1. Introduction</a></span></summary>
+<summary><span id="1-introduction" style="font-size: 2em; font-weight: 700;"><a href="#1-introduction">1. Introduction</a></span></summary>
 
 <div align="center">
   <h1>
@@ -27,7 +27,7 @@
 </details>
 
 <details>
-<summary><span id="2-features" style="font-size: 1.5em; font-weight: 700;"><a href="#2-features">2. Features</a></span></summary>
+<summary><span id="2-features" style="font-size: 2em; font-weight: 700;"><a href="#2-features">2. Features</a></span></summary>
 
 <ol>
   <li><strong>Multi-Provider Authentication</strong><br/>Secure email/password login and one-click Google OAuth 2.0 with JWT access and HTTP-only refresh tokens.</li>
@@ -47,7 +47,7 @@
 </details>
 
 <details open>
-<summary><span id="3-installation" style="font-size: 1.5em; font-weight: 700;"><a href="#3-installation">3. Installation</a></span></summary>
+<summary><span id="3-installation" style="font-size: 2em; font-weight: 700;"><a href="#3-installation">3. Installation</a></span></summary>
 
 <br/>
 <p><strong>1. Clone the repository and open the project folder:</strong></p>
@@ -118,7 +118,7 @@ npm run dev
 </details>
 
 <details>
-<summary><span id="4-screenshots" style="font-size: 1.5em; font-weight: 700;"><a href="#4-screenshots">4. Screenshots</a></span></summary>
+<summary><span id="4-screenshots" style="font-size: 2em; font-weight: 700;"><a href="#4-screenshots">4. Screenshots</a></span></summary>
 
 <details open>
 <summary><span id="1-storefront" style="font-size: 1.25em; font-weight: 700; margin-left: 20px;"><a href="#1-storefront">1. Storefront</a></span></summary>
