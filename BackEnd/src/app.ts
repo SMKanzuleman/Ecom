@@ -19,7 +19,7 @@ app.use(express.json())
 app.use(morgan("dev"))
 app.use(cookieParser())
 app.use(cors({
-    origin: "http://localhost:2024",
+    origin: "https://ecom-epvl.onrender.com",
     credentials: true
 }))
 app.use("/auth/", AuthRouter)
