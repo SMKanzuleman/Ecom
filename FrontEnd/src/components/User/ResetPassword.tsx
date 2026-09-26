@@ -51,7 +51,11 @@ const ResetPassword = ({ setMenu }: any) => {
 
         try {
             setSaving(true);
-            const res = await API.post("/auth/reset-password", { NewPassword: NewPass,Email });
+            const res = await API.post("/auth/reset-password", {
+                NewPassword: NewPass,
+                Email,
+                UserOTP: OTP,
+            });
             if (res.data) {
                 showSuccessToast("Password changed successfully");
                 setNewPass("");
@@ -72,7 +76,7 @@ const ResetPassword = ({ setMenu }: any) => {
         }
         try {
             ToggleLoading("sendotp") //true
-            const res = await API.post("/auth/request-OTP", { Email })
+            const res = await API.post("/auth/request-OTP", { Email, Purpose: "reset" })
             if (res.data) {
                 showSuccessToast("OTP sent")
                 setCodeSent(true)
@@ -98,7 +102,7 @@ const ResetPassword = ({ setMenu }: any) => {
         }
         try {
             ToggleLoading("verifyotp") //true
-            const res = await API.post("/auth/verify-otp", { Email, UserOTP: OTP })
+            const res = await API.post("/auth/verify-otp", { Email, UserOTP: OTP, Purpose: "reset" })
             if (res.data) {
                 showSuccessToast("OTP veridifed")
                 setOTPVerified(true)

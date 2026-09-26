@@ -1,7 +1,7 @@
 import { useCart } from "../context/CartContext"
 import { MdDelete } from "react-icons/md";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCartShopping } from "react-icons/fa6";
 import { MdOutlinePayment } from "react-icons/md";
 import API from "../Utils/API";
@@ -24,7 +24,13 @@ const Checkout = () => {
 
   const [DeliveryMethod, setDeliveryMethod] = useState("standard");
 
-  const [ShippingAddress, setShippingAddress] = useState({ Phone: "", RFName: "", RLName: "", Address: "", LandMark: "", City: "", State: "", Zip: "" });
+  const [ShippingAddress, setShippingAddress] = useState({ Phone: "", Address: "", LandMark: "", City: "", State: "", Zip: "" });
+
+  const [DefaultAddress, setDefaultAddress] = useState({ Phone: "", Location: "", LandMark: "", City: "", State: "", Zip: "" });
+
+  const [SaveAsDefaultAddress, setSaveAsDefaultAddress] = useState(false);
+
+  const [isSavingDefaultAddress, setIsSavingDefaultAddress] = useState(false);
 
   const [PaymentDetail, setPaymentDetail] = useState<"cod" | "bank">("cod");
 
@@ -76,6 +82,67 @@ const Checkout = () => {
     }
   }
 
+  const FetchDefaultAddress = async () => {
+    try {
+      const res = await API.get("/user/dashboard/info")
+      if (res.data) {
+        const SavedAddress = res.data.DefaultAddress;
+        if (SavedAddress?.Location) {
+          setDefaultAddress({
+            Phone: String(SavedAddress.Phone ?? ""),
+            Location: SavedAddress.Location,
+            LandMark: SavedAddress.LandMark ?? "",
+            City: SavedAddress.City ?? "",
+            State: SavedAddress.State ?? "",
+            Zip: String(SavedAddress.Zip ?? ""),
+          });
+        }
+      }
+    } catch (error) {
+      console.error(error)
+    }
+  }
+
+  const SetDefaultAddress = async () => {
+    const RequiredAddressFields = [
+      ShippingAddress.Phone,
+      ShippingAddress.Address,
+      ShippingAddress.City,
+      ShippingAddress.State,
+      ShippingAddress.Zip,
+    ];
+    if (RequiredAddressFields.some((value) => !value.trim())) {
+      showErrorToast("Complete the required shipping fields before saving");
+      setSaveAsDefaultAddress(false);
+      return;
+    }
+
+    try {
+      setIsSavingDefaultAddress(true);
+      const UserAddress = {
+        Location: ShippingAddress.Address,
+        LandMark: ShippingAddress.LandMark,
+        Phone: ShippingAddress.Phone,
+        City: ShippingAddress.City,
+        State: ShippingAddress.State,
+        Zip: ShippingAddress.Zip,
+      };
+      await API.post("/user/dashboard/add/adress", { UserAddress });
+      setDefaultAddress({ ...UserAddress, Location: UserAddress.Location });
+      showSuccessToast("Default address saved");
+    } catch (error: any) {
+      console.error(error);
+      setSaveAsDefaultAddress(false);
+      showErrorToast(error.response?.data?.message || "Could not save default address");
+    } finally {
+      setIsSavingDefaultAddress(false);
+    }
+  }
+
+  useEffect(() => {
+    FetchDefaultAddress()
+  }, [])
+
 
   return (
     <div className="w-full flex lg:flex-row flex-col bg-bg lg:h-[90vh]">
@@ -104,8 +171,28 @@ const Checkout = () => {
         {/*Shipping Address*/}
 
         <div className="w-full">
-          <div className="w-full font-accent text-black text-2xl font-semibold py-2" >
-            Shipping Address
+          <div className="w-full font-accent text-blac flex justify-between py-5" >
+            <span className="text-black text-2xl font-semibold">
+              Shipping Address
+            </span>
+            {DefaultAddress.Location && (
+              <button
+                type="button"
+                onClick={() => setShippingAddress({
+                  Phone: DefaultAddress.Phone,
+                  Address: DefaultAddress.Location,
+                  LandMark: DefaultAddress.LandMark,
+                  City: DefaultAddress.City,
+                  State: DefaultAddress.State,
+                  Zip: DefaultAddress.Zip,
+                })}
+                className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-gray-300 bg-black text-xs font-medium text-wh hover:border-black hover:text-text transition-all shadow-xs"
+              >
+                <span className="w-2 h-2 rounded-full bg-green-500"></span>
+                Use default ({DefaultAddress.City})
+              </button>
+            )}
+
           </div>
           <form action=""
             className="w-full flex flex-col gap-2">
@@ -113,10 +200,7 @@ const Checkout = () => {
             <div className="w-full">
               <input required={true} value={ShippingAddress.Phone} onChange={(e) => setShippingAddress({ ...ShippingAddress, Phone: e.target.value })} type="number" className="w-full rounded-full px-5 bg-wh border-2 border-gray-400/40 focus:outline-none text-black py-3" placeholder="Phone" />
             </div>
-            <div className="w-full flex items-center gap-3  justify-between">
-              <input required={true} value={ShippingAddress.RFName} onChange={(e) => setShippingAddress({ ...ShippingAddress, RFName: e.target.value })} type="text" className="w-full rounded-full px-5 bg-wh border-2 border-gray-400/40 focus:outline-none text-black py-3" placeholder="Recipient's First Name" />
-              <input required={true} value={ShippingAddress.RLName} onChange={(e) => setShippingAddress({ ...ShippingAddress, RLName: e.target.value })} type="text" className="w-full rounded-full px-5 bg-wh border-2 border-gray-400/40 focus:outline-none text-black py-3" placeholder="Recipient's Last Name" />
-            </div>
+
             <div className="w-full">
               <input required={true} value={ShippingAddress.Address} onChange={(e) => setShippingAddress({ ...ShippingAddress, Address: e.target.value })} type="text" className="w-full rounded-full px-5 bg-wh border-2 border-gray-400/40 focus:outline-none text-black py-3" placeholder="Address" />
             </div>
@@ -128,6 +212,20 @@ const Checkout = () => {
               <input required={true} value={ShippingAddress.State} onChange={(e) => setShippingAddress({ ...ShippingAddress, State: e.target.value })} type="text" className="w-full rounded-full px-5 bg-wh border-2 border-gray-400/40 focus:outline-none text-black py-3" placeholder="State" />
               <input required={true} value={ShippingAddress.Zip} onChange={(e) => setShippingAddress({ ...ShippingAddress, Zip: e.target.value })} type="text" className="w-full rounded-full px-5 bg-wh border-2 border-gray-400/40 focus:outline-none text-black py-3" placeholder="Zipcode" />
             </div>
+
+            <label className="w-fit flex items-center gap-2 py-2 text-sm text-black cursor-pointer">
+              <input
+                type="checkbox"
+                checked={SaveAsDefaultAddress}
+                disabled={isSavingDefaultAddress}
+                onChange={(e) => {
+                  setSaveAsDefaultAddress(e.target.checked);
+                  if (e.target.checked) void SetDefaultAddress();
+                }}
+                className="h-4 w-4 accent-black"
+              />
+              <span>{isSavingDefaultAddress ? "Saving default address..." : "Save this as my default address"}</span>
+            </label>
 
             {/*Shipping Methood*/}
 

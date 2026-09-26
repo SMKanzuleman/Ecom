@@ -9,7 +9,7 @@ import Stripe from "stripe";
 import dotenv from "dotenv"
 dotenv.config()
 
-const REDIRECT_URL_AFTER_PAYMENT=process.env.FRONTEND_URL
+const REDIRECT_URL_AFTER_PAYMENT = process.env.FRONTEND_URL
 
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "")
@@ -63,12 +63,6 @@ export const MakeOrder = async (req: AuthRequest, res: Response) => {
                 LandMark: Address.LandMark
             },
             PaymentStatus: PStatus,
-            Recipient: {
-                FName: Address.RFName,
-                LName: Address.RLName,
-                Phone: Address.Phone
-            },
-
             OrderItems: FoundedItems
         })
         foundedCart.Items = [];
@@ -276,11 +270,6 @@ export const VerifyStrpeAndCreateOrder = async (req: AuthRequest, res: Response)
                 LandMark: Address.LandMark
             },
             PaymentStatus: "paid",
-            Recipient: {
-                FName: Address.RFName,
-                LName: Address.RLName,
-                Phone: Address.Phone
-            },
 
             OrderItems: FoundedItems
         })
@@ -292,6 +281,24 @@ export const VerifyStrpeAndCreateOrder = async (req: AuthRequest, res: Response)
     } catch (error: any) {
         console.error("Stripe Error:", error);
         return SendError(res, 500, error.message || "Internal Server error")
+    }
+}
+
+export const GetOrder = async (req: AuthRequest, res: Response) => {
+    try {
+        const orderId = String(req.params.id ?? "");
+        const userId = req.User.id;
+        const FoundedOrder = await Order.findOne({ _id: orderId, UserId: userId })
+            .populate("OrderItems.ProductId");
+        if (!FoundedOrder) {
+            return SendError(res, 404, "Order not found")
+        }
+        return SendSuccess(res, 200, "Order found", { FoundedOrder })
+
+    } catch (error) {
+        console.error("Get order error:", error)
+        return SendError(res, 500, "Internal Server error")
+
     }
 }
 

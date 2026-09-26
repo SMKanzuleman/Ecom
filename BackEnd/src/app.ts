@@ -19,7 +19,7 @@ app.use(express.json())
 app.use(morgan("dev"))
 app.use(cookieParser())
 app.use(cors({
-    origin: Config.Frontend,
+    origin: "http://localhost:2024",
     credentials: true
 }))
 app.use("/auth/", AuthRouter)

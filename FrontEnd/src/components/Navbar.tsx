@@ -24,8 +24,10 @@ const Navbar = () => {
     const SearchRef = useRef<HTMLDivElement>(null)
 
     const [ExploreLinks, setExploreLinks] = useState<any[]>([])
+    const [NavLinksLoading, setNavLinksLoading] = useState(true)
 
     const FetchNavLinks = async () => {
+        setNavLinksLoading(true)
         try {
             const res = await API.get("/site/footer");
             if (res.data?.Footer) {
@@ -35,7 +37,10 @@ const Navbar = () => {
                 }
             }
         } catch (error) {
+            console.log(error)
             APIERROR(error, "Error in Fetching Footer Config")
+        } finally {
+            setNavLinksLoading(false)
         }
     };
 
@@ -154,11 +159,24 @@ const Navbar = () => {
             id="navlinks" className="w-[15%] lg:w-[40%] hidden sm:flex ">
 
                 <div className="w-full flex justify-center items-center gap-8 text-black font-heading ">
-                    {/* <a href="#" className="hover:text-text transition-transform duration-1000 ">Shop</a> */}
-                    <Link to={"/shop"} className='hover:text-text transition-transform duration-1000'>Shop</Link>
-                    {ExploreLinks.map((link, index) => (
-                        <Link to={`${link.Url}`} className='hover:text-text transition-transform duration-1000'>{link.Label}</Link>
-                    ))}
+                    {NavLinksLoading ? (
+                        Array.from({ length: 4 }).map((_, index) => (
+                            <span
+                                key={index}
+                                className="h-7 w-18 rounded bg-bg animate-pulse"
+                                aria-hidden="true"
+                            />
+                        ))
+                    ) : (
+                        <>
+                            <Link to={"/shop"} className='hover:text-text transition-transform duration-1000'>Shop</Link>
+                            {ExploreLinks.map((link: any) => (
+                                <Link key={link.Url} to={`${link.Url}`} className='hover:text-text transition-transform duration-1000'>
+                                    {link.Label}
+                                </Link>
+                            ))}
+                        </>
+                    )}
                 </div>
 
 

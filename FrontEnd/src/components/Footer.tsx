@@ -131,24 +131,24 @@ export const Footer = () => {
                                 </Link>
                             </li>
                             <li>
-                                <a href="#shipping" className="hover:underline underline-offset-4 transition-all">
+                                <Link to="/shipping-delivery" className="hover:underline underline-offset-4 transition-all">
                                     Shipping & Delivery
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#returns" className="hover:underline underline-offset-4 transition-all">
+                                <Link to="/returns-exchanges" className="hover:underline underline-offset-4 transition-all">
                                     Returns & Exchanges
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#terms" className="hover:underline underline-offset-4 transition-all">
+                                <Link to="/terms-of-service" className="hover:underline underline-offset-4 transition-all">
                                     Terms of Service
-                                </a>
+                                </Link>
                             </li>
                             <li>
-                                <a href="#privacy" className="hover:underline underline-offset-4 transition-all">
+                                <Link to="/privacy-policy" className="hover:underline underline-offset-4 transition-all">
                                     Privacy Policy
-                                </a>
+                                </Link>
                             </li>
                         </ul>
                     </div>

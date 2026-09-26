@@ -1,11 +1,11 @@
-import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import GoogleIcon from "../assets/Google_Symbol_1.png";
 import { FaRegEyeSlash } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import API from "../Utils/API";
+import { showErrorToast, showSuccessToast } from "../Utils/toast";
 
 const Signup = () => {
 
@@ -18,49 +18,126 @@ const Signup = () => {
     const Navigate = useNavigate()
     const Location = useLocation()
     const redirect = Location.state?.from || "/"
-    const [SuccMsg, SetSuccMsg] = useState("");
+    const [OtpCode, setOtpCode] = useState("");
+    const [CodeSent, setCodeSent] = useState(false);
+    const [IsLoading, setIsLoading] = useState(false);
+    const [OtpExpiresAt, setOtpExpiresAt] = useState<number | null>(null);
+    const [SecondsRemaining, setSecondsRemaining] = useState(0);
+
+    useEffect(() => {
+        if (!OtpExpiresAt) return;
+
+        const UpdateCountdown = () => {
+            setSecondsRemaining(Math.max(0, Math.ceil((OtpExpiresAt - Date.now()) / 1000)));
+        };
+        UpdateCountdown();
+        const Timer = window.setInterval(UpdateCountdown, 1000);
+        return () => window.clearInterval(Timer);
+    }, [OtpExpiresAt]);
 
 
-    const HandleSignUp = async (e: React.FormEvent) => {
+    const RequestVerificationCode = async () => {
+        try {
+            setIsLoading(true);
+            const res = await API.post("/auth/request-OTP", { Email: SignEmail, Purpose: "signup" });
+            setOtpExpiresAt(res.data.expiresAt);
+            setOtpCode("");
+            setCodeSent(true);
+            showSuccessToast("Verification code sent to your email");
+        } catch (error: any) {
+            console.error(error);
+            showErrorToast(error.response?.data?.message || "Could not send verification code");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    const HandleSignUp = (e: React.FormEvent) => {
+        e.preventDefault();
+        const StartSignup = async () => {
+            try {
+                setIsLoading(true);
+                await API.post("/auth/register", {
+                    FName: Fname,
+                    LName: Lname,
+                    Email: SignEmail,
+                    Password: SignPass,
+                });
+                await RequestVerificationCode();
+            } catch (error: any) {
+                console.error(error);
+                showErrorToast(error.response?.data?.message || "Could not start signup");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+        void StartSignup();
+    };
+
+    const VerifySignupCode = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const res = await API.post("/auth/register", {
-                FName: Fname,
-                LName: Lname,
+            setIsLoading(true);
+            const res = await API.post("/auth/verify-otp", {
                 Email: SignEmail,
-                Password: SignPass,
+                UserOTP: OtpCode,
+                Purpose: "signup",
             });
-            if (res) {
-                SetSuccMsg("Account Craeted successfully");
-                setToken(res.data.token)
-                setName(res.data.User.FName)
-                console.log("Name", res.data.User.FName)
-                setFname("");
-                setLname("");
-                setSignEmail("");
-                setSignPass("");
-
-                Navigate(redirect, { replace: true })
-
-                setTimeout(() => {
-                    SetSuccMsg("");
-                    // sl(true); // 👈 Switches tab AFTER 2 seconds!
-                }, 3000);
-            }
-        } catch (error) {
+            setToken(res.data.token);
+            setName(res.data.User.FName);
+            showSuccessToast("Email verified. Your account is ready.");
+            Navigate(redirect, { replace: true });
+            
+        } catch (error: any) {
             console.error(error);
+            showErrorToast(error.response?.data?.message || "Could not verify code");
+        } finally {
+            setIsLoading(false);
         }
     };
 
     return (
-        <div className="w-full max-w-sm h-150 lg:h-125 lg:max-w-lg px-10 lg:px-0 py-16 border border-gray-400/20 rounded-2xl bg-white flex flex-col items-center justify-center animate-fade-up duration-500">
-
-            {SuccMsg && (
-                <div className="w-[80%] bg-emerald-100 border border-emerald-400 text-emerald-800 px-4 py-3 rounded-lg text-sm font-medium mb-4 text-center">
-                    {SuccMsg}
-                </div>
-            )}
-
+        <div className="w-full max-w-sm min-h-100 lg:min-h-125 lg:max-w-lg px-10 lg:px-0 py-12 border border-gray-400/20 rounded-2xl bg-white flex flex-col items-center justify-center animate-fade-up duration-500">
+            {CodeSent ? (
+                <form
+                    onSubmit={VerifySignupCode}
+                    className="w-full max-w-103 flex flex-col justify-center items-center gap-5"
+                >
+                    <div className="w-full text-center">
+                        <h2 className="font-heading text-xl text-black">Verify your email</h2>
+                        <p className="mt-2 text-sm text-gray-600">We sent a 6-digit code to {SignEmail}</p>
+                    </div>
+                    <div className="w-full flex flex-col gap-2">
+                        <label htmlFor="signup-otp" className="text-sm text-black font-body">Verification code</label>
+                        <input
+                            id="signup-otp"
+                            value={OtpCode}
+                            onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, "").slice(0, 6))}
+                            inputMode="numeric"
+                            autoComplete="one-time-code"
+                            maxLength={6}
+                            required
+                            className="w-full px-4 py-3 rounded-lg border-2 border-gray-950 outline-none focus:border-gray-500/50 text-center tracking-[0.4em]"
+                        />
+                    </div>
+                    <button
+                        type="submit"
+                        disabled={IsLoading || OtpCode.length !== 6}
+                        className="bg-black w-full text-white font-heading py-3 cursor-pointer rounded-full hover:scale-[1.02] transition-transform duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                        {IsLoading ? "Verifying..." : "Verify and create account"}
+                    </button>
+                    
+                    <div className="w-full flex justify-between text-sm">
+                        <span className="text-gray-600" aria-live="polite">
+                            {SecondsRemaining > 0 ? `Resend in 00:${String(SecondsRemaining).padStart(2, "0")}` : "Code expired"}
+                        </span>
+                        <button type="button" disabled={IsLoading || SecondsRemaining > 0} onClick={() => void RequestVerificationCode()} className="underline underline-offset-2 disabled:opacity-50 disabled:no-underline">
+                            {IsLoading ? "Sending..." : "Resend code"}
+                        </button>
+                    </div>
+                </form>
+            ) : (
             <form
                 onSubmit={HandleSignUp}
                 className="w-full max-w-103 flex flex-col justify-center items-center gap-3.5"
@@ -78,7 +155,7 @@ const Signup = () => {
                             onFocus={() => {
                                 if (Fname === "Steve") setFname("");
                             }}
-                            required={true}
+                            required
                             value={Fname}
                             id="fname"
                             autoComplete="given-name"
@@ -118,6 +195,7 @@ const Signup = () => {
                         }}
                         value={SignEmail}
                         type="email"
+                        required
                         id="smail"
                         autoComplete="email"
                         className=" w-full px-2 py-2 rounded-lg border-2 border-gray-950 outline-none focus:border-gray-500/50"
@@ -132,6 +210,7 @@ const Signup = () => {
                         <input
                             type={ShowPass ? "text" : "password"}
                             id="spass"
+                            required
                             value={SignPass}
                             autoComplete="new-password"
                             minLength={8}
@@ -157,16 +236,17 @@ const Signup = () => {
                 </div>
 
                 <div className="w-full flex justify-center">
-                    <button className="bg-black mt-2.5 w-[calc(100%-150px)] lg:w-[calc(100%-250px)] text-wh font-heading p-1.5 py-3 cursor-pointer rounded-full  hover:scale-[1.02]  transition-transform duration-200">
-                        Sign Up
+                    <button disabled={IsLoading} className="bg-black mt-2.5 w-[calc(100%-150px)] lg:w-[calc(100%-250px)] text-wh font-heading p-1.5 py-3 cursor-pointer rounded-full hover:scale-[1.02] transition-transform duration-200 disabled:opacity-50">
+                        {IsLoading ? "Sending code..." : "Sign Up"}
                     </button>
                 </div>
 
             </form>
+            )}
 
             {/*Signup with Google*/}
 
-            <div className="w-full flex justify-center mt-10">
+            {!CodeSent && <div className="w-full flex justify-center mt-10">
                 <button
                     type="button"
                     onClick={() => {
@@ -177,7 +257,7 @@ const Signup = () => {
                     <img src={GoogleIcon} className="w-5 h-5" alt="" />
                     <span>SignUp with Google </span>
                 </button>
-            </div>
+            </div>}
 
         </div>
     )

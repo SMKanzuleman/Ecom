@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { GiShoppingBag } from "react-icons/gi";
 import Button from '../../animated components/Button';
 
-const RecentOrders = ({ MyOrders }: any) => {
+const RecentOrders = ({ MyOrders, title = "My Orders" }: any) => {
 
   const [SelectOrders, setSelectOrders] = useState("All");
 
@@ -38,7 +38,7 @@ const RecentOrders = ({ MyOrders }: any) => {
       <div className="w-full flex lg:flex-row flex-col lg:justify-between py-5  items-center gap-5 overflow-hidden">
 
         <div className="font-accent text-black flex flex-col gap-1.5">
-          <span className="font-bold text-4xl lg:text-4xl">My Orders</span>
+          <span className="font-bold text-4xl lg:text-4xl">{title}</span>
           <span className="text-[14px] tracking text-text lg:block hidden font-heading">Here's a quick overview of your orders.</span>
         </div>
 

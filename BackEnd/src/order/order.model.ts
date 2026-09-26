@@ -24,21 +24,6 @@ const OrderScheme = new mongoose.Schema<OrderType>({
         enum: ["processing", "shipped", "delivered", "cancelled"],
         default: "processing"
     },
-    Recipient: {
-        FName: {
-            type: String,
-            required: true
-        },
-        LName: {
-            type: String,
-            required: true
-        },
-        Phone: {
-            type: Number,
-            required: true
-        }
-    },
-  
     Address: {
         State: {
             type: String,

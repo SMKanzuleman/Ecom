@@ -6,6 +6,7 @@ type UserType = {
     Email: string
     Provider: "local" | "google"
     Password?: string
+    IsVerified: boolean
     Role: "User" | "Admin"
     Address: {
         Location: string
@@ -14,9 +15,7 @@ type UserType = {
         State: string
         City: string
         Zip: string
-
     }
-
 }
 
 // Generics allow us to pass types as parameters to functions and classes keeping strict type safety.
@@ -44,6 +43,10 @@ const UserSchema = new mongoose.Schema<UserType>({
         required: function (this: any) {
             return this.Provider === "local"
         }
+    },
+    IsVerified: {
+        type: Boolean,
+        default: true
     },
 
     Address: {

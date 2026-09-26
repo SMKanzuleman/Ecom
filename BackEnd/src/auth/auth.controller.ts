@@ -19,36 +19,16 @@ const RegisterUser = async (req: Request, res: Response) => {
     if (!FName || !Email || !Password) {
       return SendError(res, 404, "All field are required.");
     }
-    const ExistingUser = await User.findOne({ Email });
-    if (ExistingUser) {
-      return SendError(res, 500, "Account already exist.");
+    let ExistingUser = await User.findOne({ Email });
+    if (ExistingUser?.IsVerified) {
+      return SendError(res, 409, "Account already exists.");
     }
-    const NewUser = new User({ FName, LName, Email, Password });
-    await NewUser.save();
+    if (!ExistingUser) {
+      ExistingUser = new User({ FName, LName, Email, Password, IsVerified: false });
+      await ExistingUser.save();
+    }
 
-    const AccessToken = GenerateToken(
-      NewUser._id.toString(),
-      NewUser.Role,
-      AuthConfig.AccessSecretKey,
-      AuthConfig.AccessExpiry,
-    );
-
-    const RefreshToken = GenerateToken(
-      NewUser._id.toString(),
-      NewUser.Role,
-      AuthConfig.RefreshSecretKey,
-      AuthConfig.RefreshExpiry,
-    );
-    res.cookie("token", RefreshToken, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
-      maxAge: 30 * 24 * 60 * 60 * 1000,
-    });
-    return SendSuccess(res, 201, "User registered sucessfully", {
-      user: NewUser,
-      token: AccessToken,
-    });
+    return SendSuccess(res, 201, "Signup started. Request a verification code to continue.");
   } catch (error) {
     return SendError(res, 500, "There is some error");
   }
@@ -65,6 +45,9 @@ const LoginUser = async (req: Request, res: Response) => {
     const FoundedUser = await User.findOne({ Email });
     if (!FoundedUser) {
       return SendError(res, 404, "You does not have an account");
+    }
+    if (FoundedUser.IsVerified === false) {
+      return SendError(res, 403, "Verify your email before signing in.");
     }
     if (FoundedUser.Password !== Password) {
       return SendError(res, 400, "Enter valid credientials");
@@ -83,11 +66,11 @@ const LoginUser = async (req: Request, res: Response) => {
       AuthConfig.RefreshSecretKey,
       AuthConfig.RefreshExpiry,
     );
-
+    const IsCrossSite = process.env.NODE_ENV === "production"
     res.cookie("token", RefreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "none",
+      secure: IsCrossSite,
+      sameSite: IsCrossSite ? "none" : "lax",
       maxAge: 30 * 24 * 60 * 60 * 1000,
     });
     return SendSuccess(res, 200, "User Found sucessfully", {
@@ -118,7 +101,7 @@ const GetMe = async (req: AuthRequest, res: Response) => {
 
 const Refresh = async (req: Request, res: Response) => {
   try {
-    console.log("Cookie recived", req.cookies)
+    
     let { token } = req.cookies;
     if (!token) {
       return SendError(res, 404, "You have not refresh token.");
@@ -132,15 +115,12 @@ const Refresh = async (req: Request, res: Response) => {
       return SendError(res, 404, "You does't have account")
     }
 
-    console.log("decoded")
-
     const AccessToken = GenerateToken(
       decoded.id,
       FoundedUser.Role,
       AuthConfig.AccessSecretKey,
       AuthConfig.AccessExpiry,
     );
-    console.log("generated")
 
     return SendSuccess(res, 200, "Token genrated successfully", {
       token: AccessToken,
@@ -155,11 +135,11 @@ const Refresh = async (req: Request, res: Response) => {
 
 const Logout = async (req: Request, res: Response) => {
   try {
-
+    const IsCrossSite = process.env.NODE_ENV === "production"
     res.clearCookie("token", {
       httpOnly: true,
-      secure: AuthConfig.NODE_ENV === "production",
-      sameSite: "none"
+      secure: IsCrossSite,
+      sameSite: IsCrossSite ? "none" : "lax",
     });
 
     return SendSuccess(res, 200, "Logged out successfully");
@@ -173,31 +153,41 @@ const Logout = async (req: Request, res: Response) => {
 const RequestOTP = async (req: AuthRequest, res: Response) => {
   try {
 
-    const { Email } = req.body
+    const { Email, Purpose = "reset" } = req.body
+    
+    if (!Email) {
+      return SendError(res, 400, "Email is required.");
+    }
     //verify user
     const Founded = await User.findOne({ Email })
-    if (!Founded) {
-      SendError(res, 404, "Your email seems incorrect.TRY AGAIN")
+
+    if (!Founded || (Purpose === "signup" && Founded.IsVerified !== false)) {
+      return SendError(res, 404, "Your email seems incorrect.TRY AGAIN")
     }
+
     //genraate OTP
     const OTPCode = crypto.randomInt(100000, 1000000).toString()
 
-    await OTP.deleteMany({ Email })
+    const ExpiresAt = Date.now() + 60 * 1000;
 
-    await OTP.create({ Email, OTP: OTPCode })
+    await OTP.deleteMany({ Email, Purpose })
+
+    await OTP.create({ Email, OTP: OTPCode, Purpose })
+
+    const IsSignupVerification = Purpose === "signup";
 
     const emailHtml = `
-            <div style="font-family: Arial, sans-serif; padding: 20px;">
-                <h2>Password Reset Request</h2>
-                <p>Use the following 6-digit verification code to reset your password:</p>
-                <h1 style="background: #f4f4f4; padding: 10px 20px; display: inline-block; letter-spacing: 4px;">${OTPCode}</h1>
-                <p>This code will expire in 60 seconds. If you didn't request this, ignore this email.</p>
-            </div>
-        `;
+        <div style="font-family: Arial, sans-serif; padding: 20px;">
+          <h2>${IsSignupVerification ? "Verify your ECOM Store account" : "Password Reset Request"}</h2>
+          <p>Use the following 6-digit verification code to ${IsSignupVerification ? "complete your signup" : "reset your password"}:</p>
+          <h1 style="background: #f4f4f4; padding: 10px 20px; display: inline-block; letter-spacing: 4px;">${OTPCode}</h1>
+          <p>This code will expire in 60 seconds. If you didn't request this, ignore this email.</p>
+        </div>
+      `;
     //send Email
-    await SendEmail(Email, "ECOM: OTP-verification", emailHtml)
+    await SendEmail(Email, IsSignupVerification ? "ECOM: Verify your email" : "ECOM: OTP-verification", emailHtml)
 
-    SendSuccess(res, 201, "OTP sent")
+    return SendSuccess(res, 201, "OTP sent", { expiresAt: ExpiresAt })
 
   } catch (error) {
     console.error(error)
@@ -209,14 +199,59 @@ const RequestOTP = async (req: AuthRequest, res: Response) => {
 const VerifyOTP = async (req: AuthRequest, res: Response) => {
   try {
 
-    const { UserOTP, Email } = req.body
+    const { UserOTP, Email, Purpose = "reset" } = req.body
+    
+    if (!Email || !UserOTP || !["signup", "reset"].includes(Purpose)) {
+      return SendError(res, 400, "Email, OTP, and a valid purpose are required.");
+    }
     //verify token
-    const Founded = await OTP.findOne({ Email, OTP: UserOTP })
+    const Founded = await OTP.findOne({
+      Email,
+      OTP: UserOTP,
+      Purpose,
+      CreatedAt: { $gt: new Date(Date.now() - 60 * 1000) },
+    })
     if (!Founded) {
-      SendError(res, 404, "Sorry Incorrect OTP")
+      return SendError(res, 404, "Sorry Incorrect OTP")
     }
 
-    SendSuccess(res, 201, "OTP verified")
+    if (Purpose === "signup") {
+      const VerifiedUser = await User.findOneAndUpdate(
+        { Email, IsVerified: false },
+        { $set: { IsVerified: true } },
+        { new: true },
+      ).select("-Password");
+      if (!VerifiedUser) {
+        return SendError(res, 404, "Signup account was not found.");
+      }
+
+      await OTP.deleteOne({ _id: Founded._id });
+      const AccessToken = GenerateToken(
+        VerifiedUser._id.toString(),
+        VerifiedUser.Role,
+        AuthConfig.AccessSecretKey,
+        AuthConfig.AccessExpiry,
+      );
+      const RefreshToken = GenerateToken(
+        VerifiedUser._id.toString(),
+        VerifiedUser.Role,
+        AuthConfig.RefreshSecretKey,
+        AuthConfig.RefreshExpiry,
+      );
+      const IsCrossSite = process.env.NODE_ENV === "production";
+      res.cookie("token", RefreshToken, {
+        httpOnly: true,
+        secure: IsCrossSite,
+        sameSite: IsCrossSite ? "none" : "lax",
+        maxAge: 30 * 24 * 60 * 60 * 1000,
+      });
+      return SendSuccess(res, 200, "Email verified and account created.", {
+        User: VerifiedUser,
+        token: AccessToken,
+      });
+    }
+
+    return SendSuccess(res, 200, "OTP verified")
 
   } catch (error) {
     console.error(error)
@@ -226,16 +261,31 @@ const VerifyOTP = async (req: AuthRequest, res: Response) => {
 
 const ResetPassword = async (req: AuthRequest, res: Response) => {
   try {
-    const { NewPassword, Email } = req.body
+    const { NewPassword, Email, UserOTP } = req.body
+    if (!NewPassword || !Email || !UserOTP) {
+      return SendError(res, 400, "Email, OTP, and new password are required.");
+    }
+
+    const ValidOTP = await OTP.findOne({
+      Email,
+      OTP: UserOTP,
+      Purpose: "reset",
+      CreatedAt: { $gt: new Date(Date.now() - 60 * 1000) },
+    });
+    if (!ValidOTP) {
+      return SendError(res, 400, "OTP is incorrect or has expired.");
+    }
+
     const Success = await User.findOneAndUpdate({ Email: Email }, {
       $set: {
         Password: NewPassword
       }
     }, { new: true })
     if (!Success) {
-      SendError(res, 404, "Sorry Incorrect OTP")
+      return SendError(res, 404, "Sorry Incorrect OTP")
     }
-    SendSuccess(res, 201, "Password changed.")
+    await OTP.deleteOne({ _id: ValidOTP._id });
+    return SendSuccess(res, 201, "Password changed.")
   } catch (error) {
     console.error(error)
     SendError(res, 500, "Internal Server Error")

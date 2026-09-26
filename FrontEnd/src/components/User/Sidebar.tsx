@@ -3,6 +3,7 @@ import { RiDashboardFill } from "react-icons/ri";
 import { BiLogOut } from "react-icons/bi";
 import { GiShoppingBag } from "react-icons/gi";
 import { CgProfile } from "react-icons/cg";
+import { FiTruck } from "react-icons/fi";
 import { useAuth } from "../../context/AuthContext";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../../Utils/API";
@@ -76,6 +77,11 @@ const Sidebar = ({ Menu, setMenu }: SidebarProps) => {
                         key: "RecentOrders",
                         label: "RecentOrders",
                         icon: <GiShoppingBag className="text-xl shrink-0" />,
+                    },
+                    {
+                        key: "TrackOrder",
+                        label: "Track Order",
+                        icon: <FiTruck className="text-xl shrink-0" />,
                     },
                     {
                         key: "Profile",

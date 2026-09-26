@@ -12,7 +12,7 @@ export const GoogleRedirect = async (req: Request, res: Response) => {
         const AuthUrl = GoogleClient.generateAuthUrl({
             access_type: "offline",
             scope: ["email", "profile"],
-            prompt: "select_account" 
+            prompt: "select_account"
 
         })
         if (!AuthUrl) {
@@ -46,22 +46,23 @@ export const GoogleCallback = async (req: Request, res: Response) => {
 
         if (!user) {
 
-             user = new User({
+            user = new User({
                 Email: email,
                 Provider: "google",
                 FName: name,
+                IsVerified: true,
                 Role: "User"
             })
             await user.save()
 
         }
-        
-        const RefreshToken = GenerateToken(user._id.toString(), user.Role, AuthConfig.RefreshSecretKey, AuthConfig.RefreshExpiry)
 
+        const RefreshToken = GenerateToken(user._id.toString(), user.Role, AuthConfig.RefreshSecretKey, AuthConfig.RefreshExpiry)
+        const IsCrossSite = process.env.NODE_ENV === "production"
         res.cookie("token", RefreshToken, {
             httpOnly: true,
-            secure: AuthConfig.NODE_ENV === "prodcution",
-            sameSite: "lax",
+            secure: IsCrossSite,
+            sameSite: IsCrossSite ? "none" : "lax",
             maxAge: 30 * 24 * 60 * 60 * 1000
 
         })

@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Sidebar from "../components/User/Sidebar";
 import Overview from "../components/User/Overview";
 import RecentOrders from "../components/User/RecentOrders";
+import TrackOrder from "../components/User/TrackOrder";
 import Profile from "../components/User/Profile";
 import BottomNav from "../components/User/BottomNav";
 import API from "../Utils/API";
@@ -89,6 +90,7 @@ export const UserDashboard = () => {
             <div className="w-full pb-20 lg:pb-5 py-5 lg:flex-1 overflow-y-auto bg-bg no-scrollbar lg:px-10 px-5">
                 {Menu === "Overview" && (<Overview recentOrder={Orders?.[0] || null} TotalOrders={TotalOrders} TotalInProgress={Inprogress} TotalUserSpending={UserSpending} CancelledOrders={CancelledOrders} />)}
                 {Menu === "RecentOrders" && (<RecentOrders MyOrders={Orders} />)}
+                {Menu === "TrackOrder" && (<TrackOrder />)}
                 {Menu === "Profile" && (<Profile setMenu={setMenu} UserName={UserName} UserEmail={UserEmail} DefaultAddress={DefaultAddress} setDefaultAddress={setDefaultAddress} />)}
                 {Menu === "Password" && (<ChangePassword setMenu={setMenu} />)}
             </div>

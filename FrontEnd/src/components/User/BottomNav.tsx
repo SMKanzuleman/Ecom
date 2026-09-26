@@ -1,6 +1,7 @@
 import { RiDashboardFill } from "react-icons/ri";
 import { FiPackage } from "react-icons/fi";
 import { IoCartSharp } from "react-icons/io5";
+import { FiTruck } from "react-icons/fi";
 
 type BottomNavProps = {
     Menu: string,
@@ -18,6 +19,11 @@ const BottomNav = ({ Menu, setMenu }: BottomNavProps) => {
             <div className={`flex flex-col gap-0 cursor-pointer ${Menu === "RecentOrders" ? " bg-wh/10 animate-fadding rounded-sm" : "bg-black"} w-full p-3 items-center`} onClick={() => { setMenu("RecentOrders") }}>
                 <div><FiPackage className="text-2xl" /></div>
                 <div className="font-body text-sm">RecentOrders</div>
+            </div>
+
+            <div className={`flex flex-col gap-0 cursor-pointer ${Menu === "TrackOrder" ? " bg-wh/10 animate-fadding rounded-sm" : "bg-black"} w-full p-3 items-center`} onClick={() => { setMenu("TrackOrder") }}>
+                <div><FiTruck className="text-2xl" /></div>
+                <div className="font-body text-sm">Track Order</div>
             </div>
 
             <div className={`flex flex-col  cursor-pointer ${Menu === "Profile" ? " bg-wh/10 animate-fadding rounded-sm" : "bg-black"} w-full p-3 items-center gap-0`} onClick={() => { setMenu("Profile") }}>

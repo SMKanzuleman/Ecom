@@ -2,9 +2,10 @@ import { HiMiniCurrencyDollar } from "react-icons/hi2";
 import { GiShoppingBag } from "react-icons/gi";
 import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
+import { CopyButton } from "../../Utils/CopyButton";
 
 
-const Overview = ({ TotalOrders, TotalInProgress, TotalUserSpending, CancelledOrders, recentOrder }:any) => {
+const Overview = ({ TotalOrders, TotalInProgress, TotalUserSpending, CancelledOrders, recentOrder }: any) => {
 
   const { Name } = useAuth()
 
@@ -98,7 +99,13 @@ const Overview = ({ TotalOrders, TotalInProgress, TotalUserSpending, CancelledOr
           <div className="w-full flex justify-between items-center">
 
             <div className="flex flex-col justify-center items-start">
-              <div className="text-xl font-semibold text-black font-accent" >OrderId :{recentOrder._id}</div>
+              <div className="text-xl font-semibold text-black font-accent flex gap-2" >
+                <span>
+                  OrderId :{recentOrder._id}
+                </span>
+                <CopyButton textToCopy={`${recentOrder._id}`} />
+
+              </div>
               <div className=" text-[14px]" >Placed on {recentOrder?.createdAt
                 ? new Date(recentOrder.createdAt).toLocaleDateString("en-US", {
                   day: "numeric",

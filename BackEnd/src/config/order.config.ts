@@ -16,11 +16,6 @@ export type OrderType = {
         LandMark: string
 
     }
-    Recipient: {
-        FName: string
-        LName: string
-        Phone: Number
-    }
     OrderItems: {
         ProductId: mongoose.Types.ObjectId
         Name: string

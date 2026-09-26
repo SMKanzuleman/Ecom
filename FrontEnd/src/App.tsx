@@ -1,4 +1,4 @@
-import { Routes, Route, useLocation, Outlet } from 'react-router-dom';
+import { Routes, Route, Outlet } from 'react-router-dom';
 import { Auth } from './pages/Auth';
 import Home from './pages/Home';
 import ProductDetail from './pages/ProductDetail';
@@ -21,6 +21,7 @@ import {
 
 } from './components/OrderSuccess';
 import { NotFound } from './pages/NotFound';
+import CustomerInfoPage from './pages/CustomerInfoPage';
 
 
 const ShowNavAndFooter = () => {
@@ -52,6 +53,10 @@ export const App = () => {
           <Route path="/checkout" element={<Checkout />} />
           <Route path="/auth" element={<Auth />} />
           <Route path="/shop" element={<Shop />} />
+          <Route path="/shipping-delivery" element={<CustomerInfoPage page="shipping" />} />
+          <Route path="/returns-exchanges" element={<CustomerInfoPage page="returns" />} />
+          <Route path="/terms-of-service" element={<CustomerInfoPage page="terms" />} />
+          <Route path="/privacy-policy" element={<CustomerInfoPage page="privacy" />} />
           <Route path="product/:id" element={<ProductDetail />} />
           <Route path="/order-success" element={<OrderSuccess />} />
           <Route path="/:type/:name" element={<Shop />} />
