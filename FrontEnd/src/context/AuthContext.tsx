@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { createContext, useContext, useEffect, useState } from "react";
 import API from "../Utils/API";
 
@@ -26,7 +25,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         const refresh = async () => {
             try {
-                const res = await axios.post("http://localhost:2026/auth/refresh", {}, { withCredentials: true }); //! forces Axios to attach the HttpOnly cookie to the HTTP request headers so Express can read it.
+                const res = await API.post("/auth/refresh", {});
                 setToken(res.data.token)
                 const r = JSON.parse(atob(res.data.token.split('.')[1]));
                 setRole(r.Role)
