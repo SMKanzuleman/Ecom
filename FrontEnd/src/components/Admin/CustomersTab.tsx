@@ -26,7 +26,12 @@ const CustomersTab = ({ Stats, Users, Orders }: any) => {
 
 
     const GetCustomerSpending = (userId: string) => {
-        return Orders.filter((o: any) => userId === o.UserId._id && o.OrderStatus === "delivered").reduce((sum, o) => sum + o.OrderPrice, 0)
+        return Orders
+            .filter((order: any) => {
+                const orderUserId = typeof order.UserId === "string" ? order.UserId : order.UserId?._id;
+                return orderUserId === userId && order.OrderStatus === "delivered";
+            })
+            .reduce((sum: number, order: any) => sum + (Number(order.OrderPrice) || 0), 0);
     }
 
     const HandleExportCustumers = () => {
