@@ -54,6 +54,7 @@ const Checkout = () => {
     }
   }
 
+
   const PlaceOrder = async () => {
     setIsPlacingOrder(true)
     try {

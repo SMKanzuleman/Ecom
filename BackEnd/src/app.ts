@@ -14,7 +14,6 @@ import { UserRouter } from "./User/User.router";
 import { SiteConfigRouter } from "./site config/siteconfig.router";
 
 
-
 const app = express()
 app.use(express.json())
 app.use(morgan("dev"))

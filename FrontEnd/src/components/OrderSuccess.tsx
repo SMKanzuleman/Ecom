@@ -15,6 +15,7 @@ export const OrderSuccess = () => {
         try {
             const res = await API.post("/order/verify-stripe", { SessionId: sessionId })
             if (res.data) {
+                showSuccessToast("Order placed")
                 ClearCart();
             }
 
